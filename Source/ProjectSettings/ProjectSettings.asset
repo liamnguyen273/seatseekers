@@ -753,7 +753,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: UNITY_POST_PROCESSING_STACK_V2;DOTWEEN;RH_SerializedDictionary;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;LETAI_TRUESHADOW
+    Android: UNITY_POST_PROCESSING_STACK_V2;DOTWEEN;RH_SerializedDictionary;LETAI_TRUESHADOW
     EmbeddedLinux: UNITY_POST_PROCESSING_STACK_V2;DOTWEEN
     GameCoreScarlett: DOTWEEN
     GameCoreXboxOne: UNITY_POST_PROCESSING_STACK_V2;DOTWEEN
