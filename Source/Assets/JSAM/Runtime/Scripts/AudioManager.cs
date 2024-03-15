@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 namespace JSAM
 {
@@ -155,13 +156,13 @@ namespace JSAM
 
         private void OnEnable()
         {
-            SceneManager.activeSceneChanged += OnSceneChanged;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             Application.quitting += Quitting;
         }
 
         private void OnDisable()
         {
-            SceneManager.activeSceneChanged -= OnSceneChanged;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             Application.quitting -= Quitting;
         }
 
@@ -191,52 +192,32 @@ namespace JSAM
         {
             if (listener == null)
             {
-                bool success = false;
-
-                if (Application.isPlaying)
+                if (Camera.main != null)
                 {
-                    if (Camera.main != null)
-                    {
-                        var l = Camera.main.GetComponent<AudioListener>();
-                        if (l)
-                        {
-                            listener = l;
-                            success = true;
-                        }
-                    }
-
-                    if (!success)
-                    {
-                        var l = FindObjectOfType<AudioListener>();
-                        if (l)
-                        {
-                            listener = l;
-                            success = true;
-                        }
-                    }
+                    listener = Camera.main.GetComponent<AudioListener>();
                 }
-
-                if (success)
+                if (listener != null)
                 {
                     DebugLog("AudioManager located an AudioListener successfully!");
                 }
-                else
+                else if (listener == null) // Try to find one ourselves
+                {
+                    listener = FindObjectOfType<AudioListener>();
+                    DebugLog("AudioManager located an AudioListener successfully!");
+                }
+                if (listener == null) // In the case that there still isn't an AudioListener
                 {
                     DebugWarning("Scene is missing an AudioListener!");
                 }
             }
         }
 
-        void OnSceneChanged(Scene scene1, Scene scene2)
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             FindNewListener();
-            if (JSAMSettings.Settings.StopSoundsOnSceneChanged)
+            if (JSAMSettings.Settings.StopSoundsOnSceneLoad)
             {
                 StopAllSounds();
-            }
-            if (JSAMSettings.Settings.StopMusicOnSceneChanged)
-            {
-                StopAllMusic();
             }
         }
 
@@ -643,12 +624,6 @@ namespace JSAM
 
         #region StopMusic
         /// <summary>
-        /// Stops all playing music maintained by AudioManager
-        /// </summary>
-        public static void StopAllMusic(bool stopInstantly = true) =>
-            InternalInstance.StopAllMusicInternal(stopInstantly);
-
-        /// <summary>
         /// Instantly stops the playback of the specified playing music music
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -918,16 +893,14 @@ namespace JSAM
         }
 
 #if UNITY_EDITOR
+
+        /// <summary>
+        /// A MonoBehaviour function called when the script is loaded or a value is changed in the inspector (Called in the editor only).
+        /// </summary>
         private void OnValidate()
         {
-            // Don't go any further if you're in a prefab
-            UnityEditor.SceneManagement.PrefabStage currentStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
-            if (currentStage != null)
-            {
-                return;
-            }
-
             EstablishSingletonDominance();
+            if (listener == null) FindNewListener();
             //ValidateSourcePrefab();
 
             if (!doneLoading) return;

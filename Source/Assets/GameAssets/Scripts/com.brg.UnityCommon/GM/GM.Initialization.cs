@@ -133,6 +133,8 @@ namespace com.brg.UnityCommon
             // Now initialize banner ad
             Ad.InitializeBannerAds();
             
+            
+            
             // Initialize leaderboard
             // if (Player.GetLeaderboardShouldInitialize())
             // {

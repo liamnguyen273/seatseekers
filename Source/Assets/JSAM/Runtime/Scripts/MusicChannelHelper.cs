@@ -28,17 +28,17 @@ namespace JSAM
             }
         }
 
-        public override AudioSource Play()
+        public override AudioSource Play(MusicFileObject file)
         {
-            if (audioFile == null)
+            if (file == null)
             {
-                AudioManager.DebugWarning("Tried to play Music when no Music File was assigned!");
+                AudioManager.DebugWarning("Attempted to play a non-existent JSAM Music File Object!");
                 return AudioSource;
             }
 
             AudioSource.pitch = 1;
 
-            if (audioFile.loopMode == LoopMode.NoLooping)
+            if (file.loopMode == LoopMode.NoLooping)
             {
                 AudioSource.loop = false;
             }
@@ -47,7 +47,7 @@ namespace JSAM
                 AudioSource.loop = true;
             }
 
-            return base.Play();
+            return base.Play(file);
         }
 
         public override void Stop(bool stopInstantly = true)

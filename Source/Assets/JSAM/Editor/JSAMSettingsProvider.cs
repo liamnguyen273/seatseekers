@@ -23,17 +23,14 @@ namespace JSAM.JSAMEditor
             dynamicSourceAllocation,
             soundChannelPrefabOverride,
             musicChannelPrefabOverride,
-            stopSoundsOnSceneChanged,
-            stopMusicOnSceneChanged,
+            stopSoundsOnSceneLoad,
             spatializationMode,
             timeScaledSounds,
-
             mixer,
             masterGroup,
             musicGroup,
             soundGroup,
             voiceGroup,
-
             saveVolumeToPlayerPrefs,
             masterVolumeKey,
             masterMutedKey,
@@ -43,7 +40,6 @@ namespace JSAM.JSAMEditor
             soundMutedKey,
             voiceVolumeKey,
             voiceMutedKey,
-
             packagePath,
             presetsPath,
             fontSize;
@@ -64,17 +60,14 @@ namespace JSAM.JSAMEditor
             dynamicSourceAllocation = SettingsSO.FindProperty(nameof(dynamicSourceAllocation));
             soundChannelPrefabOverride = SettingsSO.FindProperty(nameof(soundChannelPrefabOverride));
             musicChannelPrefabOverride = SettingsSO.FindProperty(nameof(musicChannelPrefabOverride));
-            stopSoundsOnSceneChanged = SettingsSO.FindProperty(nameof(stopSoundsOnSceneChanged));
-            stopMusicOnSceneChanged = SettingsSO.FindProperty(nameof(stopMusicOnSceneChanged));
+            stopSoundsOnSceneLoad = SettingsSO.FindProperty(nameof(stopSoundsOnSceneLoad));
             spatializationMode = SettingsSO.FindProperty(nameof(spatializationMode));
             timeScaledSounds = SettingsSO.FindProperty(nameof(timeScaledSounds));
-
             mixer = SettingsSO.FindProperty(nameof(mixer));
             masterGroup = SettingsSO.FindProperty(nameof(masterGroup));
             musicGroup = SettingsSO.FindProperty(nameof(musicGroup));
             soundGroup = SettingsSO.FindProperty(nameof(soundGroup));
             voiceGroup = SettingsSO.FindProperty(nameof(voiceGroup));
-
             saveVolumeToPlayerPrefs = SettingsSO.FindProperty(nameof(saveVolumeToPlayerPrefs));
             masterVolumeKey = SettingsSO.FindProperty(nameof(masterVolumeKey));
             masterMutedKey = SettingsSO.FindProperty(nameof(masterMutedKey));
@@ -109,8 +102,7 @@ namespace JSAM.JSAMEditor
             EditorGUILayout.PropertyField(spatializationMode);
             EditorGUILayout.PropertyField(startingMusicChannels);
             EditorGUILayout.PropertyField(startingSoundChannels);
-            EditorGUILayout.PropertyField(stopSoundsOnSceneChanged);
-            EditorGUILayout.PropertyField(stopMusicOnSceneChanged);
+            EditorGUILayout.PropertyField(stopSoundsOnSceneLoad);
             EditorGUILayout.PropertyField(timeScaledSounds);
 
             EditorGUILayout.BeginHorizontal();
@@ -257,7 +249,7 @@ namespace JSAM.JSAMEditor
         public void ResetEditorSettings()
         {
             JSAMSettings.Settings.ResetEditor();
-            JSAMPaths.Instance.ResetPaths();
+            JSAMPaths.Instance.Reset();
         }
 
         [SettingsProvider]

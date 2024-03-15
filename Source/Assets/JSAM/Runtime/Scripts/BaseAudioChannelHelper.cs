@@ -209,6 +209,9 @@ namespace JSAM
             }
         }
 
+        /// <summary>
+        /// Called by Play()
+        /// </summary>
         protected void ClearProperties()
         {
             // Make sure no remnants from a previous sound remain
@@ -218,24 +221,12 @@ namespace JSAM
             if (audioFile) UnsubscribeFromAudioEvents();
         }
 
-        public void AssignNewFile(T file)
+        public virtual AudioSource Play(T file)
         {
             ClearProperties();
 
             audioFile = file;
-        }
 
-        /// <summary>
-        /// To play new sounds one after another using the same Helper, 
-        /// call the following methods in order; 
-        /// helper.AssignNewFile(file),
-        /// helper.SetSpatializationTarget(targetTransform),
-        /// helper.Play()
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        public virtual AudioSource Play()
-        {
             if (!AssignNewAudioClip())
             {
                 return AudioSource;
@@ -244,9 +235,9 @@ namespace JSAM
             if (JSAMSettings.Settings.Spatialize && audioFile.spatialize)
             {
                 AudioSource.spatialBlend = 1;
-                if (audioFile.maxDistance != 0)
+                if (file.maxDistance != 0)
                 {
-                    AudioSource.maxDistance = audioFile.maxDistance;
+                    AudioSource.maxDistance = file.maxDistance;
                 }
                 else AudioSource.maxDistance = JSAMSettings.Settings.DefaultSoundMaxDistance;
             }
@@ -255,15 +246,15 @@ namespace JSAM
                 AudioSource.spatialBlend = 0;
             }
 
-            if (audioFile.fadeInOut)
+            if (file.fadeInOut)
             {
                 BeginFadeIn(audioFile.fadeInDuration * AudioSource.clip.length);
                 BeginFadeOut(audioFile.fadeOutDuration * AudioSource.clip.length);
             }
 
-            AudioSource.outputAudioMixerGroup = audioFile.mixerGroupOverride ? audioFile.mixerGroupOverride : defaultMixerGroup;
+            AudioSource.outputAudioMixerGroup = file.mixerGroupOverride ? file.mixerGroupOverride : defaultMixerGroup;
 
-            AudioSource.priority = (int)audioFile.priority;
+            AudioSource.priority = (int)file.priority;
 
             SubscribeToVolumeEvents();
             AudioSource.volume = Volume;
@@ -274,7 +265,7 @@ namespace JSAM
                 timeScaledSounds = JSAMSettings.Settings.TimeScaledSounds;
             }
 
-            if (timeScaledSounds && !audioFile.ignoreTimeScale)
+            if (timeScaledSounds && !file.ignoreTimeScale)
             {
                 float offset = AudioSource.pitch - 1;
                 AudioSource.pitch = Time.timeScale + offset;
@@ -282,8 +273,8 @@ namespace JSAM
 
             ApplyEffects();
 
-            AudioSource.PlayDelayed(audioFile.delay);
-            enabled = true;
+            AudioSource.PlayDelayed(file.delay);
+            enabled = true; // Enable updates on the script
 
             return AudioSource;
         }
@@ -325,7 +316,7 @@ namespace JSAM
         /// <returns></returns>
         public bool AssignNewAudioClip()
         {
-            if (audioFile.Files.Count > 1)
+            if (audioFile.Files.Count > 1) // The user actually bothered to include multiple audioFiles
             {
                 int index;
                 do

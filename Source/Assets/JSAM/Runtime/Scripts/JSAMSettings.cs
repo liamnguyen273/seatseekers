@@ -56,18 +56,11 @@ namespace JSAM
         public GameObject MusicChannelPrefab => musicChannelPrefabOverride;
 
         /// <summary>
-        /// If true, stops all sounds when you change the active scene
+        /// If true, stops all sounds when you load a scene
         /// </summary>
-        [Tooltip("If true, stops all sounds when you change the active scene")]
-        [SerializeField] bool stopSoundsOnSceneChanged = false;
-        public bool StopSoundsOnSceneChanged => stopSoundsOnSceneChanged;
-
-        /// <summary>
-        /// If true, stops all music when you change the active scene
-        /// </summary>
-        [Tooltip("If true, stops all sounds when you change the active scene")]
-        [SerializeField] bool stopMusicOnSceneChanged = false;
-        public bool StopMusicOnSceneChanged => stopMusicOnSceneChanged;
+        [Tooltip("If true, stops all sounds when you load a scene")]
+        [SerializeField] bool stopSoundsOnSceneLoad = false;
+        public bool StopSoundsOnSceneLoad => stopSoundsOnSceneLoad;
 
         [Tooltip("Use if spatialized sounds are spatializing late when playing in-editor, known to happen with the Oculus SDK")]
         [SerializeField] bool spatializeLateUpdate = false;
@@ -180,7 +173,7 @@ namespace JSAM
 
         public static void TryCreateNewSettingsAsset()
         {
-            if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            if (EditorApplication.isCompiling) return;
 
             if (!EditorUtility.DisplayDialog(
                 "JSAM First Time Setup",

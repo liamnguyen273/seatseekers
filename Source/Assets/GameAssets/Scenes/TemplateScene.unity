@@ -433,6 +433,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaitHelper
       objectReference: {fileID: 0}
+    - target: {fileID: 5415113412762573555, guid: 200154b20f0d6cc409ad63a5d51cc154, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7425167819950638954, guid: 200154b20f0d6cc409ad63a5d51cc154, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -875,7 +879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &728718769
 RectTransform:
   m_ObjectHideFlags: 0
