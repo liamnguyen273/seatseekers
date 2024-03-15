@@ -88,7 +88,7 @@ namespace com.brg.UnityCommon.Editor
                 var baseGo = c.gameObject;
 
                 // If both exists, validate path first, if that fails, regenerate
-                if (!path.IsNullOrEmpty() && comp is not null)
+                if (!(path is null || path == "") && comp is not null)
                 {
                     var compGo = baseGo.TraversePath(isRelative, path);
                     var newComp = compGo?.GetComponent(tType);
@@ -109,7 +109,7 @@ namespace com.brg.UnityCommon.Editor
                     }
                 }
                 // If path is null, regenerate path
-                else if (path.IsNullOrEmpty())
+                else if (path is null || path == "")
                 {
                     pathProp.stringValue = (comp as Component)!.gameObject.RegeneratePathUpTo(baseGo);
                 }
@@ -150,7 +150,7 @@ namespace com.brg.UnityCommon.Editor
                 var baseGo = c.gameObject;
 
                 // If both exists, validate path first, if that fails, regenerate
-                if (!path.IsNullOrEmpty() && gameObject is not null)
+                if (!(path is null || path == "") && gameObject is not null)
                 {
                     var newGameObject = baseGo.TraversePath(isRelative, path);
                     if (newGameObject is not null && newGameObject == gameObject)
@@ -170,7 +170,7 @@ namespace com.brg.UnityCommon.Editor
                     }
                 }
                 // If path is null, regenerate path
-                else if (path.IsNullOrEmpty())
+                else if (path is null || path == "")
                 {
                     pathProp.stringValue = gameObject.RegeneratePathUpTo(baseGo);
                 }
