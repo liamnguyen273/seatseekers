@@ -49,11 +49,18 @@ namespace com.brg.UnityCommon.IAP
 
             var products = _dataManager.GetAllProducts();
 
-            foreach (var (key, entry) in products)
+            if (products is null || products.Count == 0)
             {
-                if (entry.IsIAP)
+                builder.AddProduct("dummy_product", ProductType.Consumable);
+            }
+            else
+            {
+                foreach (var (key, entry) in products)
                 {
-                    builder.AddProduct(entry.Id, entry.IsConsumable ? ProductType.Consumable : ProductType.NonConsumable);
+                    if (entry.IsIAP)
+                    {
+                        builder.AddProduct(entry.Id, entry.IsConsumable ? ProductType.Consumable : ProductType.NonConsumable);
+                    }
                 }
             }
             

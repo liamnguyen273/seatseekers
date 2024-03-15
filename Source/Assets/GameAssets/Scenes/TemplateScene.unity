@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ad54efbe1f943948ad3f746864196a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shouldLog: 0
+  _shouldLog: 1
   _isCheat: 0
   _forcedTheme: default
   _showMaxDebugger: 0

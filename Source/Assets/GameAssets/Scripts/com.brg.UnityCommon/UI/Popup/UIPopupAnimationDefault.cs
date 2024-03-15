@@ -22,14 +22,16 @@ namespace com.brg.UnityCommon.UI
         {
             return DOTween.Sequence()
                 .Insert(0f, GetShowBackgroundTweenOnly())
-                .Insert(0f, GetPanelShowTweenOnly());
+                .Insert(0f, GetPanelShowTweenOnly())
+                .Play();
         }
 
         protected override Tween GetHideTween()
         {
             return DOTween.Sequence()
                 .Insert(0f, GetHideBackgroundTweenOnly())
-                .Insert(0f, GetPanelHideTweenOnly());
+                .Insert(0f, GetPanelHideTweenOnly())
+                .Play();
         }
 
         protected override void PerformShowImmediately()
@@ -50,7 +52,8 @@ namespace com.brg.UnityCommon.UI
             return DOTween.To(
                 () => _canvasGroup.alpha,
                 (x) => _canvasGroup.alpha = x,
-                1f, _time);
+                1f, _time)
+                .Play();
         }        
         
         protected Tween GetHideBackgroundTweenOnly()
@@ -58,21 +61,24 @@ namespace com.brg.UnityCommon.UI
             return DOTween.To(
                 () => _canvasGroup.alpha,
                 (x) => _canvasGroup.alpha = x,
-                0f, _time);
+                0f, _time)
+                .Play();
         }
         
         protected Tween GetPanelShowTweenOnly()
         {
             return _panel.DOScale(1, _time)
                 .SetEase(Ease.OutBack)
-                .SetUpdate(UpdateType.Normal, true);
+                .SetUpdate(UpdateType.Normal, true)
+                .Play();
         }
 
         protected Tween GetPanelHideTweenOnly()
         {
             return _panel.DOScale(0, _time)
                 .SetEase(Ease.InBack)
-                .SetUpdate(UpdateType.Normal, true);
+                .SetUpdate(UpdateType.Normal, true)
+                .Play();
         }
     }
 }

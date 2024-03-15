@@ -134,27 +134,27 @@ namespace com.brg.UnityCommon
             Ad.InitializeBannerAds();
             
             // Initialize leaderboard
-            if (Player.GetLeaderboardShouldInitialize())
-            {
-                var names = Data.GetLeaderboardNames().OrderBy(x => Rng.GetFloat(-1.0f, 1.0f));
-                Player.UpdateLeaderboard("You", 0, true);
-
-                var score = 20;
-                var scoreIncrease = 12;
-                var scoreIntensifier = 5;
-                foreach (var name in names)
-                {
-                    Player.UpdateLeaderboard(name, score, true);
-                    scoreIncrease += Rng.GetInteger(scoreIntensifier + 1);
-                    score += scoreIncrease;
-                }
-                
-                Player.RequestSaveData(true, false);
-            }
-            else
-            {
-                UpdateLeaderboardAfterLaunch();
-            }
+            // if (Player.GetLeaderboardShouldInitialize())
+            // {
+            //     var names = Data.GetLeaderboardNames().OrderBy(x => Rng.GetFloat(-1.0f, 1.0f));
+            //     Player.UpdateLeaderboard("You", 0, true);
+            //
+            //     var score = 20;
+            //     var scoreIncrease = 12;
+            //     var scoreIntensifier = 5;
+            //     foreach (var name in names)
+            //     {
+            //         Player.UpdateLeaderboard(name, score, true);
+            //         scoreIncrease += Rng.GetInteger(scoreIntensifier + 1);
+            //         score += scoreIncrease;
+            //     }
+            //     
+            //     Player.RequestSaveData(true, false);
+            // }
+            // else
+            // {
+            //     UpdateLeaderboardAfterLaunch();
+            // }
         }
 
         private void InitializePrimary()

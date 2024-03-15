@@ -55,7 +55,6 @@ namespace com.brg.UnityCommon.UI
 
             // Always update if Active
             UpdateProgressBar(out var isDone);
-            
             if (_loadState == LoadState.LOADING)
             {
                 // Wait for done and trigger here
@@ -114,7 +113,7 @@ namespace com.brg.UnityCommon.UI
                 {
                     _transitTween = null;
                     ConcludeTransitIn();
-                });
+                }).Play();
 
             _slider.Comp.value = 0f;
             
@@ -136,6 +135,7 @@ namespace com.brg.UnityCommon.UI
 
         private void OnLoadingDone()
         {
+            Debug.Log("DONE");
             _hasAppend = false;
             
             // Perform callback
@@ -161,7 +161,7 @@ namespace com.brg.UnityCommon.UI
                 {
                     _transitTween = null;
                     ConcludeTransitOut();
-                });
+                }).Play();
         }
 
         private void ConcludeTransitOut()

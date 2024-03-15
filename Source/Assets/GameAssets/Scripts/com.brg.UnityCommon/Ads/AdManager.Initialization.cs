@@ -16,6 +16,7 @@ namespace com.brg.UnityCommon.Ads
             MaxSdk.SetSdkKey(SDK_KEY);
             MaxSdk.InitializeSdk();
 #else
+            EndInitialize(true);
 #endif
         }
 

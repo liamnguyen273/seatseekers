@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if USING_UNITY
+using UnityEngine;
+#endif
 
 namespace com.brg.Common.Logging
 {
@@ -23,7 +26,7 @@ namespace com.brg.Common.Logging
 #if USING_GODOT
                 GD.Print(s);
 #elif USING_UNITY
-                Debug.Warn(s);
+                Debug.LogWarning(s);
 #else
                 Console.WriteLine(s);
 #endif
@@ -34,7 +37,7 @@ namespace com.brg.Common.Logging
 #if USING_GODOT
                 GD.Print(s);
 #elif USING_UNITY
-                Debug.Error(s);
+                Debug.LogError(s);
 #else
                 Console.WriteLine(s);
 #endif

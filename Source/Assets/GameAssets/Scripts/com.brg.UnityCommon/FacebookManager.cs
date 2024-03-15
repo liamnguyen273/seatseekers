@@ -29,6 +29,8 @@ namespace com.brg.UnityCommon.Facebook
                 // Already initialized, signal an app activation App Event
                 FB.ActivateApp();
             }
+#else
+            EndInitialize(true);
 #endif
         }
 

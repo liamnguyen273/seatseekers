@@ -39,6 +39,11 @@ namespace com.brg.Common.AnalyticsEvents
             {
                 adapter.Initialize();
             }
+
+            if (_done >= _total)
+            {
+                EndInitialize(true);
+            }
         }
 
         protected override void EndInitializationBehaviour()

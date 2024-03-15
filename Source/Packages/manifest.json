@@ -2,6 +2,8 @@
   "dependencies": {
     "com.cysharp.csprojmodifier": "https://github.com/Cysharp/CsprojModifier.git?path=src/CsprojModifier/Assets/CsprojModifier",
     "com.olegknyazev.softmask": "https://github.com/olegknyazev/SoftMask.git?path=/Packages/com.olegknyazev.softmask#1.7.0",
+    "com.unity.adaptiveperformance.google.android": "1.2.1",
+    "com.unity.adaptiveperformance.samsung.android": "5.0.0",
     "com.unity.addressables": "1.21.20",
     "com.unity.collab-proxy": "2.3.1",
     "com.unity.device-simulator.devices": "1.0.0",
