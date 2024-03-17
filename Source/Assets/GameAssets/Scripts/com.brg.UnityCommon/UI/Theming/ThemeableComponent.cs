@@ -36,12 +36,17 @@ namespace com.brg.UnityCommon.UI
         protected void OnDisable()
         {
             _enabled = false;
-            
-            GM.Instance.OnThemeChangeEvent -= SetTheme;
+
+            if (GM.Instance)
+            {
+                GM.Instance.OnThemeChangeEvent -= SetTheme;
+            }
         }
         
         private void EnableHelper()
         {
+            if (!GM.Instance) return;
+            
             if (GM.Instance.Usable)
             {
                 SetTheme(GM.Instance.GetTheme());

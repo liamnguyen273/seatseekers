@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Background
+  - Car
+  - Seats
+  - Customers
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1680083901
+    locked: 0
+  - name: Car
+    uniqueID: 1197381937
+    locked: 0
+  - name: Seats
+    uniqueID: 1927132691
+    locked: 0
+  - name: Customers
+    uniqueID: 3418608303
     locked: 0

@@ -17,7 +17,6 @@ namespace com.brg.UnityCommon.Data
 
         [JsonIgnore] public bool Playable { get; internal set; }
         [JsonIgnore] public bool EvaluatedPlayable => Playable;
-        [JsonIgnore] public int TotalStickerCount { get; internal set; }
 
         public string GetShowUnlockCondition()
         {

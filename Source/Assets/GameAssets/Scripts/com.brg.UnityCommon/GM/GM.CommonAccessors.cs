@@ -24,6 +24,5 @@ namespace com.brg.UnityCommon
         public PurchaseManager Purchases => Get<GMComponentPurchaseManagerWrapper>().WrappedObject;
         public AnalyticsEventManager Events => Get<GMComponentAnalyticsEventManagerWrapper>().WrappedObject;
         public RemoteConfigManager RemoteConfigs => Get<GMComponentRemoteConfigManagerWrapper>().WrappedObject;
-
     }
 }
