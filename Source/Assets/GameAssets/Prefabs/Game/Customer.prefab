@@ -48,7 +48,7 @@ MonoBehaviour:
   _debugAppearance:
     _comp: {fileID: 2580384813547412874}
     _path: ./Appearance
-  _moveSpeed: 1
+  _moveSpeed: 5
 --- !u!1 &5516228306225335228
 GameObject:
   m_ObjectHideFlags: 0

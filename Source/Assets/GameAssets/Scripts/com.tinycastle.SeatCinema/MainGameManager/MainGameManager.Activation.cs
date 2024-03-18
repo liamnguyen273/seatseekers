@@ -1,6 +1,7 @@
 using com.brg.Common.Initialization;
 using com.brg.Common.ProgressItem;
 using com.brg.UnityCommon.Data;
+using DG.Tweening;
 
 namespace com.tinycastle.SeatCinema
 {
@@ -13,7 +14,8 @@ namespace com.tinycastle.SeatCinema
 
         public void Deactivate()
         {
-            throw new System.NotImplementedException();
+            _playerMoveTween?.Kill();
+            _playerMoveTween = null;
         }
 
         public void PrepareActivate()

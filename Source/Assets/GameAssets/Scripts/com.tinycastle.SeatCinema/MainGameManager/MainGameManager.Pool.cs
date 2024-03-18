@@ -18,6 +18,7 @@ namespace com.tinycastle.SeatCinema
         {
             _spawnedCustomers.Remove(customer);
             customer.transform.parent = _customerHost.Transform;
+            customer.Seat = null;
             customer.SetGOActive(false);
             _customerPool.Add(customer);
         }

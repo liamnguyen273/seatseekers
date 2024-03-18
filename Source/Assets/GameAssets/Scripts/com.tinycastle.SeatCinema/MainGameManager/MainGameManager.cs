@@ -6,6 +6,7 @@ using com.brg.Common.Initialization;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Data;
 using com.brg.UnityCommon.Editor;
+using DG.Tweening;
 using UnityEngine;
 
 namespace com.tinycastle.SeatCinema
@@ -43,9 +44,11 @@ namespace com.tinycastle.SeatCinema
         
         private bool _resolvingPlayerAction = false;
 
+        private Tween? _playerMoveTween;
+
         public CarController Car => _car;
 
-        public bool AllowPickUpSeat => !_resolvingPlayerAction;
+        public bool AllowPickUpSeat => _state == GameState.PLAYING && !_resolvingPlayerAction;
 
         public void LoadLevel(LevelEntry levelEntry)
         {
@@ -70,9 +73,76 @@ namespace com.tinycastle.SeatCinema
         
         public void OnSeatDroppedByPlayer()
         {
-            var validSeats = _car.Comp.GetPathfinding();
+            _resolvingPlayerAction = true;
+
+            var queueStartPos = GetQueuePos(0);
+            var validSeats = _car.Comp.GetPathfinding(queueStartPos);
             
-            
+            var moveSequence = DOTween.Sequence();
+            var seatI = 0;
+            var queueIndex = 0;
+            for (var colorI = 0; colorI < _queue.Length; ++colorI)
+            {
+                var customerList = _queue[colorI];
+                foreach (var customer in customerList)
+                {
+                    // Skip if customer is seated
+                    if (customer.Seated) continue;
+                    
+                    // If still have seats
+                    if (seatI < validSeats.Count)
+                    {
+                        var seat = validSeats[seatI];
+                        
+                        // If seat can be seated by customer
+                        if (!seat.isCustomer2 ? seat.seat.CanAssign1(customer) : seat.seat.CanAssign2(customer))
+                        {
+                            // Assign seat
+                            var sequence = customer.MoveToSeatViaPath(seat.path);
+                            sequence.AppendCallback(() =>
+                            {
+                                if (!seat.isCustomer2) seat.seat.AssignCustomer1(customer);
+                                else seat.seat.AssignCustomer2(customer);
+                            });
+                            moveSequence.Join(sequence);
+
+                            ++seatI;
+                        }
+                        // Otherwise, is still in queue
+                        else
+                        {
+                            var queuePos = GetQueuePos(queueIndex);
+                            moveSequence.Join(customer.MoveInQueue(queuePos));
+                            ++queueIndex;
+                        }
+                    }
+                    // No more valid seat, only assign to Queue
+                    else
+                    {
+                        var queuePos = GetQueuePos(queueIndex);
+                        moveSequence.Join(customer.MoveInQueue(queuePos));
+                        ++queueIndex;
+                    }
+                }
+            }
+
+            moveSequence.AppendCallback(() =>
+            {
+                _resolvingPlayerAction = false;
+                _playerMoveTween = null;
+                CheckForEndgameCondition();
+            });
+
+            _playerMoveTween = moveSequence.Play();
+        }
+
+        private void CheckForEndgameCondition()
+        {
+            var fullySeated = Car.CheckFilledAllSeats();
+            if (fullySeated)
+            {
+                SetState(GameState.ENDING_GAME);
+            }
         }
 
         private void SetState(GameState newState, bool validate = false)
@@ -84,6 +154,7 @@ namespace com.tinycastle.SeatCinema
             }
 
             _state = newState;
+            Log.Info($"State changed to ${_state}");
             
             switch (newState)
             {
@@ -148,7 +219,7 @@ namespace com.tinycastle.SeatCinema
             return (newState) switch
             {
                 GameState.OUTSIDE_GAME => true,
-                GameState.LOAD_LEVEL => oldState >= GameState.OUTSIDE_GAME && oldState < GameState.ENDING_GAME,
+                GameState.LOAD_LEVEL => oldState == GameState.OUTSIDE_GAME || oldState >= GameState.END_GAME,
                 GameState.PLAYING => oldState == GameState.PAUSED || oldState == GameState.LOAD_LEVEL,
                 GameState.PAUSED => oldState == GameState.PLAYING,
                 GameState.ENDING_GAME => oldState == GameState.PAUSED || oldState == GameState.PLAYING,
@@ -165,10 +236,10 @@ namespace com.tinycastle.SeatCinema
             _car.Comp.SetLevelData(data);
             
             // Set customer queue
-            var queuePos = _car.Comp.GetQueueStartPos(true);
             var customers = _car.Comp.Data.GetQueuers();
 
             _queue = new List<Customer>[customers.Length];
+            var queueNumber = 0;
             for (var i =  customers.Length - 1; i >= 0; --i)
             {
                 _queue[i] = new List<Customer>();
@@ -180,10 +251,11 @@ namespace com.tinycastle.SeatCinema
                     var customer = GetCustomer();
                     customer.SetGOActive(true);
                     customer.Color = (int)SeatEnum.BLUE + i;
+                    var queuePos = GetQueuePos(queueNumber);
                     customer.transform.position = queuePos;
-                    queuePos.z -= _queueDistance;
                     
                     _queue[i].Add(customer);
+                    ++queueNumber;
                 }
             }
         }
@@ -199,6 +271,13 @@ namespace com.tinycastle.SeatCinema
             }
 
             _queue = Array.Empty<List<Customer>>();
+        }
+
+        private Vector3 GetQueuePos(int queueIndex)
+        {
+            var pos = _car.Comp.GetQueueStartPos(true);
+            pos.z -= queueIndex * _queueDistance;
+            return pos;
         }
     }
 }

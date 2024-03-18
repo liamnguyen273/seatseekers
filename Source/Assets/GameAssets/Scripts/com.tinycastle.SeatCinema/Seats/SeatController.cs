@@ -1,4 +1,5 @@
 using System;
+using com.brg.Common.Logging;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using CW.Common;
@@ -37,6 +38,8 @@ namespace com.tinycastle.SeatCinema
 
         public bool FullySeated => _setCustomer1 is not null && (!IsDoubleSeat || _setCustomer2 is not null);
 
+        public int SortValue => X + Y + 1000 * SeatColor;
+
         public bool Occupy(int x, int y)
         {
             return (X == x && Y == y) || (IsDoubleSeat && X + 1 == x && Y == y);
@@ -46,10 +49,11 @@ namespace com.tinycastle.SeatCinema
         {
             var dx = fx - X;
             var dy = fy - Y;
-            if (!IsDoubleSeat) return Mathf.Abs(dx) + Mathf.Abs(dy) == 1 && (dx != 0 && dy != 1);
+            if (FullySeated) return false;
+            if (!IsDoubleSeat) return (dx == -1 && dy == 0) || (dx == 1 && dy == 0) || (dx == 0 && dy == -1);
             else
                 return (_setCustomer1 is null && ((dx == -1 && dy == 0) || (dx == 0 && dy == -1))) ||
-                       (_setCustomer2 is null && ((dx == 1 && dy == 0) || (dx == 2 && dy == 0)));
+                       (_setCustomer2 is null && ((dx == 2 && dy == 0) || (dx == 1 && dy == -1)));
         }
 
         public void SetCoord(int x, int y)
@@ -71,20 +75,42 @@ namespace com.tinycastle.SeatCinema
             RefreshAppearance();
         }
 
-        public bool AssignCustomer1(Customer customer)
+        public bool CanAssign1(Customer customer)
         {
-            if (_setCustomer1 is not null || SeatColor != customer.Color) return false;
-            _setCustomer1 = customer;
-
-            return true;
+            return _setCustomer1 is null && (SeatColor == (int)SeatEnum.ANY || SeatColor == customer.Color);
         }
 
-        public bool AssignCustomer2(Customer customer)
+        public bool CanAssign2(Customer customer)
         {
-            if (_setCustomer2 is not null || SeatColor != customer.Color) return false;
-            _setCustomer2 = customer;
+            return IsDoubleSeat && _setCustomer2 is null && (SeatColor == (int)SeatEnum.ANY || SeatColor == customer.Color);
+        }
 
-            return true;
+        public void AssignCustomer1(Customer customer)
+        {
+            if (_setCustomer1 is not null)
+            {
+                LogObj.Default.Error("AssignCustomer1 is called, but seat 1 already has a customer");
+                return;
+            }
+            
+            _setCustomer1 = customer;
+            customer.Seat = this;
+            customer.transform.SetParent(_customerSeat1.Transform);
+            customer.transform.localPosition = Vector3.zero;
+        }
+
+        public void AssignCustomer2(Customer customer)
+        {
+            if (_setCustomer2 is not null)
+            {
+                LogObj.Default.Error("AssignCustomer2 is called, but seat 2 already has a customer");
+                return;
+            }
+            
+            _setCustomer2 = customer;
+            customer.Seat = this;
+            customer.transform.SetParent(_customerSeat2.Transform);
+            customer.transform.localPosition = Vector3.zero;
         }
 
         public bool RemoveCustomers()
@@ -101,6 +127,7 @@ namespace com.tinycastle.SeatCinema
 
             var oldCustomer = _setCustomer1;
             _setCustomer1 = null;
+            oldCustomer.Seat = null;
 
             return true;
         }        
@@ -109,8 +136,9 @@ namespace com.tinycastle.SeatCinema
         {
             if (_setCustomer2 is null) return false;
 
-            var oldCustomer = _setCustomer1;
+            var oldCustomer = _setCustomer2;
             _setCustomer2 = null;
+            oldCustomer.Seat = null;
 
             return true;
         }
@@ -119,7 +147,7 @@ namespace com.tinycastle.SeatCinema
         private Vector3 _cumulativeDelta;
         public void OnFingerDown(LeanSelectByFinger select, LeanFinger finger)
         {
-            if (Car.SeatLock) return;
+            if (!Car.AllowPickUpSeat || _pickedUp) return;
             _pickedUp = true;
             _finger = finger;
             _movePosition = transform.position;
@@ -214,6 +242,8 @@ namespace com.tinycastle.SeatCinema
             }
             
             SetCoord(newX, newY);
+
+            Car.MainGame.OnSeatDroppedByPlayer();
         }
 
         private void SnapToGrid()

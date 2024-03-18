@@ -13,10 +13,14 @@ namespace com.tinycastle.SeatCinema
         [SerializeField] private CompWrapper<SpriteRenderer> _debugAppearance = "./Appearance";
 
         [Header("Params")] 
-        [SerializeField] private float _moveSpeed = 1f;
+        [SerializeField] private float _moveSpeed = 0.5f;
 
         private int _index = -1;
         private int _color;
+        
+        public SeatController? Seat { get; set; }
+
+        public bool Seated => Seat is not null;
 
         public int Color
         {
@@ -39,14 +43,28 @@ namespace com.tinycastle.SeatCinema
             throw new NotImplementedException();
         }
 
-        public void MoveToSeatViaPath(List<Vector3> pathPoints)
+        public Sequence MoveToSeatViaPath(List<Vector3> pathPoints)
         {
-            throw new NotImplementedException();
+            var currPos = transform.position;
+
+            var sequence = DOTween.Sequence();
+            foreach (var nextPoint in pathPoints)
+            {
+                var dist = Vector3.Distance(currPos, nextPoint);
+                var moveTime = dist / _moveSpeed;
+                sequence.Append(transform.DOMove(nextPoint, moveTime).SetEase(Ease.Linear));
+                currPos = nextPoint;
+            }
+
+            return sequence;
         }
 
-        public void MoveInQueue(Vector3 queuePos)
+        public Tween MoveInQueue(Vector3 queuePos)
         {
-            throw new NotImplementedException();
+            var currPos = transform.position;
+            var dist = Vector3.Distance(currPos, queuePos);
+            var moveTime = dist / _moveSpeed;
+            return transform.DOMove(queuePos, moveTime).SetEase(Ease.Linear);
         }
 
         private void GetMoveTweenTo(Vector3 pos)

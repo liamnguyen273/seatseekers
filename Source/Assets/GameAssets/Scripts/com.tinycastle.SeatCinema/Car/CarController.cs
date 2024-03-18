@@ -42,18 +42,13 @@ namespace com.tinycastle.SeatCinema
         
         private LevelData _levelData;
         private Dictionary<int, IOccupyable> _occupyables;
-        private bool _seatLock = false;
 
         private HashSet<Obstacle> _spawnedObstacles;
         private HashSet<SeatController> _spawnedSeats;
 
         public LevelData Data => _levelData;
-        
-        public bool SeatLock
-        {
-            get => _seatLock;
-            set => _seatLock = value;
-        }
+
+        public bool AllowPickUpSeat => MainGame.AllowPickUpSeat;
         
         public void SetLevelData(string levelInput)
         {
@@ -155,13 +150,16 @@ namespace com.tinycastle.SeatCinema
         
         public Vector3 GetCellPosition(int x, int y, bool worldSpace = false)
         {
-            var worldPosOrigin = _gridRenderer.Transform.position;
             var dW = (_levelData.Width - 1) * _cellUnit / 2f;
             var dH = (_levelData.Height - 1) * _cellUnit / 2f;
             var wX = x * _cellUnit - dW;
             var wY = y * _cellUnit - dH;
             var localPos = new Vector3(wX, -wY, 0);
-            return worldSpace ? worldPosOrigin + localPos : localPos;
+
+            if (!worldSpace) return localPos;
+            
+            var worldPos = _gridRenderer.Transform.TransformPoint(localPos);
+            return worldPos;
         }        
         
         public Vector3 GetQueueStartPos(bool worldSpace = false)
@@ -189,16 +187,14 @@ namespace com.tinycastle.SeatCinema
             
             // Clear old occupyables
             _occupyables.Remove(oldI);
-            if (!IsLastCellOfRow(oldX) && occupyable.Data.IsDouble) _occupyables.Remove(oldNextI);
+            if (occupyable.Data.IsDouble && !IsLastCellOfRow(oldX)) _occupyables.Remove(oldNextI);
             
             _occupyables[i] = occupyable;
             if (occupyable.Data.IsDouble) _occupyables[nextI] = occupyable;
 
             newX = x;
             newY = y;
-            
-            // Perform pathfinding to get available seat.
-            
+
             return true;
         }
 
@@ -214,43 +210,76 @@ namespace com.tinycastle.SeatCinema
             newY = y;
             
             snappedPosition = GetCellPosition(x, y, false);
-            
-            MainGame.OnSeatDroppedByPlayer();
 
             return !(x < 0 || x >= _levelData.Width || y < 0 || y >= _levelData.Height || _occupyables.ContainsKey(i) ||
                    (occupyable.Data.IsDouble && (IsLastCellOfRow(x) || _occupyables.ContainsKey(nextI))));
         }
 
-        public Dictionary<int, List<(SeatController seat, List<Vector3> path)>> GetPathfinding()
+        public List<(SeatController seat, bool isCustomer2, List<Vector3> path)> GetPathfinding(params Vector3[] prependPositions)
         {
             var start = _levelData.Width - 1;
-            var engine = new DijkstraPathfindEngine<int>(start, QueryMoveCost, DistanceComparer.GetInstance(this),
+            var engine = new DijkstraPathfindEngine<int>(start, QueryMoveCost, GetPriority,
                 GetNeighborsOf);
 
             // Run engine, add async later
             engine.Run();
 
-            var validSeats = new Dictionary<int, List<(SeatController seat, List<Vector3> path)>>();
+            var validSeats = new List<(SeatController seat, bool isCustomer2, List<Vector3> path)>();
             foreach (var seat in _spawnedSeats)
             {
-                var i = seat.X + seat.Y * _levelData.Width;
-                var color = seat.SeatColor;
-                if (engine.GetPathTo(i, out var path))
+                var i1 = seat.X + seat.Y * _levelData.Width;
+                if (engine.GetPathTo(i1, out var path))
                 {
-                    if (!validSeats.ContainsKey(color))
+                    var positions = path!
+                        .Select(si => GetCellPosition(si % _levelData.Width, si / _levelData.Width, true)).ToList();
+                    
+                    for (var i = prependPositions.Length - 1; i >= 0; --i)
                     {
-                        validSeats[color] = new List<(SeatController seat, List<Vector3> path)>();
+                        positions.Add(prependPositions[i]);
                     }
                     
-                    validSeats[color].Add((seat, path!.Select(si => GetCellPosition(si % _levelData.Width, si / _levelData.Width, true)).ToList()));
+                    positions.Reverse();
+                    validSeats.Add((seat, false, positions));
+                }
+
+                if (!seat.IsDoubleSeat) continue;
+                
+                var i2 = seat.X + 1+ seat.Y * _levelData.Width;
+                if (engine.GetPathTo(i2, out var path2))
+                {
+                    var positions = path2!
+                        .Select(si => GetCellPosition(si % _levelData.Width, si / _levelData.Width, true)).ToList();
+                    
+                    for (var i = prependPositions.Length - 1; i >= 0; --i)
+                    {
+                        positions.Add(prependPositions[i]);
+                    }
+                    
+                    positions.Reverse();
+                    validSeats.Add((seat, true, positions));               
                 }
             }
 
+            validSeats.Sort((a, b) => a.Item1.SortValue - b.Item1.SortValue);
             return validSeats;
+        }
+
+        public bool CheckFilledAllSeats()
+        {
+            foreach (var seat in _spawnedSeats)
+            {
+                if (!seat.FullySeated) return false;
+            }
+
+            return true;
         }
 
         private int QueryMoveCost(int from, int to)
         {
+            // var hasOccupyableFrom = _occupyables.TryGetValue(from, out var occupyableFrom);
+            // var hasOccupyableTo = _occupyables.TryGetValue(from, out var occupyableTo);
+            // return int.MaxValue;
+
             return 1;
         }
 
@@ -259,16 +288,18 @@ namespace com.tinycastle.SeatCinema
             var x = index % _levelData.Width;
             var y = index / _levelData.Width;
 
-            if (x < 0 || x >= _levelData.Width || y < 0 || y >= _levelData.Height) yield break;
+            var hasCurrOccupyable = _occupyables.TryGetValue(index, out _);
+            if (x < 0 || x >= _levelData.Width || y < 0 || y >= _levelData.Height || hasCurrOccupyable) yield break;
 
-            foreach (var (dx, dy) in new[] { (-1, 0), (1, 0), (0, -1), (0, 1) })
+            foreach (var (dx, dy) in new[] { (-1, 0), (0, 1), (1, 0), (0, -1) })
             {
                 var nx = x + dx;
                 var ny = y + dy;
                 if (nx < 0 || nx >= _levelData.Width || ny < 0 || ny >= _levelData.Height) continue;
 
                 var ni = nx + ny * _levelData.Width;
-                if (_occupyables.TryGetValue(ni, out var occupyable) && occupyable.CanEnterFrom(x, y))
+                var hasOccupyable = _occupyables.TryGetValue(ni, out var occupyable);
+                if (!hasOccupyable || occupyable!.CanEnterFrom(x, y))
                 {
                     yield return ni;
                 }
@@ -280,37 +311,9 @@ namespace com.tinycastle.SeatCinema
             return (x + 1) % _levelData.Width == 0;
         }
 
-        private class DistanceComparer : IComparer<int>
+        private int GetPriority(int index)
         {
-            private static DistanceComparer? _instance;
-            public static DistanceComparer GetInstance(CarController car)
-            {
-                if (_instance == null)
-                {
-                    _instance = new DistanceComparer(car);
-                }
-                else
-                {
-                    _instance._car = car;
-                }
-
-                return _instance;
-            }
-            
-            private CarController _car;
-            private DistanceComparer(CarController car)
-            {
-                _car = car;
-            }
-            
-            public int Compare(int a, int b)
-            {
-                var xa = a % _car._levelData.Width;
-                var ya = a / _car._levelData.Width; 
-                var xb = b % _car._levelData.Width;
-                var yb = b / _car._levelData.Width;
-                return (xa + ya) - (xb + yb);
-            }
+            return (_levelData.Width - index % _levelData.Width) + index / _levelData.Width;
         }
     }
 }

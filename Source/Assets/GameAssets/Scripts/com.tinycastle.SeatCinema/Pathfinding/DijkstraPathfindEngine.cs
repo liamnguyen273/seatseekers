@@ -1,29 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using com.brg.Common.Logging;
 
 namespace com.tinycastle.SeatCinema
 {
     public class DijkstraPathfindEngine<TKey>
     {
         private Func<TKey, TKey, int> _moveCostQuery;
-        private IComparer<TKey> _distanceQuery;
+        private Func<TKey, int> _priorityQuery;
         private Func<TKey, IEnumerable<TKey>> _neighborQuery;
         private TKey _start;
         
         private Dictionary<TKey, int> _cost = new();
         private Dictionary<TKey, TKey> _parent = new();
         private HashSet<TKey> _visited = new();
-        private SortedSet<TKey> _frontier;
+        private PriorityQueue<TKey> _frontier;
         
-        public DijkstraPathfindEngine(TKey start, Func<TKey, TKey, int> moveCostQuery, IComparer<TKey> distanceQuery, Func<TKey, IEnumerable<TKey>> neighborQuery)
+        public DijkstraPathfindEngine(TKey start, Func<TKey, TKey, int> moveCostQuery, Func<TKey, int> priorityQuery, Func<TKey, IEnumerable<TKey>> neighborQuery)
         {
             _moveCostQuery = moveCostQuery;
-            _distanceQuery = distanceQuery;
+            _priorityQuery = priorityQuery;
             _neighborQuery = neighborQuery;
             _start = start;
 
-            _frontier = new SortedSet<TKey>(_distanceQuery);
+            _frontier = new PriorityQueue<TKey>();
             
             Clear();
         }
@@ -31,25 +32,30 @@ namespace com.tinycastle.SeatCinema
         public void Run()
         {
             _cost[_start] = 0;
-            _frontier.Add(_start);
+            _frontier.Enqueue(_start, _priorityQuery(_start));
 
+            var iterations = 0;
+            
             while (_frontier.Count > 0)
             {
-                var node = _frontier!.Min;
-                _frontier.Remove(node);
+                ++iterations;
+                var node = _frontier.Dequeue();
 
                 foreach (var neighbor in _neighborQuery(node))
                 {
                     var currNeighborCost = GetCost(neighbor);
-                    var thisPathCost = GetCost(node) + _moveCostQuery(node, neighbor);
+                    var thisPathCost = InfSafeSum(GetCost(node), _moveCostQuery(node, neighbor));
+                    
                     if (currNeighborCost > thisPathCost)
                     {
                         SetCost(neighbor, thisPathCost);
                         SetParent(neighbor, node);
-                        _frontier.Add(neighbor);
+                        _frontier.Enqueue(neighbor, _priorityQuery(neighbor));
                     }
                 }
             }
+            
+            LogObj.Default.Info("Dijkstra", $"Dijkstra run on Car in {iterations} iterations");
         }
 
         public bool GetPathTo(TKey destination, out List<TKey>? path)
@@ -67,6 +73,7 @@ namespace com.tinycastle.SeatCinema
             while (GetParent(currNode, out var parent))
             {
                 result.Add(parent);
+                currNode = parent;
             }
 
             if (!_start!.Equals(result.Last()))
@@ -84,7 +91,7 @@ namespace com.tinycastle.SeatCinema
             _cost.Clear();
             _parent.Clear();
             _visited.Clear();
-            _frontier.Clear();
+            _frontier = new PriorityQueue<TKey>();
         }
 
         private bool IsVisited(TKey key)
@@ -112,6 +119,12 @@ namespace com.tinycastle.SeatCinema
         private void SetParent(TKey node, TKey parent)
         {
             _parent[node] = parent;
+        }
+
+        private static int InfSafeSum(int a, int b)
+        {
+            if (a == int.MaxValue || b == int.MaxValue) return int.MaxValue;
+            return a + b;
         }
     }
 }
