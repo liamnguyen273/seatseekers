@@ -1,0 +1,31 @@
+{
+    "name": "com.brg.UnityComponents",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cc9b1dbcea8af584ba492afeb67a12da",
+        "GUID:b78cd4934e1fa8b4ab2177d45da8fec1",
+        "GUID:0c62e1ca81cc2224c9a5b4e3f5fc1671",
+        "GUID:7bb1ee73ebb9f114188944f67b1333d6",
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:09dcc9c0126b6b34ab2a877b8f2277f5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "Newtonsoft.Json.dll",
+        "com.brg.UnityCommon.dll",
+        "DOTween.dll",
+        "DemiLib.dll",
+        "DOTweenPro.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

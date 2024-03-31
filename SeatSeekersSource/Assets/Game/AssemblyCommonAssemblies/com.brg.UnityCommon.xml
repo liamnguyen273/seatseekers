@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.brg.UnityCommon</name>
+    </assembly>
+    <members>
+        <member name="T:com.brg.UnityCommon.UnityAdManager">
+            <summary>
+            Manager that handle ad requests: Loading, showing and hiding ads using <see cref="T:com.brg.UnityCommon.IAdServiceProvider"/>,
+            as well as handling the result.
+            </summary>
+            <remarks>
+            A wrapper for <see cref="T:com.brg.UnityCommon.AdManager"/>
+            </remarks>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityAdManager.RequestAd(com.brg.UnityCommon.AdRequest)">
+            <summary>
+            Request and ad, if the ad is an overlaying ad, show the ad canvas.
+            </summary>
+            <param name="request">The ad request.</param>
+            <returns>The showing progress.</returns>
+        </member>
+        <member name="T:com.brg.UnityCommon.SpawnableEffectAttribute">
+            <summary>
+            Use this attribute to mark a MonoBehaviour as a spawnable effect
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityComp`1">
+            <summary>
+            Abstract wrapper class for a <see cref="T:com.brg.Common.GameComponent"/> that extends Unity's <see cref="T:UnityEngine.MonoBehaviour"/>.
+            </summary>
+            <typeparam name="T">Type of the <see cref="T:com.brg.Common.GameComponent"/> that this class wraps.</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Comp">
+            <summary>
+            The wrapped component.
+            </summary>
+            <exception cref="T:System.Exception">Thrown when the wrapper wrapped a null, or haven't wrapped any component,
+            or trying to set a new component when the current one has NOT finished initialization.</exception>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Initialized">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Activated">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Paused">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.InitializationProgress">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Resume">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.op_Explicit(com.brg.UnityCommon.UnityComp{`0})~`0">
+            <summary>
+            Expose the underlying component
+            </summary>
+            <param name="wrapper"></param>
+            <returns>The wrapped component.</returns>
+            <exception cref="T:System.Exception">Thrown when the wrapper wrapped a null, or haven't wrapped any component,
+            or trying to set a new component when the current one has finished initialization.</exception>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityComp">
+            <summary>
+            Abstract class for a standalone game component that can be initialized, activated, deactivated and pause.
+            <para>
+            This class should have the exact implementation as <see cref="T:com.brg.Common.GameComponent"/>
+            </para>
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.InitializationProgress">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Initialized">
+            <summary>
+            Whether the component has been successfully initialized.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Activated">
+            <summary>
+            Whether the component is activated.
+            </summary>
+            <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully.
+            </remarks>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Paused">
+            <summary>
+            Whether the component is paused.
+            </summary>
+            /// <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully, or deactivated.
+            </remarks>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Resume">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityLogWriter">
+            <summary>
+            Log Writer that uses Unity's <see cref="T:UnityEngine.Debug"/> to log.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IPlayable">
+            <summary>
+            Interface for a single playable animation. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IPlayable.Play(System.Action)">
+            <summary>
+            Play the animation, do not replay if already playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IPlayable.Kill">
+            <summary>
+            Kill the currently playing animation. Do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IInOutPlayable">
+            <summary>
+            Interface for a set of two mutually exclusive playable animation. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.PlayIn(System.Action)">
+            <summary>
+            Play the "in" animation, do not play if "in" animation is already playing.
+            Kill the "out" animation if it is playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.PlayOut(System.Action)">
+            <summary>
+            Play the "out" animation, do not play if "out" animation is already playing.
+            Kill the "in" animation if it is playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.Kill">
+            <summary>
+            Kill the currently "in" or "out" animation. Do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IAnyPlayable">
+            <summary>
+            Interface for a set of (not necessarily exclusives) playable animations. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.Play(System.String,System.Action)">
+            <summary>
+            Play animation by name, do not replay if the animation is already playing.
+            </summary>
+            <param name="animationName">Name of the animation to play.</param>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.Kill">
+            <summary>
+            Kill the all currently playing animation, do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.ComponentPool`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.ComponentPool`1.SpawnedObjects">
+            <summary>
+            Set of all the spawned objects.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.#ctor(UnityEngine.GameObject,UnityEngine.GameObject,System.Action{`0},System.Action{`0})">
+            <summary>
+            Creates a component <typeparamref name="T"/> pool. The initial game objects are searched from direct children of <paramref name="host"/>.
+            </summary>
+            <param name="host">The host for pooled game objects.</param>
+            <param name="prefab">The prefab of the pooled game object.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.ComponentPool`1.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.TryGet(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.Return(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.GameObjectPool">
+            <summary>
+            Implementation of a pool for UnityEngine's <see cref="T:UnityEngine.GameObject"/> that resides on a host when in the pool.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.#ctor(UnityEngine.GameObject,UnityEngine.GameObject,System.Action{UnityEngine.GameObject},System.Action{UnityEngine.GameObject})">
+            <summary>
+            Creates a GameObject pool. The initial game objects are searched from direct children of <paramref name="host"/>.
+            </summary>
+            <param name="host">The host for pooled game objects.</param>
+            <param name="prefab">The prefab of the pooled game object.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.GameObjectPool.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.TryGet(UnityEngine.GameObject@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.Return(UnityEngine.GameObject)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.ObjectPool`1">
+            <summary>
+            Class for a generic implementation of object pool.
+            </summary>
+            <comment>
+            Implement destroy and max size in the future.
+            </comment>
+            <typeparam name="T">Type of the instance this pool manages.</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.ObjectPool`1.SpawnedObjects">
+            <summary>
+            Set of all the spawned objects.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Action{`0},System.Action{`0},System.Func{`0})">
+            <summary>
+            Creates an object pool
+            </summary>
+            <param name="initialInstances">Supplied list of initial instances.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.ObjectPool`1.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+            <param name="instanceCreator">Function to return a new instance, lest the pool ran out of instances.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.TryGet(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.Return(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.PlayerPrefsSaver`1">
+            <summary>
+            Abstract class that reads and write data a key in PlayerPrefs containing a serialized <typeparamref name="T"/> instance.
+            </summary>
+            <typeparam name="T">Type of the data</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.PlayerPrefsSaver`1.HasModifiedData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.GetData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.SetModified(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.WriteDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.Utils.FromHex(System.String)">
+            <summary>
+            Gets a <see cref="T:UnityEngine.Color"/> from hex.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.Extensions">
+            <summary>
+            Extensions for UnityCommon
+            </summary>
+            <summary>
+            Utilities for UnityCommon
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.TraversePath(UnityEngine.GameObject,System.Boolean,System.String)">
+            <summary>
+            Traverse and find a <see cref="T:UnityEngine.GameObject"/> at the path <paramref name="path"/> from <paramref name="baseGo"/> if relative, otherwise from scene root.
+            </summary>
+            <param name="baseGo">The starting point of the traversal.</param>
+            <param name="isRelative">Whether the search is relative from <paramref name="baseGo"/> or the scene root.</param>
+            <param name="path">The path to traverse.</param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RegeneratePathUpTo(UnityEngine.GameObject,UnityEngine.GameObject)">
+            <summary>
+            If <paramref name="go"/> is child of <paramref name="baseGo"/>: get path from <paramref name="baseGo"/> to <paramref name="go"/>;
+            otherwise get path from scene root.
+            </summary>
+            <param name="go">The child object.</param>
+            <param name="baseGo">The (possible) parent object.</param>
+            <returns>The path either from <paramref name="baseGo"/> to <paramref name="go"/> or path from scene root.</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetFullPath(UnityEngine.GameObject)">
+            <summary>
+            Get full path from scene root to <paramref name="obj"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetRelativePath(UnityEngine.GameObject,UnityEngine.GameObject)">
+            <summary>
+            Get path from <paramref name="parent"/> to <paramref name="obj"/>
+            </summary>
+            <param name="obj"></param>
+            <param name="parent"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetDirectOrderedChildComponents``1(UnityEngine.GameObject)">
+            <summary>
+            Get components of type <typeparamref name="T"/> that are attached to the direct children of <paramref name="go"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetDirectOrderedChildComponents``1(UnityEngine.Transform)">
+            <summary>
+            Get components of type <typeparamref name="T"/> that are attached to the direct children of <paramref name="transform"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DestroyAllChildren(UnityEngine.Transform)">
+            <summary>
+            Destroy all children of <paramref name="transform"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DestroyAllChildrenImmediately(UnityEngine.Transform)">
+            <summary>
+            Destroy all children of <paramref name="transform"/> immediately.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.SetGOActive(UnityEngine.Component,System.Boolean)">
+            <summary>
+            Shorthand to toggle activity of the component's game object.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RotateByRad(UnityEngine.Vector2,System.Single)">
+            <summary>
+            Rotate a <see cref="T:UnityEngine.Vector2"/> by <paramref name="radian"/> randians.
+            </summary>
+            <returns>The rotated vector</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RotateByDeg(UnityEngine.Vector2,System.Single)">
+            <summary>
+            Rotate a <see cref="T:UnityEngine.Vector2"/> by <paramref name="degree"/> degrees.
+            </summary>
+            <returns>The rotated vector</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RadRotation(UnityEngine.Vector2)">
+            <summary>
+            Get the argument of a <see cref="T:UnityEngine.Vector2"/> in radians.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DegRotation(UnityEngine.Vector2)">
+            <summary>
+            Get the argument of a <see cref="T:UnityEngine.Vector2"/> in degrees.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper.Invoke">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`1">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`1.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`2">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`2.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`3">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`3.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`4">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`4.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+    </members>
+</doc>

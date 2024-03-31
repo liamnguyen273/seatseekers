@@ -1,0 +1,23 @@
+{
+    "name": "com.brg.UnityComponents.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3a451954ff063cf42bdd7b7f88e8192b",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6546d7765b4165b40850b3667f981c26"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
