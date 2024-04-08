@@ -46,17 +46,7 @@ namespace com.tinycastle.SeatSeekers
         {
             if (!_isUnlocked || _entry == null) return;
 
-            var mainGame = GM.Instance.Get<MainGameManager>();
-            var loading = GM.Instance.Get<LoadingScreen>();
-            var popupManager = GM.Instance.Get<PopupManager>();
-            
-            loading.RequestLoad(mainGame.Activate(),
-                () =>
-                {
-                    popupManager.HideAllPopups(true, true);
-                    mainGame.LoadLevel(_entry);
-                },
-                mainGame.StartGame);
+            GM.Instance.RequestPlayLevelWithValidation(_entry);
         }
     }
 }

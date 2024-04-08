@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace com.tinycastle.SeatSeekers
 {
     public interface IOccupyable
@@ -6,5 +8,7 @@ namespace com.tinycastle.SeatSeekers
         public bool Occupy(int x, int y);
         public bool CanEnterFrom(int fx, int fy);
         public void SetData(SeatData data);
+
+        public Transform Transform { get; }
     }
 }

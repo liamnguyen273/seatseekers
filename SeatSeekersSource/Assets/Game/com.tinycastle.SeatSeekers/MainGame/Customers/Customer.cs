@@ -17,6 +17,7 @@ namespace com.tinycastle.SeatSeekers
 
         private int _index = -1;
         private int _color;
+
         
         public SeatController? Seat { get; set; }
 
@@ -37,6 +38,7 @@ namespace com.tinycastle.SeatSeekers
             get => _index;
             set => _index = value;
         }
+
 
         public void TeleportTo(Vector3 position)
         {

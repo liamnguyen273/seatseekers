@@ -317,27 +317,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 5663980458147295728}
     _path: .
   _positionCaster:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 369535794156716201}
     _path: ./PositionCaster
   _appearanceSingle:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 7121794825995464937}
     _path: ./AppearanceSingle
   _appearanceDouble:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 4022517015769462685}
     _path: ./AppearanceDouble
   _casterRed:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 7637978631018310014}
     _path: ./PositionCaster/CasterRed
   _casterGreen:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 3543887053642310397}
     _path: ./PositionCaster/CasterGreen
   _customerSeat1:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 6887697570075608780}
     _path: ./Seats/Seat1
   _customerSeat2:
+    _parent: {fileID: 6118592693975300598}
     _comp: {fileID: 2730035343634751800}
     _path: ./Seats/Seat2
   _sensitivity: 1

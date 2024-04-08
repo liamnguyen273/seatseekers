@@ -49,13 +49,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1363051992880308561}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f14875f7414afca69f695a7877af4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 225fd288a31d70348b55be86441b1a9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _text:
+    _parent: {fileID: 1363051992880308561}
     _comp: {fileID: 2922495184703701653}
     _path: ./Text
   _image:
+    _parent: {fileID: 1363051992880308561}
     _comp: {fileID: 2654261731552567765}
     _path: ./Icon
 --- !u!114 &150179478248867339

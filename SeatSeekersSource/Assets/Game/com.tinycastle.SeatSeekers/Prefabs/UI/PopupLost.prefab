@@ -854,12 +854,15 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   _xButton:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 5936300202065579019}
     _path: ./Panel/TitleGroup/RightButtonGroup/XButton
   _noAdButton:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 9188705030200647237}
     _path: ./ButtonNoAds
   _tryAgainButton:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 5284436293955177694}
     _path: ./Panel/BottomGroup/Buttons/ButtonRetry
 --- !u!224 &3996199920459206182 stripped

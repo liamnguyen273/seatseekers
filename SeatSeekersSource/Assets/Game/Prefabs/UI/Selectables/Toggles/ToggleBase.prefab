@@ -54,15 +54,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label:
+    _parent: {fileID: 73092601485419918}
     _comp: {fileID: 2037890511668858210}
     _path: ./Label
   _checkMark:
+    _parent: {fileID: 73092601485419918}
     _comp: {fileID: 4736858908532692892}
     _path: ./Icon/Checkmark
   _clickOnPlayable:
+    _parent: {fileID: 73092601485419918}
     _comp: {fileID: 0}
     _path: ./Playable
   _clickOffPlayable:
+    _parent: {fileID: 73092601485419918}
     _comp: {fileID: 0}
     _path: ./Playable
   _valueChangedEvent:
@@ -544,7 +548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 98.2
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchoredPosition.y

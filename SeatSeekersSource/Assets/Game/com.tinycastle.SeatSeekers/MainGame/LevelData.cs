@@ -41,6 +41,22 @@ namespace com.tinycastle.SeatSeekers
             Width = other.Width;
             Height = other.Height;
         }
+
+        public void ExpandOneLaneLeft()
+        {
+            var newGrid = new int[(Width + 1) * Height];
+            for (int x = 0; x < Width; ++x)
+            {
+                for (int y = 0; y < Height; ++y)
+                {
+                    var i = x + y * Width;
+                    var newI = x + 1 * Width;
+                    newGrid[newI] = Grid[i];
+                }
+            }
+
+            Grid = newGrid;
+        }
                 
         /// <summary>
         /// Assuming correct grid data, return the seat at the position (x,y).

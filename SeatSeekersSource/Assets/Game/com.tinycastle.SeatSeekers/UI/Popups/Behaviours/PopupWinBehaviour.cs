@@ -44,7 +44,7 @@ namespace com.tinycastle.SeatSeekers
             if (_entry != null)
             {
                 var saveManager = GM.Instance.Get<GameSaveManager>();
-                saveManager.SetPlayerData_CompletedLevels(_entry.Id, new CompletedLevelData(true, 0));
+                saveManager.PlayerData.SetInCompletedLevels(_entry.Id, true);
                 saveManager.SavePlayerData();
             }
             else
@@ -64,6 +64,8 @@ namespace com.tinycastle.SeatSeekers
         {
             // TODO: Show ad
             
+            
+            
             GoToNextLevel();
         }
 
@@ -79,25 +81,15 @@ namespace com.tinycastle.SeatSeekers
             var loading = GM.Instance.Get<LoadingScreen>();
             var popupManager = GM.Instance.Get<PopupManager>();
 
-            var goNext = mainGame.ReadyNextLevel(out var entry);
-
-            if (goNext)
+            var canGoNext = mainGame.HasNextLevel(out var nextLevel);
+            
+            if (!canGoNext)
             {
-                loading.RequestLoad(mainGame.Activate(),
-                    () =>
-                    {
-                        popupManager.HideAllPopups(true, true);
-                        mainGame.LoadLevel(entry);
-                    }, mainGame.StartGame);
+                mainGame.TransitOut();
             }
             else
             {
-                loading.RequestLoad(mainGame.Deactivate(),
-                    () =>
-                    {
-                        popupManager.HideAllPopups();
-                        popupManager.GetPopup<PopupMainMenu>().Show();
-                    }, null);
+                GM.Instance.RequestPlayLevelWithValidation(nextLevel);
             }
         }
     }

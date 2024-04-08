@@ -14,17 +14,18 @@ namespace com.brg.UnityComponents
     public class LoadingScreen : UnityComp
     {
         [Header("Components")]
-        [SerializeField] private GOWrapper _initBackground = "./InitBackground";
         [SerializeField] private GOWrapper _inputBlocker = "./Blocker";
         [SerializeField] private CompWrapper<RectTransform> _animRect = "./AnimRect";      
         [SerializeField] private CompWrapper<Slider> _progressSlider = "./AnimRect/Appearance/Bar";
+        [SerializeField] private GOWrapper _initBackground = "./InitBackground";
         
         [Header("Params")]
         [SerializeField] private float _transitTime = 1f;
         [SerializeField] private float _naturalDelayTime = 0.5f;
 
         private float _screenWidth;
-        
+
+        private bool _transitInDone = false;
         private IProgress _overallProgress;
         private readonly List<IProgress> _progresses = new List<IProgress>();
         private event Action _beforeOutEvent;
@@ -37,6 +38,8 @@ namespace com.brg.UnityComponents
             var rect = GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(0f, 0f);
             SetProgressBar(0f);
+            
+            _initBackground.SetActive(true);
 
             _screenWidth = GetComponent<RectTransform>().rect.width;
             _animRect.Comp.anchoredPosition = new Vector2(-_screenWidth - 15, 0f);
@@ -44,13 +47,15 @@ namespace com.brg.UnityComponents
             // Make playable
             _transitPlayable = new TweenInOutPlayable(
                 () => DOTween.Sequence()
+                            .AppendCallback(() => _animRect.Comp.anchoredPosition = new Vector2(-_screenWidth - 15, 0f))
                             .Append(_animRect.Comp.DOAnchorPosX(0, _transitTime)
-                            .SetEase(Ease.OutCubic))
+                            .SetEase(Ease.InOutSine))
                             .AppendInterval(_naturalDelayTime), 
                 () => DOTween.Sequence()
+                            .AppendCallback(() => _animRect.Comp.anchoredPosition = new Vector2(0f, 0f))
                             .AppendInterval(_naturalDelayTime)
                             .Append(_animRect.Comp.DOAnchorPosX(_screenWidth + 15, _transitTime)
-                            .SetEase(Ease.OutCubic))
+                            .SetEase(Ease.InOutSine))
                 );
         }
         
@@ -63,13 +68,8 @@ namespace com.brg.UnityComponents
             }
 
             UpdateProgressBar(_overallProgress);
-
-            if (_transitPlayable is TweenInOutPlayable { PlayingIn: true })
-            {
-                return;
-            }
             
-            if (_overallProgress.Finished)
+            if (_transitInDone && _overallProgress.Finished)
             {
                 OnProgressDone();
             }
@@ -93,11 +93,11 @@ namespace com.brg.UnityComponents
             
             _animRect.GameObject.SetActive(true);
             _inputBlocker.GameObject.SetActive(true);
-            
-            _animRect.Comp.anchoredPosition = new Vector2(-_screenWidth - 15, 0f);
+            _transitInDone = false;
             _transitPlayable.PlayIn(() =>
             {
-                _initBackground.GameObject.SetActive(false);
+                _initBackground.SetActive(false);
+                _transitInDone = true;
             });
         }
         
@@ -108,8 +108,6 @@ namespace com.brg.UnityComponents
             
             _beforeOutEvent?.Invoke();
             _beforeOutEvent = null;
-            
-            SetProgressBar(1f);
             
             _transitPlayable.PlayOut(() =>
             {

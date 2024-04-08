@@ -70,19 +70,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 603243016966361748, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 603243016966361748, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 603243016966361748, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 603243016966361748, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1867321739118276910, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_IsActive
@@ -236,12 +236,36 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6843099797124473001, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843099797124473001, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843099797124473001, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843099797124473001, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843099797124473001, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6932616373914049509, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_text
       value: No Internet!
       objectReference: {fileID: 0}
     - target: {fileID: 7299707950007294152, guid: d6da7d92c18515848acd308571b63945, type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7299707950007294152, guid: d6da7d92c18515848acd308571b63945, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7587853229831105726, guid: d6da7d92c18515848acd308571b63945, type: 3}

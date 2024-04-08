@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugAppearance:
+    _parent: {fileID: 2053820846078159110}
     _comp: {fileID: 2580384813547412874}
     _path: ./Appearance
   _moveSpeed: 8

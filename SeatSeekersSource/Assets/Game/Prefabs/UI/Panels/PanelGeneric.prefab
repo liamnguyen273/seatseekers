@@ -1334,26 +1334,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _titleText:
+    _parent: {fileID: 7374559219404961455}
     _comp: {fileID: 8814415266334194594}
     _path: ./TitleGroup/TextHeading
   _leftTitleIcon:
+    _parent: {fileID: 7374559219404961455}
     _comp: {fileID: 4154154830709899003}
     _path: ./TitleGroup/LeftIconGroup/Icon
   _rightTitleButton:
+    _parent: {fileID: 7374559219404961455}
     _comp: {fileID: 2911233922457960329}
     _path: ./TitleGroup/RightButtonGroup/Button
   _contentImage:
+    _parent: {fileID: 7374559219404961455}
     _comp: {fileID: 8110118085227252355}
     _path: ./CenterGroup/ContentImage
   _contentText:
+    _parent: {fileID: 7374559219404961455}
     _comp: {fileID: 5634228150704255297}
     _path: ./CenterGroup/ContentText
   _bottomButtons:
-  - _comp: {fileID: 9182557673172843058}
+  - _parent: {fileID: 7374559219404961455}
+    _comp: {fileID: 9182557673172843058}
     _path: ./BottomGroup/Buttons/Button1
-  - _comp: {fileID: 3697781336539397980}
+  - _parent: {fileID: 7374559219404961455}
+    _comp: {fileID: 3697781336539397980}
     _path: ./BottomGroup/Buttons/Button2
-  - _comp: {fileID: 8954903935828416351}
+  - _parent: {fileID: 7374559219404961455}
+    _comp: {fileID: 8954903935828416351}
     _path: ./BottomGroup/Buttons/Button3
 --- !u!114 &2479684897030669610
 MonoBehaviour:
@@ -2700,7 +2708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: 400
-  m_MinHeight: 29.59375
+  m_MinHeight: 60
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: 2000

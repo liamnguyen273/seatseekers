@@ -1,6 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using com.brg.Common;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
@@ -9,6 +8,45 @@ using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
 {
+    public static class GMExtensions
+    {
+        public static bool HasNextLevel(this GM gm, LevelEntry currentLevel, out LevelEntry entry)
+        {
+            entry = gm.Get<GameDataManager>().GetNextLevelEntry(currentLevel.Id);
+            
+            return entry != null;
+        }
+        
+        public static void RequestPlayLevelWithValidation(this GM gm, LevelEntry entry)
+        {
+            var mainGame = gm.Get<MainGameManager>();
+            var loading = gm.Get<LoadingScreen>();
+            var popupManager = gm.Get<PopupManager>();
+            var accessor = gm.Get<GameSaveManager>().PlayerData;
+
+            var energy = accessor.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+            if (energy > 0)
+            {
+                energy -= 1;
+                accessor.SetInResources(GlobalConstants.ENERGY_RESOURCE, energy, true);
+                accessor.WriteDataAsync();
+                
+                loading.RequestLoad(mainGame.Activate(),
+                    () =>
+                    {
+                        popupManager.HideAllPopups(true, true);
+                        mainGame.LoadLevel(entry);
+                    },
+                    mainGame.StartGame);
+            }
+            else
+            {
+                var popup = popupManager.GetPopup<PopupRefill>(out var behaviour);
+                popup.Show();
+            }
+        }
+    }
+    
     [DisallowMultipleComponent]
     public class UnityGM : UnityComp<GM>
     {
@@ -34,7 +72,7 @@ namespace com.tinycastle.SeatSeekers
             
             // Make managers
             var dataManager = new GameDataManager();
-            var saveManager = new GameSaveManager();
+            var saveManager = new GameSaveManager(new PlayerDataAccessor());
             
             var localizationManager = new LocalizationManager(saveManager, GMUtils.MakeLocalizationSuppliers());
             var analyticsEventManager = new AnalyticsEventManager(GMUtils.MakeAnalyticsAdapters());
@@ -96,11 +134,66 @@ namespace com.tinycastle.SeatSeekers
             // GM.Instance.Get<MainGameManager>().LoadLevel(GM.Instance.Get<GameDataManager>().GetLevelEntry("level_1"));
             var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupMainMenu>(out var behaviour);
             popup.Show();
+
+            _playerData = GM.Instance.Get<GameSaveManager>().PlayerData;
+            InitializeEnergyWatch();
         }
         
         private void OnInitializationLoadingOver()
         {
             Log.Success("Game started, continue to load game screens.");
+        }
+
+        private void Update()
+        {
+            if (_playerData != null)
+            {
+                UpdateEnergyWatch(Time.deltaTime);
+            }
+        }
+
+        private void InitializeEnergyWatch()
+        {
+            _timer = _playerData.EnergyRechargeTimer;
+            var nowTime = DateTime.UtcNow;
+            var lastSaveTime = _playerData.GetLastModified();
+            var span = nowTime - lastSaveTime;
+            var seconds = (int)Math.Ceiling(span.TotalSeconds);
+
+            _timer -= seconds;
+            var energyCount = _playerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+
+            while (energyCount < GlobalConstants.MAX_ENERGY && _timer < 0)
+            {
+                _timer += GlobalConstants.ENERGY_RECHARGE_TIME;
+                ++energyCount;
+            }
+
+            if (_timer < 0) _timer = 0;
+
+            _secondTimer = 1f; // Check every second
+        }
+
+        private PlayerDataAccessor _playerData;
+        private int _timer = 0;
+        private float _secondTimer = 0f;
+        private void UpdateEnergyWatch(float dt)
+        {
+            _secondTimer -= dt;
+            while (_secondTimer < 0f)
+            {
+                _secondTimer += 1f;
+                _timer -= 1;
+                var currEnergy = _playerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+                if (_timer < 0 && currEnergy < GlobalConstants.MAX_ENERGY)
+                {
+                    currEnergy += 1;
+                    _timer = GlobalConstants.ENERGY_RECHARGE_TIME;
+                    _playerData.SetInResources(GlobalConstants.ENERGY_RESOURCE, currEnergy, true);
+                }
+                
+                _playerData.EnergyRechargeTimer = _timer;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using com.brg.Common;
+using com.brg.UnityCommon.Editor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -14,7 +15,7 @@ namespace com.brg.UnityComponents
     [ExecuteAlways]
     public class DirectionalKnob : UIBehaviour, IDragHandler
     {
-        [SerializeField] private Transform _knobGraphic;
+        [SerializeField] private GOWrapper _knobGraphic = "./Circle";
         [SerializeField] private float _min = 0;
         [SerializeField] private float _max = 1;
         [SerializeField] private float _value = .5f;
@@ -43,7 +44,7 @@ namespace com.brg.UnityComponents
         {
             _value = newValue;
 
-            _knobGraphic.localRotation = Quaternion.Euler(0, 0, 1 - _value * 360);
+            _knobGraphic.Transform.localRotation = Quaternion.Euler(0, 0, 1 - _value * 360);
 
             KnobValueChangedEvent?.Invoke(_value);
         }

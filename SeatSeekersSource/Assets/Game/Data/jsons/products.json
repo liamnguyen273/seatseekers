@@ -1,6 +1,6 @@
 {
-	"noads01_stickerbook": {
-		"id": "noads01_stickerbook",
+	"no_ads": {
+		"id": "no_ads",
 		"listingName": "No Ads",
 		"description": "No Ads, forever!",
 		"type": "noads",
@@ -8,79 +8,211 @@
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
+		"buyResolution": "set_own",
+		"resolutionData": "no_ad"
+	},
+	"bundle_starter": {
+		"id": "bundle_starter",
+		"listingName": "Starter Pack",
+		"description": "Starter Pack",
+		"type": "bundle",
+		"isConsumable": 1,
+		"isIap": true,
+		"price": -1,
+		"currency": "real",
 		"buyResolution": "set_own,add_resource",
-		"resolutionData": "no_ad_item,100 stamp"
+		"resolutionData": "no_ad,1000 coin"
 	},
-	"powerup_bundle_1": {
-		"id": "powerup_bundle_1",
-		"listingName": "Backpack 1",
-		"description": "5 lookup and 5 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_mini": {
+		"id": "bundle_mini",
+		"listingName": "Mini Bundle",
+		"description": "Bundle Mini",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
 		"buyResolution": "add_resource",
-		"resolutionData": "5 lookup&5 compass"
+		"resolutionData": "1750 coin&1 booster_freeze&1 booster_jump&1 booster_expand&900 inf_energy"
 	},
-	"powerup_bundle_2": {
-		"id": "powerup_bundle_2",
-		"listingName": "Backpack 2",
-		"description": "10 lookup and 10 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_live_coin": {
+		"id": "bundle_live_coin",
+		"listingName": "Live & Coin Bundle",
+		"description": "Live & Coin Bundle",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
 		"buyResolution": "add_resource",
-		"resolutionData": "10 lookup&10 compass"
+		"resolutionData": "2500 coin&3600 inf_energy"
 	},
-	"powerup_bundle_3": {
-		"id": "powerup_bundle_3",
-		"listingName": "Backpack 3",
-		"description": "15 lookup and 15 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_large": {
+		"id": "bundle_large",
+		"listingName": "Large Bundle",
+		"description": "Large Bundle",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
 		"buyResolution": "add_resource",
-		"resolutionData": "25 lookup&25 compass"
+		"resolutionData": "4000 coin&3 booster_freeze&3 booster_jump&3 booster_expand&2700 inf_energy"
 	},
-	"powerup_bundle_4": {
-		"id": "powerup_bundle_4",
-		"listingName": "Backpack 4",
-		"description": "20 lookup and 20 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_live_coin_big": {
+		"id": "bundle_live_coin_big",
+		"listingName": "Live & Coin Big Bundle",
+		"description": "Live & Coin Big Bundle",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
 		"buyResolution": "add_resource",
-		"resolutionData": "50 lookup&50 compass"
+		"resolutionData": "9000 coin&3600 inf_energy"
 	},
-	"powerup_bundle_5": {
-		"id": "powerup_bundle_5",
-		"listingName": "Backpack 5",
-		"description": "30 lookup and 30 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_super": {
+		"id": "bundle_super",
+		"listingName": "Super Bundle",
+		"description": "Bundle Super",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
-		"buyResolution": "add_resource",
-		"resolutionData": "85 lookup&85 compass"
+		"buyResolution": "set_own,add_resource",
+		"resolutionData": "no_ad,15000 coin&9 booster_freeze&9 booster_jump&9 booster_expand"
 	},
-	"powerup_bundle_6": {
-		"id": "powerup_bundle_6",
-		"listingName": "Backpack 6",
-		"description": "50 lookup and 50 compass powerups",
-		"type": "powerups",
-		"isConsumable": true,
+	"bundle_vip": {
+		"id": "bundle_vip",
+		"listingName": "VIP Bundle",
+		"description": "Bundle VIP",
+		"type": "bundle",
+		"isConsumable": 1,
 		"isIap": true,
 		"price": -1,
 		"currency": "real",
+		"buyResolution": "set_own,add_resource",
+		"resolutionData": "no_ad,35000 coin&17 booster_freeze&17 booster_jump&17 booster_expand"
+	},
+	"booster_freeze_x3": {
+		"id": "booster_freeze_x3",
+		"listingName": "Freeze Time X3",
+		"description": "Freeze Time X3",
+		"type": "powerups",
+		"isConsumable": 1,
+		"isIap": false,
+		"price": 900,
+		"currency": "coin",
 		"buyResolution": "add_resource",
-		"resolutionData": "100 lookup&100 compass"
+		"resolutionData": "3 booster_freeze"
+	},
+	"booster_jump_x3": {
+		"id": "booster_jump_x3",
+		"listingName": "Jump Passenger X3",
+		"description": "Jump Passenger X3",
+		"type": "powerups",
+		"isConsumable": 1,
+		"isIap": false,
+		"price": 2250,
+		"currency": "coin",
+		"buyResolution": "add_resource",
+		"resolutionData": "3 booster_jump"
+	},
+	"booster_expand_x3": {
+		"id": "booster_expand_x3",
+		"listingName": "Expand Bus X3",
+		"description": "Expand Bus X3",
+		"type": "powerups",
+		"isConsumable": 1,
+		"isIap": false,
+		"price": 3600,
+		"currency": "coin",
+		"buyResolution": "add_resource",
+		"resolutionData": "3 booster_expand"
+	},
+	"refill": {
+		"id": "refill",
+		"listingName": "+1 Energy",
+		"description": "+1 Energy",
+		"type": "powerups",
+		"isConsumable": 1,
+		"isIap": false,
+		"price": 700,
+		"currency": "coin",
+		"buyResolution": "add_resource",
+		"resolutionData": "1 energy"
+	},
+	"gold_pack_1": {
+		"id": "gold_pack_1",
+		"listingName": "Gold Pack 1",
+		"description": "Gold Pack 1",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "1000 coin"
+	},
+	"gold_pack_2": {
+		"id": "gold_pack_2",
+		"listingName": "Gold Pack 2",
+		"description": "Gold Pack 2",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "5000 coin"
+	},
+	"gold_pack_3": {
+		"id": "gold_pack_3",
+		"listingName": "Gold Pack 3",
+		"description": "Gold Pack 3",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "10000 coin"
+	},
+	"gold_pack_4": {
+		"id": "gold_pack_4",
+		"listingName": "Gold Pack 4",
+		"description": "Gold Pack 4",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "25000 coin"
+	},
+	"gold_pack_5": {
+		"id": "gold_pack_5",
+		"listingName": "Gold Pack 5",
+		"description": "Gold Pack 5",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "50000 coin"
+	},
+	"gold_pack_6": {
+		"id": "gold_pack_6",
+		"listingName": "Gold Pack 6",
+		"description": "Gold Pack 6",
+		"type": "resources",
+		"isConsumable": 1,
+		"isIap": 1,
+		"price": -1,
+		"currency": "real",
+		"buyResolution": "add_resource",
+		"resolutionData": "100000 coin"
 	}
 }

@@ -1,4 +1,4 @@
 {
-	"outputPath": "../../Source/Assets/GameAssets/Data/jsons/",
+	"outputPath": "../../SeatSeekersSource/Assets/Game/Data/jsons/",
 	"xlsxDefaultPath": "../../Data/seat_cinema_data.xlsx"
 }

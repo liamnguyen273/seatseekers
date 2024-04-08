@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using com.brg.Common;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
+using DG.Tweening;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -38,15 +40,20 @@ namespace com.tinycastle.SeatSeekers
         
         public MainGameManager MainGame { get; set; }
         
-        private LevelData _levelData;
+        private LevelData _currentLevelData;
+        private bool _expanded = false;
+        private LevelData _expandedLevelData;
         private Dictionary<int, IOccupyable> _occupyables;
 
         private HashSet<Obstacle> _spawnedObstacles;
         private HashSet<SeatController> _spawnedSeats;
 
-        public LevelData Data => _levelData;
+        public LevelData CurrentLevelData
+        {
+            get => _expanded ? _expandedLevelData : _currentLevelData;
+        }
 
-        public bool AllowPickUpSeat => MainGame.AllowPickUpSeat;
+        public bool AllowPickUpSeat => MainGame.AllowPickUpSeat && _expandTween == null;
 
         private IProgress _initializeProgress;
         public override IProgress InitializationProgress => _initializeProgress ?? new ImmediateProgress(false, 1f);
@@ -75,19 +82,38 @@ namespace com.tinycastle.SeatSeekers
             
             return base.Initialize();
         }
-
-        public void SetLevelData(string levelInput)
-        {
-            SetLevelData(LevelData.Make(levelInput));
-        }
         
         public void SetLevelData(LevelData data)
         {
-            _levelData = data;
+            _currentLevelData = data;
+            _expanded = false;
+            _expandedLevelData = null;
+            
             RefreshGridAppearance();
             PopulateSeatsAndObstacles();
             RefreshQueue();
             RefreshWalls();
+        }
+
+        public bool ExpandLevelByOneLane(float time, Action onComplete)
+        {
+            if (_expanded || _expandTween != null) return false;
+            _expandedLevelData = new LevelData(_currentLevelData);
+            _expandedLevelData.ExpandOneLaneLeft();
+            
+            var tweenA = AnimateRefreshGridAppearance(time);
+            var tweenB = AnimateSeatMovePositions(time);
+            _expandTween = DOTween.Sequence().Join(tweenA).Join(tweenB)
+                .OnComplete(() =>
+                {
+                    _expanded = true;
+                    _expandTween = null;
+                    onComplete?.Invoke();
+                }).Play();
+            
+            RefreshQueue();
+            RefreshWalls();
+            return true;
         }
         
         public void ClearLevel()
@@ -97,29 +123,94 @@ namespace com.tinycastle.SeatSeekers
         
         public void RefreshGridAppearance()
         {
+            _expandTween?.Kill();
+            _expandTween = null;
+            
             _gridRenderer.Comp.drawMode = SpriteDrawMode.Tiled;
             _gridRenderer.Comp.tileMode = SpriteTileMode.Continuous;
-            _gridRenderer.Comp.size = new Vector2(_levelData.Width, _levelData.Height);
+            _gridRenderer.Comp.size = new Vector2(CurrentLevelData.Width, CurrentLevelData.Height);
             
             // TODO: Randomize grid background
             var background = _gridBackRenderers[0].Comp;
             var config = background.GetComponent<CarBackgroundConfig>();
             if (config != null)
             {
-                var wMin = config.Width3Size;
-                var hMin = config.Height4Size;
-                var w = (_levelData.Width - 3) * config.Expand + wMin;
-                var h = (_levelData.Height - 4) * config.Expand + hMin;
-
-                background.size = new Vector2(w, h);
+                background.size = GetBackgroundRendererSize(config);
             }
+        }
+
+        private Tween _expandTween;
+        private Tween AnimateRefreshGridAppearance(float time)
+        {
+            _gridRenderer.Comp.drawMode = SpriteDrawMode.Tiled;
+            _gridRenderer.Comp.tileMode = SpriteTileMode.Continuous;
+            
+            // TODO: Randomize grid background
+            var background = _gridBackRenderers[0].Comp;
+            var config = background.GetComponent<CarBackgroundConfig>();
+            
+            var gridCurrSize = _gridRenderer.Comp.size;
+            var backCurrSize = background.size;
+            var gridTargetSize = new Vector2(CurrentLevelData.Width, CurrentLevelData.Height);
+            var backTargetSize = GetBackgroundRendererSize(config);
+            
+            var ratio = 0f;
+            return DOTween.To(() => ratio, (v) => ratio = v, 1f, time)
+                .OnUpdate(() =>
+                {
+                    _gridRenderer.Comp.size = Vector2.Lerp(gridCurrSize, gridTargetSize, ratio);
+                    background.size = Vector2.Lerp(backCurrSize, backTargetSize, ratio);
+                });
+        }
+
+        private Tween AnimateSeatMovePositions(float time)
+        {
+            var newPairs = _occupyables.ToList().Select(pair =>
+            {
+                var index = pair.Key;
+                var occupyable = pair.Value;
+
+                var data = occupyable.Data;
+                var newX = occupyable.Data.X + 1;
+                var newY = occupyable.Data.Y;
+                var newI = newX + newY * CurrentLevelData.Width;
+
+                data.X = newX;
+                data.Y = newY;
+
+                occupyable.SetData(data);
+                return (newI, occupyable);
+            });
+            
+            _occupyables.Clear();
+
+            var moveSequence = DOTween.Sequence();
+            foreach (var (newI, occupyable) in newPairs)
+            {
+                _occupyables.Add(newI, occupyable);
+                var x = occupyable.Data.X;
+                var y = occupyable.Data.Y;
+                moveSequence.Join(occupyable.Transform.DOLocalMove(GetCellPosition(x, y, false), time));
+            }
+
+            return moveSequence;
+        }
+        
+        private Vector2 GetBackgroundRendererSize(CarBackgroundConfig config)
+        {
+            var wMin = config.Width3Size;
+            var hMin = config.Height4Size;
+            var w = (CurrentLevelData.Width - 3) * config.Expand + wMin;
+            var h = (CurrentLevelData.Height - 4) * config.Expand + hMin;
+
+            return new Vector2(w, h);
         }
 
         public void PopulateSeatsAndObstacles()
         {
             ClearSeatsAndObstacles();
             
-            foreach (var seatData in _levelData.IterateAllSeats())
+            foreach (var seatData in CurrentLevelData.IterateAllSeats())
             {
                 if (seatData.Value == (int)SeatEnum.NONE) continue;
 
@@ -141,8 +232,8 @@ namespace com.tinycastle.SeatSeekers
                     occupyable = seat;
                 }
                 
-                var i = seatData.X + seatData.Y * _levelData.Width;
-                var nextI = seatData.X + 1 + seatData.Y * _levelData.Width;
+                var i = seatData.X + seatData.Y * CurrentLevelData.Width;
+                var nextI = seatData.X + 1 + seatData.Y * CurrentLevelData.Width;
                 _occupyables[i] = occupyable;
                 if (seatData.IsDouble) _occupyables[nextI] = occupyable;
                 occupyable.SetData(seatData);
@@ -151,7 +242,7 @@ namespace com.tinycastle.SeatSeekers
 
         public void RefreshQueue()
         {
-            var firstCellPos = GetCellPosition(_levelData.Width, 0, false);
+            var firstCellPos = GetCellPosition(CurrentLevelData.Width, 0, false);
             var gridPos = _gridRenderer.Transform.localPosition;
             var queueStartPos = gridPos + firstCellPos + new Vector3(_carDoorOffset, 0f, 0f);
             _queueStartPos.Transform.localPosition = queueStartPos;
@@ -160,10 +251,10 @@ namespace com.tinycastle.SeatSeekers
         public void RefreshWalls()
         {
             // Set walls
-            _wallLeft.Transform.localPosition = new Vector3(-(_levelData.Width + 1) / 2f, 0f, 0f);
-            _wallRight.Transform.localPosition = new Vector3((_levelData.Width + 1) / 2f, 0f, 0f);
-            _wallUp.Transform.localPosition = new Vector3(0f, (_levelData.Height + 1) / 2f, 0f);
-            _wallDown.Transform.localPosition = new Vector3(0f, -(_levelData.Height + 1) / 2f, 0f);
+            _wallLeft.Transform.localPosition = new Vector3(-(CurrentLevelData.Width + 1) / 2f, 0f, 0f);
+            _wallRight.Transform.localPosition = new Vector3((CurrentLevelData.Width + 1) / 2f, 0f, 0f);
+            _wallUp.Transform.localPosition = new Vector3(0f, (CurrentLevelData.Height + 1) / 2f, 0f);
+            _wallDown.Transform.localPosition = new Vector3(0f, -(CurrentLevelData.Height + 1) / 2f, 0f);
         }
 
         public void ResetSeatsAndObstacles()
@@ -190,8 +281,8 @@ namespace com.tinycastle.SeatSeekers
         
         public Vector3 GetCellPosition(int x, int y, bool worldSpace = false)
         {
-            var dW = (_levelData.Width - 1) * _cellUnit / 2f;
-            var dH = (_levelData.Height - 1) * _cellUnit / 2f;
+            var dW = (CurrentLevelData.Width - 1) * _cellUnit / 2f;
+            var dH = (CurrentLevelData.Height - 1) * _cellUnit / 2f;
             var wX = x * _cellUnit - dW;
             var wY = y * _cellUnit - dH;
             var localPos = new Vector3(wX, -wY, 0);
@@ -211,12 +302,12 @@ namespace com.tinycastle.SeatSeekers
         {
             var oldX = occupyable.Data.X;
             var oldY = occupyable.Data.Y;
-            var oldI = oldX + oldY * _levelData.Width;
-            var oldNextI = oldX + 1 + oldY * _levelData.Width;
+            var oldI = oldX + oldY * CurrentLevelData.Width;
+            var oldNextI = oldX + 1 + oldY * CurrentLevelData.Width;
             // Do not allow drop if existing, or out of bounds
             var canDrop = CheckSeatDrop(occupyable, localPosition, out _, out var x, out var y);
-            var i = x + y * _levelData.Width;
-            var nextI = x + 1 + y * _levelData.Width;
+            var i = x + y * CurrentLevelData.Width;
+            var nextI = x + 1 + y * CurrentLevelData.Width;
             
             if (!canDrop)
             {
@@ -240,24 +331,24 @@ namespace com.tinycastle.SeatSeekers
 
         public bool CheckSeatDrop(IOccupyable occupyable, Vector3 localPosition, out Vector3 snappedPosition, out int newX, out int newY)
         {
-            var x = (int)(localPosition.x + _levelData.Width * _cellUnit * 0.5f);
-            var y = -(int)(localPosition.y - _levelData.Height * _cellUnit * 0.5f);
+            var x = (int)(localPosition.x + CurrentLevelData.Width * _cellUnit * 0.5f);
+            var y = -(int)(localPosition.y - CurrentLevelData.Height * _cellUnit * 0.5f);
 
-            var i = x + y * _levelData.Width;
-            var nextI = x + 1 + y * _levelData.Width;
+            var i = x + y * CurrentLevelData.Width;
+            var nextI = x + 1 + y * CurrentLevelData.Width;
 
             newX = x;
             newY = y;
             
             snappedPosition = GetCellPosition(x, y, false);
 
-            return !(x < 0 || x >= _levelData.Width || y < 0 || y >= _levelData.Height || _occupyables.ContainsKey(i) ||
+            return !(x < 0 || x >= CurrentLevelData.Width || y < 0 || y >= CurrentLevelData.Height || _occupyables.ContainsKey(i) ||
                    (occupyable.Data.IsDouble && (IsLastCellOfRow(x) || _occupyables.ContainsKey(nextI))));
         }
 
         public List<(SeatController seat, bool isCustomer2, List<Vector3> path)> GetPathfinding(params Vector3[] prependPositions)
         {
-            var start = _levelData.Width - 1;
+            var start = CurrentLevelData.Width - 1;
             var engine = new DijkstraPathfindEngine<int>(start, QueryMoveCost, GetPriority,
                 GetNeighborsOf);
 
@@ -267,11 +358,11 @@ namespace com.tinycastle.SeatSeekers
             var validSeats = new List<(SeatController seat, bool isCustomer2, List<Vector3> path)>();
             foreach (var seat in _spawnedSeats)
             {
-                var i1 = seat.X + seat.Y * _levelData.Width;
+                var i1 = seat.X + seat.Y * CurrentLevelData.Width;
                 if (engine.GetPathTo(i1, out var path))
                 {
                     var positions = path!
-                        .Select(si => GetCellPosition(si % _levelData.Width, si / _levelData.Width, true)).ToList();
+                        .Select(si => GetCellPosition(si % CurrentLevelData.Width, si / CurrentLevelData.Width, true)).ToList();
                     
                     for (var i = prependPositions.Length - 1; i >= 0; --i)
                     {
@@ -284,11 +375,11 @@ namespace com.tinycastle.SeatSeekers
 
                 if (!seat.IsDoubleSeat) continue;
                 
-                var i2 = seat.X + 1+ seat.Y * _levelData.Width;
+                var i2 = seat.X + 1+ seat.Y * CurrentLevelData.Width;
                 if (engine.GetPathTo(i2, out var path2))
                 {
                     var positions = path2!
-                        .Select(si => GetCellPosition(si % _levelData.Width, si / _levelData.Width, true)).ToList();
+                        .Select(si => GetCellPosition(si % CurrentLevelData.Width, si / CurrentLevelData.Width, true)).ToList();
                     
                     for (var i = prependPositions.Length - 1; i >= 0; --i)
                     {
@@ -325,19 +416,19 @@ namespace com.tinycastle.SeatSeekers
 
         public IEnumerable<int> GetNeighborsOf(int index)
         {
-            var x = index % _levelData.Width;
-            var y = index / _levelData.Width;
+            var x = index % CurrentLevelData.Width;
+            var y = index / CurrentLevelData.Width;
 
             var hasCurrOccupyable = _occupyables.TryGetValue(index, out _);
-            if (x < 0 || x >= _levelData.Width || y < 0 || y >= _levelData.Height || hasCurrOccupyable) yield break;
+            if (x < 0 || x >= CurrentLevelData.Width || y < 0 || y >= CurrentLevelData.Height || hasCurrOccupyable) yield break;
 
             foreach (var (dx, dy) in new[] { (-1, 0), (0, 1), (1, 0), (0, -1) })
             {
                 var nx = x + dx;
                 var ny = y + dy;
-                if (nx < 0 || nx >= _levelData.Width || ny < 0 || ny >= _levelData.Height) continue;
+                if (nx < 0 || nx >= CurrentLevelData.Width || ny < 0 || ny >= CurrentLevelData.Height) continue;
 
-                var ni = nx + ny * _levelData.Width;
+                var ni = nx + ny * CurrentLevelData.Width;
                 var hasOccupyable = _occupyables.TryGetValue(ni, out var occupyable);
                 if (!hasOccupyable || occupyable!.CanEnterFrom(x, y))
                 {
@@ -345,15 +436,23 @@ namespace com.tinycastle.SeatSeekers
                 }
             }
         }
+
+        public void SetJumpGuide(bool on)
+        {
+            foreach (var seat in _spawnedSeats)
+            {
+                seat.SeatInJumpMode = on;
+            }
+        }
         
         private bool IsLastCellOfRow(int x)
         {
-            return (x + 1) % _levelData.Width == 0;
+            return (x + 1) % CurrentLevelData.Width == 0;
         }
 
         private int GetPriority(int index)
         {
-            return (_levelData.Width - index % _levelData.Width) + index / _levelData.Width;
+            return (CurrentLevelData.Width - index % CurrentLevelData.Width) + index / CurrentLevelData.Width;
         }
     }
 }

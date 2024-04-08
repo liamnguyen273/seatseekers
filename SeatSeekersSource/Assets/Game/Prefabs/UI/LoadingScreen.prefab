@@ -973,18 +973,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc9899359244a9d8befdedba7eb74fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initBackground:
-    _comp: {fileID: 4980911926846688640}
-    _path: ./InitBackground
   _inputBlocker:
+    _parent: {fileID: 5702150914111693282}
     _comp: {fileID: 5799333841430155248}
     _path: ./Blocker
   _animRect:
+    _parent: {fileID: 5702150914111693282}
     _comp: {fileID: 2025189556011954227}
     _path: ./AnimRect
   _progressSlider:
+    _parent: {fileID: 5702150914111693282}
     _comp: {fileID: 6296535374432027396}
     _path: ./AnimRect/Appearance/Progress
+  _initBackground:
+    _parent: {fileID: 5702150914111693282}
+    _comp: {fileID: 4980911926846688640}
+    _path: ./InitBackground
   _transitTime: 0.75
   _naturalDelayTime: 0.75
 --- !u!1 &5799333841430155248

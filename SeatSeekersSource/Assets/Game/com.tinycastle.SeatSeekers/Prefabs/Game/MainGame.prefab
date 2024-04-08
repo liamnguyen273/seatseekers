@@ -244,15 +244,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _car:
+    _parent: {fileID: 6494859691964706640}
     _comp: {fileID: 7126096881157109794}
     _path: ./Car
   _customerHost:
+    _parent: {fileID: 6494859691964706640}
     _comp: {fileID: 5887543890742184487}
     _path: ./CustomerHost
   _levelText:
+    _parent: {fileID: 6494859691964706640}
     _comp: {fileID: 0}
     _path: UIGroups/BackCanvas/TopGroup/LevelText
   _timeText:
+    _parent: {fileID: 6494859691964706640}
     _comp: {fileID: 0}
     _path: UIGroups/BackCanvas/TopGroup/LevelTime
   _customerPrefab: {fileID: 0}

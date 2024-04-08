@@ -283,6 +283,33 @@
             and expected to activate before pausing or resuming.
             </summary>
         </member>
+        <member name="P:com.brg.Common.GameComponent.InitializationProgress">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Initialized">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Activated">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Paused">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Resume">
+            <inheritdoc/>
+        </member>
         <member name="T:com.brg.Common.IGameComponent">
             <summary>
             Interface for a Game Component.
@@ -374,6 +401,17 @@
             Whether the progress is successful does not depend on its child progresses.
             </summary>
         </member>
+        <member name="T:com.brg.Common.ProgressLeniencyAttribute">
+            <summary>
+            Attribute to designate how a progress group should be successful.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ProgressLeniencyAttribute.#ctor(com.brg.Common.ProgressLeniency)">
+            <summary>
+            Sets progress leniency with <paramref name="policy"/>.
+            </summary>
+            <param name="policy"></param>
+        </member>
         <member name="T:com.brg.Common.ManagerBase">
             <summary>
             Abstract class that provides basic behaviour for a Manager component that can be initialized, activated and paused.
@@ -381,6 +419,16 @@
             A manager can have a list of initialization dependencies. They first need to successfully initialize
             for the manager to perform its own initialization.
             </remarks>
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ManagerBase.InitTask">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ManagerBase.InitializationProgress">
+            <summary>
+            Initialization progress of 
             </summary>
         </member>
         <member name="P:com.brg.Common.ManagerBase.Log">
@@ -396,6 +444,11 @@
         <member name="P:com.brg.Common.ManagerBase.LogName">
             <summary>
             Name of the manager to use in logging.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.#ctor">
+            <summary>
+            Constructor for <see cref="T:com.brg.Common.ManagerBase"/>.
             </summary>
         </member>
         <member name="M:com.brg.Common.ManagerBase.InitializeBehaviourAsync">
@@ -431,6 +484,12 @@
             The child managers may not be the parent's dependencies, but the parent's initialization only should
             complete if they finish.
             </summary>
+        </member>
+        <member name="M:com.brg.Common.ParentManagerBase.InitializeBehaviourAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.ParentManagerBase.MakeInitializationProgress">
+            <inheritdoc />
         </member>
         <member name="T:com.brg.Common.ImmediateProgress">
             <summary>
@@ -478,6 +537,20 @@
             Get a <see cref="P:com.brg.Common.IProgress.Task"/> that completes when the progress is completed,
             returning its success or failure.
             </summary>
+        </member>
+        <member name="T:com.brg.Common.PersistentTaskProgress">
+            <summary>
+            Implementation of <see cref="T:com.brg.Common.IProgress"/> that is intended to be reused by a <see cref="T:com.brg.Common.IGameComponent"/>'s
+            initialization (and other actions that only ever should be invoked once).
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.PersistentTaskProgress.#ctor(System.Func{System.Threading.Tasks.Task{System.Boolean}},System.Single)">
+            <summary>
+            Create a persistent progress that keep <paramref name="task"/> as an underlying task. The constructor does
+            not start the task itself, and only start the waiting <see cref="P:com.brg.Common.PersistentTaskProgress.Task"/> task.
+            </summary>
+            <param name="task">The task to track.</param>
+            <param name="totalProgress">Total progress of the task.</param>
         </member>
         <member name="T:com.brg.Common.ProgressGroup">
             <summary>
@@ -762,6 +835,111 @@
             <remarks>
             Makes sure all instances are not referenced before or after calling this method.
             </remarks>
+        </member>
+        <member name="T:com.brg.Common.IPolymorphicObjectPool`1">
+            <summary>
+            Interface for an object pool that handles spawning specific instances of child classes of <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+        </member>
+        <member name="M:com.brg.Common.IPolymorphicObjectPool`1.Get``1">
+            <summary>
+            Get an instance from the pool.
+            </summary>
+            <returns>Return the instance of the pool</returns>
+        </member>
+        <member name="M:com.brg.Common.IPolymorphicObjectPool`1.TryGet``1(``0@)">
+            <summary>
+            Try get an instance from the pool.
+            </summary>
+            <param name="instance">The instance</param>
+            <returns>Whether the action is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.IPolymorphicObjectPool`1.Return(`0)">
+            <summary>
+            Return an instance to the pool.
+            </summary>
+            <param name="obj">The instance to return.</param>
+        </member>
+        <member name="M:com.brg.Common.IPolymorphicObjectPool`1.ReturnAll">
+            <summary>
+            Return all spawned instance to the pool.
+            </summary>
+            <remarks>
+            Makes sure all instances are not referenced before or after calling this method.
+            </remarks>
+        </member>
+        <member name="T:com.brg.Common.SaveManager">
+            <summary>
+            Abstract class for a Player Save manager.
+            Player data should be its own classes, marked with appropriated source generators attributes
+            to create getters and setters.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.SaveManager.SaveAll">
+            <summary>
+            Save all modified changes of the player data.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.SaveManager.InitializeBehaviourAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.DataAccessorAttribute">
+            <summary>
+            Attribute to mark a class an an accessor for another class.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DataAccessorAttribute.#ctor(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Mark a class as an accessor for a DTO class. Source generator generates the appropriate methods for the class.
+            </summary>
+            <param name="dto">Type of the DTO.</param>
+            <param name="allowRead">Whether to allow reading.</param>
+            <param name="allowWrite">Whether to allow writing.</param>
+        </member>
+        <member name="T:com.brg.Common.ExposeInAttribute">
+            <summary>
+            Attribute to mark exposure in a data/save manager, current not in use.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ExposeInAttribute.#ctor(System.Type)">
+            <summary>
+            Creates attribute to mark exposure in a data/save manager, current not in use.
+            </summary>
+            <param name="managerType">The type of the manager to expose the class.</param>
+        </member>
+        <member name="T:com.brg.Common.DoNotAccessAttribute">
+            <summary>
+            Attribute to mark a DTO's field to not generate its getter/setter.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DoNotAccessAttribute.#ctor">
+            <summary>
+            Creates attribute to mark a DTO's field to not generate its getter/setter.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.AccessorNotifyAttribute">
+            <summary>
+            Attribute to mark a DTO's field to generate on change events alongside its property, do nothing if <see cref="T:com.brg.Common.DoNotAccessAttribute"/>
+            is also present.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AccessorNotifyAttribute.#ctor(System.String)">
+            <summary>
+            Creates attribute to mark a DTO's field change events alongside its property.
+            </summary>
+            <param name="eventName">The name of the event, if empty or null, will use a default value.</param>
+        </member>
+        <member name="T:com.brg.Common.AccessorPropertyAttribute">
+            <summary>
+            Attribute to override DTO's field's accessor property name.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AccessorPropertyAttribute.#ctor(System.String)">
+            <summary>
+            Creates attribute to override DTO's field's accessor property name.
+            </summary>
+            <param name="propertyName">The propertyName to use.</param>
         </member>
         <member name="T:com.brg.Common.JsonFileListReader`1">
             <summary>
@@ -1089,6 +1267,16 @@
         <member name="P:com.brg.Common.ExplicitStateMachine`1.Running">
             <summary>
             Whether the state machine is actively updating its context via states.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ExplicitStateMachine`1.CurrentStateName">
+            <summary>
+            Get name of current state.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ExplicitStateMachine`1.CurrentState">
+            <summary>
+            Get current state.
             </summary>
         </member>
         <member name="P:com.brg.Common.ExplicitStateMachine`1.InitializationProgress">

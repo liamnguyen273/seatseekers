@@ -46,17 +46,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unityPopupManager:
+    _parent: {fileID: 1236528075384427588}
     _comp: {fileID: 0}
     _path: UIGroups/ImmediateCanvas/Popups
   _unityEffectMaker:
-    _comp: {fileID: 2612091117453618359}
+    _parent: {fileID: 1236528075384427588}
+    _comp: {fileID: 7418402038678049718}
     _path: ./EffectMakerCenter
   _unityAdManager:
+    _parent: {fileID: 1236528075384427588}
     _comp: {fileID: 0}
     _path: UIGroups/FrontCanvas/AdManager
   _loadingScreen:
+    _parent: {fileID: 1236528075384427588}
     _comp: {fileID: 0}
     _path: UIGroups/FrontCanvas/LoadingScreen
+  _mainGameManager:
+    _parent: {fileID: 1236528075384427588}
+    _comp: {fileID: 0}
+    _path: ./
 --- !u!1 &5042828854775943446
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8241861494790325260}
-  - component: {fileID: 2612091117453618359}
+  - component: {fileID: 7418402038678049718}
   m_Layer: 0
   m_Name: EffectMakerCenter
   m_TagString: Untagged
@@ -90,7 +98,7 @@ Transform:
   - {fileID: 5881474984595001286}
   m_Father: {fileID: 1330419818739595022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2612091117453618359
+--- !u!114 &7418402038678049718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5042828854775943446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c0ebfa5ea14980a7f2d4614242acca, type: 3}
+  m_Script: {fileID: 11500000, guid: e31920430065d3a479f8ff033a11b19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6708422714247554977
@@ -149,5 +157,6 @@ MonoBehaviour:
   ExplicitName: UIFloater
   SpawnablePrefab: {fileID: 1363051992880308561, guid: 5c709ca7b6e51f04ca475b1639f52d47, type: 3}
   DesignatedHost:
+    _parent: {fileID: 0}
     _comp: {fileID: 0}
     _path: UIGroups/BackCanvas/UIEffectHost

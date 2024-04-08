@@ -158,9 +158,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas:
+    _parent: {fileID: 5819788063345803007}
     _comp: {fileID: 6939521654042619019}
     _path: ./BlockingCanvas
   _icon:
+    _parent: {fileID: 5819788063345803007}
     _comp: {fileID: 2695546068659644866}
     _path: ./BlockingCanvas/Icon
 --- !u!1 &7883214620974268701

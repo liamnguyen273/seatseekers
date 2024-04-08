@@ -409,30 +409,39 @@ MonoBehaviour:
   _cellUnit: 1
   _carDoorOffset: 0.5
   _seatHost:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 8197038732206249547}
     _path: ./SeatPoolHost
   _obstacleHost:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 9081046876977119177}
     _path: ./ObstaclePoolHost
   _gridRenderer:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 7816948849111024149}
     _path: ./Grid
   _queueStartPos:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 613412044513038832}
     _path: ./QueueStart
   _gridBackRenderers:
-  - _comp: {fileID: 1118773792815457955}
+  - _parent: {fileID: 0}
+    _comp: {fileID: 1118773792815457955}
     _path: ./CarGrid/car_blue
   _wallLeft:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 8862004677484381325}
     _path: ./Grid/WallLeft
   _wallRight:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 8467395085223201343}
     _path: ./Grid/WallRight
   _wallUp:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 336538933363763770}
     _path: ./Grid/WallUp
   _wallDown:
+    _parent: {fileID: 5727490853854516592}
     _comp: {fileID: 1756799237624477161}
     _path: ./Grid/WallDown
   _singleSeatPrefab: {fileID: 0}

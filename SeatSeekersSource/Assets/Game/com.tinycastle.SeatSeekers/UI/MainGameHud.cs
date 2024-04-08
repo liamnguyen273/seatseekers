@@ -9,23 +9,31 @@ namespace com.tinycastle.SeatSeekers
     {
         [SerializeField] private CompWrapper<UIButton> _buttonSettings;
         [SerializeField] private CompWrapper<UIButton> _buttonNoAds;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterFreezeTime;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterFreezeGetMore;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterJump;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterJumpGetMore;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterLine;
-        [SerializeField] private CompWrapper<UIButton> _buttonBoosterLineGetMore;
+        [SerializeField] private CompWrapper<BoosterButton>[] _boosters;
 
         private void Awake()
         {
             _buttonSettings.Comp.OnClicked += OnButtonSettings;
             _buttonNoAds.Comp.OnClicked += OnButtonNoAds;
-            _buttonBoosterFreezeTime.Comp.OnClicked += OnBoosterFreeze;
-            _buttonBoosterFreezeGetMore.Comp.OnClicked += OnBoosterFreezeGetMore;
-            _buttonBoosterJump.Comp.OnClicked += OnBoosterJump;
-            _buttonBoosterJumpGetMore.Comp.OnClicked += OnBoosterJumpGetMore;
-            _buttonBoosterLine.Comp.OnClicked += OnBoosterLine;
-            _buttonBoosterLineGetMore.Comp.OnClicked += OnBoosterLineGetMore;
+        }
+
+        public void OnLevel(int level)
+        {
+            foreach (var booster in _boosters)
+            {
+                booster.Comp.OnLevel(level);
+            }
+        }
+
+        public BoosterButton GetBoosterButton(string boosterName)
+        {
+            return boosterName switch
+            {
+                GlobalConstants.BOOSTER_FREEZE_RESOURCE => _boosters[0].Comp,
+                GlobalConstants.BOOSTER_JUMP_RESOURCE => _boosters[1].Comp,
+                GlobalConstants.BOOSTER_EXPAND_RESOURCE => _boosters[2].Comp,
+                _ => null
+            };
         }
 
         private void OnButtonSettings()
@@ -37,37 +45,8 @@ namespace com.tinycastle.SeatSeekers
 
         private void OnButtonNoAds()
         {
-            
-        }
-
-        private void OnBoosterFreeze()
-        {
-            
-        }
-
-        private void OnBoosterJump()
-        {
-            
-        }
-
-        private void OnBoosterLine()
-        {
-            
-        }
-
-        private void OnBoosterFreezeGetMore()
-        {
-            
-        }
-
-        private void OnBoosterJumpGetMore()
-        {
-            
-        }
-
-        private void OnBoosterLineGetMore()
-        {
-            
+            var popup = GM.Instance.Get<PopupManager>().GetPopup("popup_noads");
+            popup.Show();
         }
     }
 }

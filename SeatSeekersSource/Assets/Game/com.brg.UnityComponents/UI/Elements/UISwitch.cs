@@ -19,6 +19,12 @@ namespace com.brg.UnityComponents
         
         private Toggle _unityToggle;
         
+        public EventWrapper<bool> ValueChangedEvent
+        {
+            get => _valueChangedEvent;
+            set => _valueChangedEvent = value;
+        }
+        
         public LocalizableText Label
         {
             get => _label.Comp.CloneText();
@@ -69,12 +75,6 @@ namespace com.brg.UnityComponents
                 _unityToggle.SetIsOnWithoutNotify(value);
                 SetToggleObject(value);
             }
-        }
-        
-        public EventWrapper<bool> OnValueChanged
-        {
-            get => _valueChangedEvent;
-            set => _valueChangedEvent = value;
         }
 
         private void Awake()

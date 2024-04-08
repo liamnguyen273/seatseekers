@@ -14,6 +14,8 @@ namespace com.tinycastle.SeatSeekers
         public int SeatColor => _data.Color;
         public bool IsDoubleSeat => _data.IsDouble;
         
+        public Transform Transform => transform;
+        
         public bool Occupy(int x, int y)
         {
             return (X == x && Y == y) || (IsDoubleSeat && X + 1 == x && Y == y);

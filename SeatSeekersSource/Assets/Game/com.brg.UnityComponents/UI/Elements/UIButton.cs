@@ -66,19 +66,17 @@ namespace com.brg.UnityComponents
                     _unityButton = GetComponent<Button>();
                     _unityButton.onClick.AddListener(OnUnityButtonClick);
 
-                    if (_clickPlayable.Comp == null)
+                    if (_clickPlayable.NullableComp != null) return _unityButton;
+                    
+                    var comp = transform.GetComponentInChildren<CompPlayable>();
+                    if (comp != null)
                     {
-                        var comp = transform.GetComponentInChildren<CompPlayable>();
-                        if (comp != null)
-                        {
-                            var path = comp.gameObject.RegeneratePathUpTo(gameObject);
-                            _clickPlayable.Set(comp, path);
-                        }
-                        else
-                        {
-                            LogObj.Default.Warn("Cannot find any CompPlayable on the Button.");
-                        }
+                        _clickPlayable.SetUp(comp, gameObject);
                     }
+                //     else
+                //     {
+                //         LogObj.Default.Warn("UIButton", $"Cannot find any CompPlayable on the \"{name}\".");
+                //     }
                 }
 
                 return _unityButton;
@@ -103,7 +101,7 @@ namespace com.brg.UnityComponents
             // other things
             // AudioManager.PlaySound(_tapSound, gameObject.transform);
 
-            _clickPlayable.Comp?.Play(null);
+            _clickPlayable.NullableComp?.Play(null);
             _clickedEvent?.Invoke();
         }
     }

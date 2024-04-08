@@ -131,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 446194571819238396, guid: d33849149a58b5142ba5fec71322d30a, type: 3}
       propertyPath: _icon._path
-      value: ./Appearance
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 446194571819238396, guid: d33849149a58b5142ba5fec71322d30a, type: 3}
       propertyPath: _label._comp

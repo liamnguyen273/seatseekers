@@ -53,12 +53,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label:
+    _parent: {fileID: 452555007513551743}
     _comp: {fileID: 0}
     _path: ./Label
   _icon:
+    _parent: {fileID: 452555007513551743}
     _comp: {fileID: 0}
     _path: ./Icon
   _clickPlayable:
+    _parent: {fileID: 452555007513551743}
     _comp: {fileID: 0}
     _path: ./Playable
   _clickedEvent:
@@ -251,6 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _explicitName: popup_generic
   _backgroundButton:
+    _parent: {fileID: 8309868686794698768}
     _comp: {fileID: 7688916317519294836}
     _path: ./Background
 --- !u!223 &5100170257530747383
@@ -582,8 +586,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3497965655284074276, guid: 803d17df25115b344817f1d701c71e80, type: 3}
-      propertyPath: _bottomButtons.Array.data[2]._comp
-      value: 
+      propertyPath: _bottomButtons.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4035284067662782739, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_Enabled

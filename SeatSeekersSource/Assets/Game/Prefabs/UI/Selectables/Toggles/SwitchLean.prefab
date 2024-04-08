@@ -717,18 +717,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _label:
+    _parent: {fileID: 8809551378993030399}
     _comp: {fileID: 7112292095947677121}
     _path: ./Appearance/Label
   _onObject:
+    _parent: {fileID: 8809551378993030399}
     _comp: {fileID: 1592205442873111991}
     _path: ./Appearance/Panel/Tab/OnObject
   _offObject:
+    _parent: {fileID: 8809551378993030399}
     _comp: {fileID: 2478982023378754674}
     _path: ./Appearance/Panel/Tab/OffObject
   _offPlayable:
+    _parent: {fileID: 8809551378993030399}
     _comp: {fileID: 5422019125265846109}
     _path: ./OffPlayable
   _onPlayable:
+    _parent: {fileID: 8809551378993030399}
     _comp: {fileID: 4798595416616448658}
     _path: ./OnPlayable
   _valueChangedEvent:
@@ -813,7 +818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMin.x
@@ -821,7 +826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_SizeDelta.x
@@ -865,7 +870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

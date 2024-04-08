@@ -1,8 +1,6 @@
-using System;
 using com.brg.Common;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
-using com.brg.UnityComponents;
 using DG.Tweening;
 using UnityEngine;
 
@@ -33,8 +31,8 @@ namespace com.brg.UnityComponents
 
         public override IProgress Initialize()
         {
-            if (_panel.Comp == null) _panel.Set(transform.Find("Panel").gameObject, "./Panel");
-            if (_background.Comp == null) _background.Set(transform.Find("Background").GetComponent<CanvasGroup>(), "./Background");
+            if (_panel.NullableComp == null) _panel.SetUp(transform.Find("Panel").gameObject, gameObject);
+            if (_background.NullableComp == null) _background.SetUp(transform.Find("Background").GetComponent<CanvasGroup>(), gameObject);
 
             return base.Initialize();
         }

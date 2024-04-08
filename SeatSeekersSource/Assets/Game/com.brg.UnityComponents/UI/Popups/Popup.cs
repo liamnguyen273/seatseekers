@@ -30,9 +30,10 @@ namespace com.brg.UnityComponents
 				_rect.anchoredPosition3D = pos;
 
 				var canvas = GetComponent<Canvas>();
-				canvas.overrideSorting = true;
-				canvas.sortingLayerName = "UI";
-				canvas.sortingOrder = _popupZ;
+				if (canvas != null)
+				{
+					canvas.sortingOrder = _popupZ;
+				}
 			}
 		}
 
@@ -149,15 +150,13 @@ namespace com.brg.UnityComponents
 		internal void ManagerShow(bool immediately)
 		{
 			_functionallyActive = true;
-			if (immediately) _animation.PlayShowImmediately(); 
-			else _animation.PlayShow();
+			if (immediately) _animation.PlayShowImmediately(); else _animation.PlayShow();
 		}
 
 		internal void ManagerHide(bool immediately)
 		{			
 			_functionallyActive = false;
-			if (immediately) _animation.PlayHideImmediately(); 
-			else _animation.PlayHide();
+			if (immediately) _animation.PlayHideImmediately(); _animation.PlayHide();
 		}
 
 		private void HideByBackground()

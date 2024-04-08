@@ -18,6 +18,7 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private GOWrapper _customerSeat2 = "./Seats/Seat2";
 
         [Header("Params")] 
+        [SerializeField] private CompWrapper<SpriteRenderer> _jumpModeSelectGudie;
         [SerializeField] private float _sensitivity = 1f;
 
         [SerializeField] private Sprite[] _seatSingleSprites;
@@ -29,6 +30,8 @@ namespace com.tinycastle.SeatSeekers
         private bool _pickedUp;
         private LeanFinger _finger = null;
         
+        private bool _seatInJumpMode = false;
+        
         public CarController Car { get; set; }
         public SeatData Data => _data;
         public int X => _data.X;
@@ -39,6 +42,26 @@ namespace com.tinycastle.SeatSeekers
         public bool FullySeated => _setCustomer1 is not null && (!IsDoubleSeat || _setCustomer2 is not null);
 
         public int SortValue => X + Y + 1000 * SeatColor;
+        
+        public bool SeatInJumpMode
+        {
+            get => !FullySeated || _seatInJumpMode;
+            set
+            {
+                if (FullySeated)
+                {
+                    _seatInJumpMode = false;
+                }
+                else
+                {
+                    _seatInJumpMode = value;
+                }
+                
+                _jumpModeSelectGudie.GameObject.SetActive(_seatInJumpMode);
+            }
+        }
+
+        public Transform Transform => transform;
 
         public bool Occupy(int x, int y)
         {
@@ -152,6 +175,11 @@ namespace com.tinycastle.SeatSeekers
         private Vector3 _cumulativeDelta;
         public void OnFingerDown(LeanSelectByFinger select, LeanFinger finger)
         {
+            if (SeatInJumpMode)
+            {
+                
+            }
+            
             if (!Car.AllowPickUpSeat || _pickedUp) return;
             _pickedUp = true;
             _finger = finger;

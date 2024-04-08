@@ -17,7 +17,7 @@ namespace com.brg.UnityComponents
         /// <summary>
         /// The localizable text.
         /// </summary>
-        public LocalizableText Text
+        public virtual LocalizableText Text
         {
             set => SetText(value);
         }
@@ -48,14 +48,14 @@ namespace com.brg.UnityComponents
             var text = _tmp.text;
             _text = text;
             
-            var manager = GM.Instance.Get<LocalizationManager>();
+            var manager = GM.Instance?.Get<LocalizationManager>();
             if (manager is null) return;
             
             RefreshAppearance();
             manager.LanguageChangeEvent += OnLanguageChange;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             var manager = GM.Instance?.Get<LocalizationManager>();
             if (manager is null) return;
@@ -63,7 +63,7 @@ namespace com.brg.UnityComponents
             manager.LanguageChangeEvent += OnLanguageChange;
         }
         
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             var manager = GM.Instance?.Get<LocalizationManager>();
             if (manager is null) return;
@@ -111,18 +111,20 @@ namespace com.brg.UnityComponents
             if (sender is LocalizationManager manager)
             {
                 FullyTranslate(manager);
-                Debug.Log("Translated");
             }
         }
 
         private void RefreshAppearance()
         {
-            FullyTranslate(GM.Instance.Get<LocalizationManager>());
+            FullyTranslate(GM.Instance?.Get<LocalizationManager>());
         }
         
         private void FullyTranslate(LocalizationManager manager)
         {
-            var translated = manager.Translate(_text.Key, out var translatedText);
+            if (_tmp == null) return;
+            var translatedText = _text.Key;
+            var translated = manager?.Translate(_text.Key, out translatedText) ?? false;
+            
             _cachedString = _text.IterateParameters()
                 .Aggregate(translatedText, (current, replacement) =>
                 {

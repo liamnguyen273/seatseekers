@@ -2422,15 +2422,19 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   _doubleCoinText:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 7852843611587007897}
     _path: ./Panel/BottomGroup/Buttons/Buttonx2/Appearance/Layout2/x2Text
   _coinText:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 944828821567162450}
     _path: ./Panel/BottomGroup/Buttons/ButtonContinue/Appearance/Layout2/ValueText
   _doubleCoinButton:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 390055917835487664}
     _path: ./Panel/BottomGroup/Buttons/Buttonx2
   _continueButton:
+    _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 5284436293955177694}
     _path: ./Panel/BottomGroup/Buttons/ButtonContinue
 --- !u!224 &5246210622699169645 stripped

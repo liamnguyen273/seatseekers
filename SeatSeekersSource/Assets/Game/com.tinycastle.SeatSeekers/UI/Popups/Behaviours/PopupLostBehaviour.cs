@@ -36,15 +36,7 @@ namespace com.tinycastle.SeatSeekers
         private void OnXButton()
         {
             var mainGame = GM.Instance.Get<MainGameManager>();
-            var loading = GM.Instance.Get<LoadingScreen>();
-            var popupManager = GM.Instance.Get<PopupManager>();
-            
-            loading.RequestLoad(mainGame.Deactivate(),
-                () =>
-                {
-                    popupManager.HideAllPopups();
-                    popupManager.GetPopup<PopupMainMenu>().Show();
-                }, null);
+            mainGame.TransitOut();
         }
 
         private void OnRetryButton()
@@ -57,15 +49,7 @@ namespace com.tinycastle.SeatSeekers
         private void Restartlevel()
         {
             var mainGame = GM.Instance.Get<MainGameManager>();
-            var loading = GM.Instance.Get<LoadingScreen>();
-            var popupManager = GM.Instance.Get<PopupManager>();
-            
-            loading.RequestLoad(mainGame.Activate(),
-                () =>
-                {
-                    popupManager.HideAllPopups(true, true);
-                    mainGame.RestartGame();
-                }, mainGame.StartGame);
+            mainGame.RestartLevelWithValidation();
         }
     }
 }

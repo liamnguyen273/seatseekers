@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.UnityCommon;
 
@@ -6,9 +7,35 @@ namespace com.tinycastle.SeatSeekers
 {
     public partial class GameSaveManager : com.brg.Common.SaveManager, ILanguageCodeQuery, IUserAdQuery
     {
+        public PlayerDataAccessor PlayerData { get; }
+
+        public GameSaveManager(PlayerDataAccessor playerData)
+        {
+            PlayerData = playerData;
+        }
+
+        protected override async Task<bool> InitializeBehaviourAsync()
+        {
+            var readComplete = await PlayerData.ReadDataAsync();
+            if (!readComplete) return false;
+            return await base.InitializeBehaviourAsync();
+        }
+
+        public new void SaveAll()
+        {
+            base.SaveAll();
+            PlayerData.WriteDataAsync();
+        }
+
+        public void SavePlayerData()
+        {
+            PlayerData.WriteDataAsync();
+        }
+
         public bool GetAdSkippability(AdRequestType type)
         {
-            return GetPlayerData_Ownerships(GlobalConstants.AD_FREE_PACKAGE) ?? false;
+            var success = PlayerData.TryGetFromOwnerships(GlobalConstants.AD_FREE_PACKAGE, out var has);
+            return success && has is true;
         }
 
         public string GetSelectedLanguage()

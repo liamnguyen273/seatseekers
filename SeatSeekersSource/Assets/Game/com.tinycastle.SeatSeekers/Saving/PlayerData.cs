@@ -1,69 +1,143 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using com.brg.Common;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
 {
-    public struct CompletedLevelData
+    [DataAccessor(typeof(PlayerData))]
+    public partial class PlayerDataAccessor : TempJsonSaver<PlayerData>
     {
-        public bool Completed;
-        public int BestTime;
-
-        public CompletedLevelData(bool completed, int bestTime)
+        private const string SAVE_NAME = "player_data.json";
+        
+        public PlayerDataAccessor() : base(Application.persistentDataPath + "/" + SAVE_NAME)
         {
-            Completed = completed;
-            BestTime = bestTime;
+            
+        }
+
+        public bool HasData => _dto != null;
+        
+        public override bool HasModifiedData => _modified;
+
+        public override async Task<bool> ReadDataAsync()
+        {
+            var result = await base.ReadDataAsync();
+
+            if (result)
+            {
+                var data = GetData();
+                _dto = data;
+            }
+
+            return result;
+        }
+
+        public bool CheckUnlockedBooster(int currentLevel, string boosterName, out bool shouldIntroduce)
+        {
+            shouldIntroduce = false;
+            var hasAlready = GetFromOwnerships(boosterName + "_unlocked") ?? false;
+            if (hasAlready) return true;
+            
+            switch (boosterName)
+            {
+                case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
+                {
+                    if (currentLevel < 3) return false;
+                    
+                    shouldIntroduce = true;
+                    SetInOwnerships(boosterName, true, true);
+                    WriteDataAsync();
+
+                    return true;
+                }
+                case GlobalConstants.BOOSTER_JUMP_RESOURCE:
+                {
+                    if (currentLevel < 4) return false;
+                    
+                    shouldIntroduce = true;
+                    SetInOwnerships(boosterName, true, true);
+                    WriteDataAsync();
+
+                    return true;
+                }
+                case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
+                {
+                    if (currentLevel < 5) return false;
+                    
+                    shouldIntroduce = true;
+                    SetInOwnerships(boosterName, true, true);
+                    WriteDataAsync();
+
+                    return true;
+                }
+                default:
+                    return false;
+            }
+        }
+
+        public override Task<bool> WriteDataAsync()
+        {
+            if (_dto != null)
+            {
+                _dto.lastModified = DateTime.UtcNow;
+            }
+            
+            return base.WriteDataAsync();
+        }
+
+        public override void SetModified(bool modified)
+        {
+            _modified = modified;
+        }
+
+        public DateTime GetLastModified()
+        {
+            return _dto.lastModified;
         }
     }
     
-    [ReadableSingle(typeof(PlayerDataSaver))]
-    [WritableSingle(typeof(PlayerDataSaver))]
-    [ExposeRead(typeof(GameSaveManager))]
-    [ExposeWrite(typeof(GameSaveManager))]
-    [Serializable]
     public partial class PlayerData
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, CompletedLevelData> CompletedLevels;
+        public Dictionary<string, bool> completedLevels;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, bool> Ownerships;
+        [AccessorNotify]
+        public Dictionary<string, bool> ownerships;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, int> Resources;
+        [AccessorNotify]
+        public Dictionary<string, int> resources;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, int> Leaderboard;
-        
-        public bool TutorialPlayed { get; set; }
-        
-        public DateTime LastSaveTime { get; set; }
+        public Dictionary<string, int> leaderboard;
+
+        public bool tutorialPlayed;
+        [DoNotAccess] public DateTime lastModified;
+
+        [AccessorNotify] public int energyRechargeTimer;
 
         [JsonConstructor]
         public PlayerData()
         {
-            CompletedLevels = new Dictionary<string, CompletedLevelData>();
-            Ownerships = new Dictionary<string, bool>();
-            Leaderboard = new Dictionary<string, int>();
-            Resources = new Dictionary<string, int>()
+            completedLevels = new Dictionary<string, bool>();
+            ownerships = new Dictionary<string, bool>();
+            leaderboard = new Dictionary<string, int>();
+            resources = new Dictionary<string, int>()
             {
-                { GlobalConstants.SOFT_CURRENCY_RESOURCE, 0 },
-                { GlobalConstants.HARD_CURRENCY_RESOURCE, 0 },
-                { GlobalConstants.ENERGY_RESOURCE, 0 },
+                { GlobalConstants.COIN_RESOURCE, 100 },
+                { GlobalConstants.GEM_RESOURCE, 10 },
+                { GlobalConstants.BOOSTER_FREEZE_RESOURCE, 3 },
+                { GlobalConstants.BOOSTER_JUMP_RESOURCE, 3 },
+                { GlobalConstants.BOOSTER_EXPAND_RESOURCE, 3 },
+                { GlobalConstants.ENERGY_RESOURCE, GlobalConstants.MAX_ENERGY },
+                { GlobalConstants.INFINITE_ENERGY_RESOURCE, 0 },
             };
-            TutorialPlayed = false;
-            LastSaveTime = DateTime.UtcNow;
-        }
-    }
-
-    public class PlayerDataSaver : JsonFileSingleSaver<PlayerData>
-    {
-        private const string SAVE_NAME = "player_data.json";
-        public PlayerDataSaver() : base(Application.persistentDataPath + "/" + SAVE_NAME)
-        {
-            
+            tutorialPlayed = false;
+            lastModified = DateTime.UtcNow;
+            energyRechargeTimer = 0;
         }
     }
 }

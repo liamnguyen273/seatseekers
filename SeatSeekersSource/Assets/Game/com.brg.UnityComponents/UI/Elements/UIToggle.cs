@@ -20,6 +20,12 @@ namespace com.brg.UnityComponents
         
         private Toggle _unityToggle;
         private Color _baseColor;
+
+        public EventWrapper<bool> ValueChangedEvent
+        {
+            get => _valueChangedEvent;
+            set => _valueChangedEvent = value;
+        }
         
         public LocalizableText Label
         {
@@ -57,6 +63,12 @@ namespace com.brg.UnityComponents
         {
             get => UnityToggle.interactable;
             set => UnityToggle.interactable = value;
+        }
+
+        public ToggleGroup Group
+        {
+            get => UnityToggle.group;
+            set => UnityToggle.group = value;
         }
         
         public Toggle UnityToggle
@@ -98,18 +110,18 @@ namespace com.brg.UnityComponents
 
         private void SetToggleObject(bool isOn)
         {
-            if (_checkMark.Comp != null)
+            if (_checkMark.NullableComp != null)
             {
-                _checkMark.Comp.color = isOn ? _baseColor : Color.clear;
+                _checkMark.NullableComp.color = isOn ? _baseColor : Color.clear;
             }
 
             if (isOn)
             {
-                _clickOnPlayable.Comp?.Play(null);
+                _clickOnPlayable.NullableComp?.Play(null);
             }
             else
             {
-                _clickOffPlayable.Comp?.Play(null);
+                _clickOffPlayable.NullableComp?.Play(null);
             }
         }
 

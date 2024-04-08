@@ -16,8 +16,8 @@ namespace com.brg.UnityCommon.UI
 
         public override IProgress Initialize()
         {
-            if (_panel.Comp == null) _panel.Set(transform.Find("Panel").GetComponent<RectTransform>(), "./Panel");
-            if (_background.Comp == null) _background.Set(transform.Find("Background").GetComponent<CanvasGroup>(), "./Background");
+            if (_panel.NullableComp == null) _panel.SetUp(transform.Find("Panel").GetComponent<RectTransform>(), gameObject);
+            if (_background.NullableComp == null) _background.SetUp(transform.Find("Background").GetComponent<CanvasGroup>(), gameObject);
             
             _height = _panel.Comp.rect.height;
             return base.Initialize();

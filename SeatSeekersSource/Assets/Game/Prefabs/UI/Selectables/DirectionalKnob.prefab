@@ -157,7 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1107e01429444246a014393f53d0b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knobGraphic: {fileID: 2992981781017954245}
+  _knobGraphic:
+    _parent: {fileID: 2992981781424225395}
+    _comp: {fileID: 2992981781017954244}
+    _path: ./Circle
   _min: 0
   _max: 1
   _value: 0.5

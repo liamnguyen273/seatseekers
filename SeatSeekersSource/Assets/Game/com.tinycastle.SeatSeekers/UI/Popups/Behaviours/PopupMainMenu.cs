@@ -13,6 +13,9 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private GOWrapper _levelPageHost = "./LevelPages";
         [SerializeField] private CompWrapper<UIButton> _buttonSettings;
         [SerializeField] private CompWrapper<UIButton> _buttonNoAds;
+        [SerializeField] private CompWrapper<UIButton> _buttonAddEnergy;
+        [SerializeField] private CompWrapper<UIButton> _buttonAddCoin;
+        [SerializeField] private CompWrapper<UIButton> _debugEnergyButton;
 
         public List<LevelPage> LevelPages { get; private set; }
         public List<LevelItem> LevelItems { get; private set; }
@@ -21,6 +24,7 @@ namespace com.tinycastle.SeatSeekers
         {
             _buttonSettings.Comp.OnClicked += OnButtonSettings;
             _buttonNoAds.Comp.OnClicked += OnButtonNoAds;
+            _debugEnergyButton.Comp.OnClicked += OnDebugEnergyButton;
             
             LevelPages = _levelPageHost.GameObject.GetDirectOrderedChildComponents<LevelPage>().ToList();
             LevelItems = new();
@@ -45,9 +49,9 @@ namespace com.tinycastle.SeatSeekers
             LevelItem currentItem = null;
             while (levels.TryGetValue(levelId, out var levelEntry) && levelNumber <= LevelItems.Count)
             {
-                var completedLevel = saveManager.GetPlayerData_CompletedLevels(levelId);
+                var completedLevel = saveManager.PlayerData.GetFromCompletedLevels(levelId) is true;
                 var lastIsBeaten = currentBeaten;
-                currentBeaten = completedLevel != null && completedLevel.HasValue && completedLevel.Value.Completed;
+                currentBeaten = completedLevel;
                 
                 var unlocked = currentBeaten || lastIsBeaten;
                 var isCurrent = !currentBeaten && lastIsBeaten;
@@ -86,6 +90,28 @@ namespace com.tinycastle.SeatSeekers
         }
 
         private void OnButtonNoAds()
+        {
+            var popup = GM.Instance.Get<PopupManager>().GetPopup("popup_noads");
+            popup.Show();
+        }
+
+        private void OnDebugEnergyButton()
+        {
+            var energy = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+            if (energy < GlobalConstants.MAX_ENERGY)
+            {
+                energy += 1;
+            }
+            GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(GlobalConstants.ENERGY_RESOURCE, energy, true);
+            GM.Instance.Get<GameSaveManager>().PlayerData.WriteDataAsync();
+        }
+
+        private void OnButtonAddEnergy()
+        {
+            
+        }
+
+        private void OnButtonAddCoin()
         {
             
         }

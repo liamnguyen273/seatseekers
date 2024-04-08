@@ -1,4 +1,8 @@
+// #define DEBUG_VIEW_PARENT
+
+using System;
 using System.Reflection;
+using com.brg.Common;
 using UnityEditor;
 using UnityEngine;
 using GUIContent = UnityEngine.GUIContent;
@@ -7,6 +11,7 @@ namespace com.brg.UnityCommon.Editor
 {
     public class CommonWrapperPropertyDrawer: PropertyDrawer
     {
+        private bool _validated = false;
         // public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         // {
         //     var height = EditorGUI.GetPropertyHeight(property, label);
@@ -21,7 +26,7 @@ namespace com.brg.UnityCommon.Editor
 
             // Draw label
             pos = EditorGUI.PrefixLabel(pos, GUIUtility.GetControlID(FocusType.Passive), label);
-
+            
             // Don't make child fields be indented
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
@@ -30,22 +35,36 @@ namespace com.brg.UnityCommon.Editor
             var buttonWidth = 70f;
             var pathRect = new Rect(pos.x - offset, pos.y, pos.width + offset - buttonWidth, pos.height);
             EditorGUI.PropertyField(pathRect, property.FindPropertyRelative("_path"), GUIContent.none);
+
+            if (!_validated)
+            {
+                Validate(property, false);
+            }
             
             var buttonRect = new Rect(pos.x + pos.width - buttonWidth, pos.y, buttonWidth, pos.height);
             if (GUI.Button(buttonRect, "Validate"))
             {
-                Validate(property);
+                Validate(property, true);
             }
             
             EditorGUILayout.BeginVertical();
 
             var goLabel = new GUIContent("GO");
+            var parentLabel = new GUIContent("Parent");
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.Space(20);
             EditorGUILayout.LabelField(goLabel, GUILayout.Width(30));
             EditorGUILayout.PropertyField(property.FindPropertyRelative("_comp"), GUIContent.none);
             EditorGUILayout.EndHorizontal();
+            
+#if DEBUG_VIEW_PARENT
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(20);
+            EditorGUILayout.LabelField(parentLabel, GUILayout.Width(30));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("_parent"), GUIContent.none);
+            EditorGUILayout.EndHorizontal();
+#endif
 
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space(4);
@@ -56,138 +75,185 @@ namespace com.brg.UnityCommon.Editor
             EditorGUI.EndProperty();
         }
 
-        protected virtual void Validate(SerializedProperty property)
+        protected virtual void Validate(SerializedProperty property, bool shouldLog)
         {
-            // do nothing
+            _validated = true;
         }
     }
 
     [CustomPropertyDrawer(typeof(CompWrapper<>))]
     public class CompWrapperPropertyDrawer : CommonWrapperPropertyDrawer
     {
-        protected override void Validate(SerializedProperty property)
+        protected override void Validate(SerializedProperty property, bool shouldLog)
         {
             var c = property.serializedObject.targetObject as Component;
             var cType = property.serializedObject.targetObject.GetType();
-            var field = cType.GetField(property.propertyPath, BindingFlags.NonPublic | BindingFlags.Instance);
-            var fieldType = field!.FieldType;
-            var tType = fieldType.GetGenericArguments()[0];
             
-            // Debug.Log(tType);
+            if (c is null) return;
             
-            if (c is not null)
+            var fieldType = fieldInfo!.FieldType;
+            Type tType = null;
+
+            if (fieldType.IsArray)
             {
-                var pathProp = property.FindPropertyRelative("_path")!;
-                var compProp = property.FindPropertyRelative("_comp")!;
+                var elementType = fieldType.GetElementType();
+                tType = elementType!.GetGenericArguments()[0];
+            }
+            else
+            {
+                tType = fieldType.GetGenericArguments()[0];
+            }
+            
+            var parentProp = property.FindPropertyRelative("_parent")!;
+            var pathProp = property.FindPropertyRelative("_path")!;
+            var compProp = property.FindPropertyRelative("_comp")!;
+
+            var path = pathProp.stringValue ?? string.Empty;
+            var comp = compProp.objectReferenceValue;
+            
+            var pathIsRelative = path.Length switch
+            {
+                >= 2 when path[0] == '.' && path[1] == '/' => true,
+                >= 1 when path[0] == '/' => false,
+                _ => false
+            };
+            
+            var baseGo = c.gameObject;
+
+            var goAtPath = baseGo.TraversePath(pathIsRelative, path);
+            var compAtPath = goAtPath is null ? null : goAtPath.GetComponent(tType);
                 
-                var path = pathProp.stringValue ?? ".";
-                var comp = compProp.objectReferenceValue;
-
-                bool isRelative = path == "." || (path.Length >= 2 && path[0] == '.' && path[1] == '/');
-                path = path == "." ? "" : (isRelative ? path.Substring(2) : path);
-                var baseGo = c.gameObject;
-
-                // If both exists, validate path first, if that fails, regenerate
-                if (!(path is null || path == "") && comp is not null)
+            if (comp is null && compAtPath is null)
+            {
+                // No comp at path, default to self
+                parentProp.objectReferenceValue = baseGo;
+                if (shouldLog) Debug.LogError($"CompWrapper: Cannot find a \"{tType}\" at path \"{path}\".");
+            }
+            else if (comp is null && compAtPath is not null)
+            {
+                // CompAtPath is now comp.
+                compProp.objectReferenceValue = compAtPath;
+                pathProp.stringValue = path;
+                parentProp.objectReferenceValue = pathIsRelative ? baseGo : null;
+            }
+            else if (comp is not null && compAtPath is null)
+            {
+                // Regenerate path
+                pathProp.stringValue = (comp as Component)!.gameObject.RegeneratePathUpTo(baseGo, out var relative);
+                parentProp.objectReferenceValue = relative ? baseGo : null;
+            }
+            else // comp is not null && compAtPath is not null
+            {
+                var compPath = (comp as Component)!.gameObject.RegeneratePathUpTo(baseGo, out var compPathIsRelative);
+                if (comp == compAtPath)
                 {
-                    var compGo = baseGo.TraversePath(isRelative, path);
-                    var newComp = compGo?.GetComponent(tType);
-                    if (newComp is not null && newComp == comp)
+                    // Cool, set parent though.
+                    parentProp.objectReferenceValue = pathIsRelative ? baseGo : null;
+                }
+                else
+                {
+                    // Prioritize the component that is relative
+                    if (pathIsRelative)
                     {
-                        // Validation completed, no errors
-                        return;
+                        compProp.objectReferenceValue = compAtPath;
+                        parentProp.objectReferenceValue = baseGo;
                     }
-                    else if (newComp is not null)
+                    else if (compPathIsRelative)
                     {
-                        // Reset the comp to follow path
-                        compProp.objectReferenceValue = newComp;
+                        // Keep as is
+                        parentProp.objectReferenceValue = baseGo;
+                        pathProp.stringValue = compPath;
                     }
                     else
                     {
-                        // Reset path to follow comp.
-                        pathProp.stringValue = (comp as Component)!.gameObject.RegeneratePathUpTo(baseGo);
+                        // Prioritize the compPath
+                        compProp.objectReferenceValue = compAtPath;
+                        parentProp.objectReferenceValue = null;
                     }
-                }
-                // If path is null, regenerate path
-                else if (path is null || path == "")
-                {
-                    pathProp.stringValue = (comp as Component)!.gameObject.RegeneratePathUpTo(baseGo);
-                }
-                // If missing comp, get from path
-                else if (comp is null)
-                {
-                    var compGo = baseGo.TraversePath(isRelative, path);
-
-                    if (compGo is null)
-                    {
-                        Debug.LogError($"Cannot find component at path \"{path}\"");
-                        return;
-                    }
-                    
-                    compProp.objectReferenceValue = compGo.GetComponent(tType);
                 }
             }
+            
+            base.Validate(property, shouldLog);
         }
     }
     
     [CustomPropertyDrawer(typeof(GOWrapper))]
     public class GameObjectWrapperPropertyDrawer : CommonWrapperPropertyDrawer
     {
-        protected override void Validate(SerializedProperty property)
+        protected override void Validate(SerializedProperty property, bool shouldLog)
         {
             var c = property.serializedObject.targetObject as Component;
+
+            if (c is null) return;
             
-            if (c is not null)
-            {
-                var pathProp = property.FindPropertyRelative("_path")!;
-                var compProp = property.FindPropertyRelative("_comp")!;
+            var parentProp = property.FindPropertyRelative("_parent")!;
+            var pathProp = property.FindPropertyRelative("_path")!;
+            var compProp = property.FindPropertyRelative("_comp")!;
                 
-                var path = pathProp.stringValue ?? ".";
-                var gameObject = compProp.objectReferenceValue as GameObject;
+            var path = pathProp.stringValue ?? ".";
+            var go = compProp.objectReferenceValue as GameObject;
+            
+            var pathIsRelative = path.Length switch
+            {
+                >= 2 when path[0] == '.' && path[1] == '/' => true,
+                >= 1 when path[0] == '/' => false,
+                _ => false
+            };
+            
+            var baseGo = c.gameObject;
 
-                bool isRelative = path == "." || (path.Length >= 2 && path[0] == '.' && path[1] == '/');
-                path = path == "." ? "" : (isRelative ? path.Substring(2) : path);
-                var baseGo = c.gameObject;
-
-                // If both exists, validate path first, if that fails, regenerate
-                if (!(path is null || path == "") && gameObject is not null)
+            var goAtPath = baseGo.TraversePath(pathIsRelative, path);
+                
+            if (go is null && goAtPath == null)
+            {
+                // No comp at path
+                if (shouldLog) Debug.LogError($"GOWrapper: Cannot find a GameObject at path \"{path}\".");
+            }
+            else if (go is null && goAtPath != null)
+            {
+                // goAtPath is now comp.
+                compProp.objectReferenceValue = goAtPath;
+                pathProp.stringValue = path;
+                parentProp.objectReferenceValue = pathIsRelative ? baseGo : null;
+            }
+            else if (go is not null && goAtPath == null)
+            {
+                // Regenerate path
+                pathProp.stringValue = go.RegeneratePathUpTo(baseGo, out var relative);
+                parentProp.objectReferenceValue = relative ? baseGo : null;
+            }
+            else // go is not null && compAtPath != null
+            {
+                var goPath = go!.RegeneratePathUpTo(baseGo, out var goPathIsRelative);
+                if (go == goAtPath)
                 {
-                    var newGameObject = baseGo.TraversePath(isRelative, path);
-                    if (newGameObject is not null && newGameObject == gameObject)
+                    // Cool, set parent though.
+                    parentProp.objectReferenceValue = pathIsRelative ? baseGo : null;
+                }
+                else
+                {
+                    // Prioritize the game object that is relative
+                    if (pathIsRelative)
                     {
-                        // Validation completed, no errors
-                        return;
+                        compProp.objectReferenceValue = goAtPath;
+                        parentProp.objectReferenceValue = baseGo;
                     }
-                    else if (newGameObject is not null)
+                    else if (goPathIsRelative)
                     {
-                        // Reset the comp to follow path
-                        compProp.objectReferenceValue = newGameObject;
+                        // Keep as is
+                        parentProp.objectReferenceValue = baseGo;
+                        pathProp.stringValue = goPath;
                     }
                     else
                     {
-                        // Reset path to follow comp.
-                        pathProp.stringValue = gameObject.RegeneratePathUpTo(baseGo);
+                        // Prioritize the go Path
+                        compProp.objectReferenceValue = goAtPath;
+                        parentProp.objectReferenceValue = null;
                     }
-                }
-                // If path is null, regenerate path
-                else if (path is null || path == "")
-                {
-                    pathProp.stringValue = gameObject.RegeneratePathUpTo(baseGo);
-                }
-                // If missing comp, get from path
-                else if (gameObject is null)
-                {
-                    var compGo = baseGo.TraversePath(isRelative, path);
-
-                    if (compGo is null)
-                    {
-                        Debug.LogError($"Cannot find component at path \"{path}\"");
-                        return;
-                    }
-
-                    compProp.objectReferenceValue = compGo;
                 }
             }
+            
+            base.Validate(property, shouldLog);
         }
     }
 }

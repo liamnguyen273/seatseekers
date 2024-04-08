@@ -95,7 +95,7 @@ namespace com.brg.UnityComponents
         {
             _state = state;
             // Log is too verbose
-            LogObj.Default.Info(Popup.ExplicitName, $"Animation: state is set to {_state}");
+            // LogObj.Default.Info(Popup.ExplicitName, $"Animation: state is set to {_state}");
             OnStateChangeAction?.Invoke(state);
         }
     }

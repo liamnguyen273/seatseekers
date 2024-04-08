@@ -269,18 +269,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelNumber:
+    _parent: {fileID: 3990978936078076684}
     _comp: {fileID: 4455208035748448506}
-    _path: ./LevelNumber
+    _path: ./Button/LevelNumber
   _levelUnlocked:
+    _parent: {fileID: 3990978936078076684}
     _comp: {fileID: 5553096455358060152}
     _path: ./Button/Appearance/AppearanceOn
   _levelLocked:
+    _parent: {fileID: 3990978936078076684}
     _comp: {fileID: 693311223353892364}
     _path: ./Button/Appearance/AppearanceOff
   _currentLevel:
+    _parent: {fileID: 3990978936078076684}
     _comp: {fileID: 522510371714317328}
-    _path: ./CurrentLevel
+    _path: ./Button/Appearance/CurrentLevel
   _button:
+    _parent: {fileID: 3990978936078076684}
     _comp: {fileID: 6546541468129217644}
     _path: ./Button
 --- !u!1 &4410355225427367200
