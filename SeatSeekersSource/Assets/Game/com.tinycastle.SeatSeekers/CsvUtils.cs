@@ -76,5 +76,12 @@ namespace com.tinycastle.SeatSeekers
             
             Debug.Log($"Saved data to {filePath}");
         }
+
+        public static string FormatTime(int seconds)
+        {
+            var m = seconds / 60;
+            var s = seconds % 60;
+            return $"{m:00}:{s:00}";
+        }
     }
 }

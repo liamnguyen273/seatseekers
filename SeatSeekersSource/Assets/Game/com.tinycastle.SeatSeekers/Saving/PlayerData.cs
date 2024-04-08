@@ -44,7 +44,7 @@ namespace com.tinycastle.SeatSeekers
             {
                 case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
                 {
-                    if (currentLevel < 3) return false;
+                    if (currentLevel < 8) return false;
                     
                     shouldIntroduce = true;
                     SetInOwnerships(GlobalConstants.BOOSTER_FREEZE_UNLOCKED, true, true);
@@ -54,7 +54,7 @@ namespace com.tinycastle.SeatSeekers
                 }
                 case GlobalConstants.BOOSTER_JUMP_RESOURCE:
                 {
-                    if (currentLevel < 4) return false;
+                    if (currentLevel < 12) return false;
                     
                     shouldIntroduce = true;
                     SetInOwnerships(GlobalConstants.BOOSTER_JUMP_UNLOCKED, true, true);
@@ -64,7 +64,7 @@ namespace com.tinycastle.SeatSeekers
                 }
                 case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
                 {
-                    if (currentLevel < 5) return false;
+                    if (currentLevel < 16) return false;
                     
                     shouldIntroduce = true;
                     SetInOwnerships(GlobalConstants.BOOSTER_EXPAND_UNLOCKED, true, true);

@@ -15,6 +15,7 @@ namespace com.tinycastle.SeatSeekers
 
         private LevelEntry _entry;
         private int _coinValue = 0;
+        private bool _received = false;
 
         public void SetCoin(LevelEntry entry, int coin)
         {
@@ -34,6 +35,7 @@ namespace com.tinycastle.SeatSeekers
 
             _coinText.Comp.Text = $"{_coinValue}";
             _doubleCoinText.Comp.Text = $"{_coinValue * 2}";
+            _received = false;
         }
 
         protected override void InnateOnShowEnd()
@@ -63,8 +65,12 @@ namespace com.tinycastle.SeatSeekers
         private void OnDoubleButton()
         {
             // TODO: Show ad
-            
-            
+            var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
+            var curr = accessor.GetFromResources(GlobalConstants.COIN_RESOURCE) ?? 0;
+            curr += _coinValue * 2;
+            accessor.SetInResources(GlobalConstants.COIN_RESOURCE, curr, true);
+            accessor.WriteDataAsync();
+            _received = true;
             
             GoToNextLevel();
         }
@@ -80,6 +86,15 @@ namespace com.tinycastle.SeatSeekers
             var mainGame = GM.Instance.Get<MainGameManager>();
             var loading = GM.Instance.Get<LoadingScreen>();
             var popupManager = GM.Instance.Get<PopupManager>();
+
+            if (!_received)
+            {
+                var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
+                var curr = accessor.GetFromResources(GlobalConstants.COIN_RESOURCE) ?? 0;
+                curr += _coinValue;
+                accessor.SetInResources(GlobalConstants.COIN_RESOURCE, curr, true);
+                accessor.WriteDataAsync();
+            }
 
             var canGoNext = mainGame.HasNextLevel(out var nextLevel);
             

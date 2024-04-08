@@ -57,7 +57,7 @@ namespace com.tinycastle.SeatSeekers
             {
                 if (_energyText.NullableComp != null) _energyText.Comp.Text = "\u221e";
                 if (_infTimeGroup.NullableComp != null) _infTimeGroup.SetActive(true);
-                if (_infTimeText.NullableComp != null) _infTimeText.Comp.Text = infTime.ToString();
+                if (_infTimeText.NullableComp != null) _infTimeText.Comp.Text = Utils.FormatTime(infTime);
                 if (_timeText.NullableComp != null) _timeText.Comp.Text = "Max";
             }
             else if (energyCount >= GlobalConstants.MAX_ENERGY)
@@ -70,7 +70,7 @@ namespace com.tinycastle.SeatSeekers
             {
                 if (_energyText.NullableComp != null) _energyText.Comp.Text = $"{energyCount}";
                 if (_infTimeGroup.NullableComp != null) _infTimeGroup.SetActive(false);
-                if (_timeText.NullableComp != null) _timeText.Comp.Text = rechargeTime.ToString();
+                if (_timeText.NullableComp != null) _timeText.Comp.Text = Utils.FormatTime(rechargeTime);
             }
         }
 

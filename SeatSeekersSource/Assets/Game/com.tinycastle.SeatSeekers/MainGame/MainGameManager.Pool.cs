@@ -8,6 +8,7 @@ namespace com.tinycastle.SeatSeekers
         private Customer GetCustomer()
         {
             var customer = _customerPool.First();
+            customer.ResetAnim();
             _customerPool.Remove(customer);
             _spawnedCustomers.Add(customer);
             return customer;

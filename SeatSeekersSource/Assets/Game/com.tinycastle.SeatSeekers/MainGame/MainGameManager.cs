@@ -277,7 +277,8 @@ namespace com.tinycastle.SeatSeekers
                     
                     // No more valid seat or cut off seating, only assign to Queue
                     var queuePos = GetQueuePos(queueIndex);
-                    moveSequence.Join(customer.MoveInQueue(queuePos));
+                    var tween = customer.MoveInQueue(queuePos);
+                    if (tween != null) moveSequence.Join(tween);
                     ++queueIndex;
                 }
             }
@@ -317,6 +318,7 @@ namespace com.tinycastle.SeatSeekers
                     _levelText.Comp.Text = $"Level {_levelEntry?.SortOrder ?? 0}";
                     _usedTimeoutChance = false;
                     TimeLeft = 60 * 5f;
+                    _isWin = false;
                     break;
                 case GameState.PLAYING:
                     _mainHud.Comp.OnLevel(_levelEntry!.SortOrder);
@@ -328,15 +330,7 @@ namespace com.tinycastle.SeatSeekers
                     if (_isWin)
                     {
                         // TODO: ANIM
-                        SetState(GameState.END_GAME);
-                    }
-                    break;
-                case GameState.END_GAME:
-                    if (_isWin)
-                    {
-                        var popup = popupManager.GetPopup<PopupWinBehaviour>(out var behaviour);
-                        behaviour.SetCoin(_levelEntry, 50);
-                        popup.Show();
+                        DOVirtual.DelayedCall(1f, () => SetState(GameState.END_GAME)).Play();
                     }
                     else
                     {
@@ -353,6 +347,19 @@ namespace com.tinycastle.SeatSeekers
                         }
                     }
                     break;
+                case GameState.END_GAME:
+                    if (_isWin)
+                    {
+                        var popup = popupManager.GetPopup<PopupWinBehaviour>(out var behaviour);
+                        behaviour.SetCoin(_levelEntry, 50);
+                        popup.Show();
+                    }
+                    else
+                    {
+                        var popup = popupManager.GetPopup<PopupLostBehaviour>(out var behaviour);
+                        popup.Show();
+                    }
+                    break;
                 case GameState.EXIT:
                     ClearLevel();
                     break;
@@ -367,6 +374,7 @@ namespace com.tinycastle.SeatSeekers
 
             TimeLeft = 31f;
             _usedTimeoutChance = true;
+            SetState(GameState.PLAYING, false);
         }
 
         public void OnRefuseTimeoutChance()
@@ -457,7 +465,7 @@ namespace com.tinycastle.SeatSeekers
         {
             if (seat.CanAssign1(customer)) seat.AssignCustomer1(customer, false);
             else if (seat.CanAssign2(customer)) seat.AssignCustomer2(customer, false);
-            var moveTween = customer.MoveToSeatViaPath(new List<Vector3>() { seat.Transform.position });
+            var moveTween = customer.MoveToSeatViaPath(new List<Vector3>() { seat.Transform.position }, true);
             return moveTween;
         }
 
@@ -505,6 +513,11 @@ namespace com.tinycastle.SeatSeekers
                     {
                         FreezeTimer = -1f;
                         TimeLeft -= Time.deltaTime;
+
+                        if (TimeLeft <= 0f)
+                        {
+                            SetState(GameState.ENDING_GAME);
+                        }
                     }
                     break;
                 case GameState.PAUSED:
