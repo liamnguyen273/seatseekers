@@ -100,13 +100,13 @@ namespace com.tinycastle.SeatSeekers
             if (_expanded || _expandTween != null) return false;
             _expandedLevelData = new LevelData(_currentLevelData);
             _expandedLevelData.ExpandOneLaneLeft();
+            _expanded = true;
             
             var tweenA = AnimateRefreshGridAppearance(time);
             var tweenB = AnimateSeatMovePositions(time);
             _expandTween = DOTween.Sequence().Join(tweenA).Join(tweenB)
                 .OnComplete(() =>
                 {
-                    _expanded = true;
                     _expandTween = null;
                     onComplete?.Invoke();
                 }).Play();
@@ -158,6 +158,7 @@ namespace com.tinycastle.SeatSeekers
             return DOTween.To(() => ratio, (v) => ratio = v, 1f, time)
                 .OnUpdate(() =>
                 {
+                    Debug.Log(ratio);
                     _gridRenderer.Comp.size = Vector2.Lerp(gridCurrSize, gridTargetSize, ratio);
                     background.size = Vector2.Lerp(backCurrSize, backTargetSize, ratio);
                 });
@@ -178,7 +179,7 @@ namespace com.tinycastle.SeatSeekers
                 data.X = newX;
                 data.Y = newY;
 
-                occupyable.SetData(data);
+                occupyable.SetData(data, false);
                 return (newI, occupyable);
             });
             

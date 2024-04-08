@@ -29,7 +29,7 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<TextLocalizer> _levelText = "UICanvas/TopGroup/LevelText";
         [SerializeField] private CompWrapper<TextLocalizer> _timeText = "UICanvas/TopGroup/TimeText";
         [SerializeField] private CompWrapper<MainGameHud> _mainHud = "UIGroups/BackCanvas/MainGameHud";
-        [SerializeField] private CompWrapper<CompInOutPlayable> _freezePlayable;
+        [SerializeField] private CompWrapper<CompPlayable> _freezePlayable;
         
         [Header("Prefabs")] 
         [SerializeField] private GameObject _customerPrefab;
@@ -84,11 +84,12 @@ namespace com.tinycastle.SeatSeekers
                 if (oldTime <= 0f && value > 0f)
                 {
                     // Toggle on
-                    _freezePlayable.NullableComp?.PlayIn(null);
+                    _freezePlayable.NullableComp?.Play(null);
                 }
                 else if (oldTime > 0f && value <= 0f)
                 {
-                    _freezePlayable.NullableComp?.PlayOut(null);
+                    _freezePlayable.NullableComp?.Kill();
+                    _mainHud.Comp.GetBoosterButton(GlobalConstants.BOOSTER_FREEZE_RESOURCE).ToggleOff();
                 }
             }
         }
@@ -98,11 +99,7 @@ namespace com.tinycastle.SeatSeekers
             get => _seatInJumpMode;
             set
             {
-                if (value != _seatInJumpMode)
-                {
-                    _car.Comp.SetJumpGuide(value);
-                }
-
+                _car.Comp.SetJumpGuide(value);
                 _seatInJumpMode = value;
             }
         }
@@ -178,6 +175,12 @@ namespace com.tinycastle.SeatSeekers
             return GM.Instance.HasNextLevel(_levelEntry, out entry);
         }
 
+        public void ForceClearLevel()
+        {
+            SetState(GameState.EXIT, false);
+            SetState(GameState.OUTSIDE_GAME, false);
+        }
+        
         public void StartNextLevel()
         {
             SetState(GameState.EXIT, false);
@@ -205,10 +208,10 @@ namespace com.tinycastle.SeatSeekers
             SetState(GameState.PLAYING);
         }
         
-        public void OnSeatDroppedByPlayer()
+        public void OnSeatDroppedByPlayer(bool blockSeating = false)
         {
             _resolvingPlayerAction = true;
-            var moveSequence = GetMoveCustomerSequenceToSeats()
+            var moveSequence = GetMoveCustomerSequenceToSeats(blockSeating)
                 .AppendCallback(() =>
                 {
                     _resolvingPlayerAction = false;
@@ -219,10 +222,10 @@ namespace com.tinycastle.SeatSeekers
             _playerMoveTween = moveSequence.Play();
         }
 
-        private Sequence GetMoveCustomerSequenceToSeats()
+        private Sequence GetMoveCustomerSequenceToSeats(bool blockSeating = false)
         {
             var queueStartPos = GetQueuePos(0);
-            var validSeats = _car.Comp.GetPathfinding(queueStartPos);
+            var validSeats = blockSeating ? new() : _car.Comp.GetPathfinding(queueStartPos);
             
             var moveSequence = DOTween.Sequence();
             var queueIndex = 0;
@@ -383,9 +386,9 @@ namespace com.tinycastle.SeatSeekers
                     return true;
                 case GlobalConstants.BOOSTER_JUMP_RESOURCE:
                     SeatInJumpMode = true;
-                    return false;
+                    return true;
                 case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
-                    var willExpand = _car.Comp.ExpandLevelByOneLane(1f, OnExpandComplete);
+                    var willExpand = _car.Comp.ExpandLevelByOneLane(1.5f, OnExpandComplete);
                     if (willExpand)
                     {
                         AnimateExpandCustomerMove();
@@ -396,14 +399,20 @@ namespace com.tinycastle.SeatSeekers
             return false;
         }
 
-        public void OnBoosterOff(string boosterName)
+        public bool OnBoosterOff(string boosterName)
         {
             switch (boosterName)
             {
+                case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
+                    return FreezeTimer <= 0f;
                 case GlobalConstants.BOOSTER_JUMP_RESOURCE:
                     SeatInJumpMode = false;
-                    break;
+                    return true;
+                case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
+                    return false;
             }
+
+            return false;
         }
 
         public void OnSeatWantCustomerToJumpTo(SeatController seat)
@@ -430,7 +439,7 @@ namespace com.tinycastle.SeatSeekers
 
             if (jumpTween != null)
             {
-                var moveSequence = GetMoveCustomerSequenceToSeats();
+                var moveSequence = GetMoveCustomerSequenceToSeats(true);
                 _playerMoveTween = moveSequence.Join(jumpTween)
                     .AppendCallback(() =>
                     {
@@ -446,8 +455,8 @@ namespace com.tinycastle.SeatSeekers
 
         private Tween AnimateJumpToSeat(Customer customer, SeatController seat)
         {
-            if (seat.CanAssign1(customer)) seat.AssignCustomer1(customer);
-            else if (seat.CanAssign2(customer)) seat.AssignCustomer2(customer);
+            if (seat.CanAssign1(customer)) seat.AssignCustomer1(customer, false);
+            else if (seat.CanAssign2(customer)) seat.AssignCustomer2(customer, false);
             var moveTween = customer.MoveToSeatViaPath(new List<Vector3>() { seat.Transform.position });
             return moveTween;
         }
@@ -459,7 +468,7 @@ namespace com.tinycastle.SeatSeekers
 
         private void AnimateExpandCustomerMove()
         {
-            OnSeatDroppedByPlayer();   
+            OnSeatDroppedByPlayer(true);   
         }
 
         public void TransitOut()

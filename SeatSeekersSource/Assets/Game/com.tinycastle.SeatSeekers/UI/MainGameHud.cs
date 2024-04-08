@@ -22,6 +22,7 @@ namespace com.tinycastle.SeatSeekers
             foreach (var booster in _boosters)
             {
                 booster.Comp.OnLevel(level);
+                booster.Comp.ForceBoosterOff();
             }
         }
 

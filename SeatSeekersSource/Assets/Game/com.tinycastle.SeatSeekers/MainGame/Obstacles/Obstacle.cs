@@ -26,9 +26,9 @@ namespace com.tinycastle.SeatSeekers
             return false;
         }
 
-        public void SetData(SeatData data)
+        public void SetData(SeatData data, bool performMoveImmediately = true)
         {
-            data = _data;
+            _data = data;
             RefreshAppearance();
         }
 

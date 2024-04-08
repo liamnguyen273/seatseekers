@@ -89,6 +89,7 @@ namespace com.tinycastle.SeatSeekers
             }
             else
             {
+                GM.Instance.Get<MainGameManager>().ForceClearLevel();
                 GM.Instance.RequestPlayLevelWithValidation(nextLevel);
             }
         }

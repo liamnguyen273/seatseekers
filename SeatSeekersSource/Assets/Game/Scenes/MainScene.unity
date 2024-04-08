@@ -199,6 +199,18 @@ PrefabInstance:
       propertyPath: _levelText._parent
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5423345926033558517, guid: 8911de7f3f78c374a8d8d62cb50377e0, type: 3}
+      propertyPath: _freezePlayable._comp
+      value: 
+      objectReference: {fileID: 1818389343}
+    - target: {fileID: 5423345926033558517, guid: 8911de7f3f78c374a8d8d62cb50377e0, type: 3}
+      propertyPath: _freezePlayable._path
+      value: /UIGroups/BackCanvas/UIEffectHost/SnowParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423345926033558517, guid: 8911de7f3f78c374a8d8d62cb50377e0, type: 3}
+      propertyPath: _freezePlayable._parent
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6494859691964706640, guid: 8911de7f3f78c374a8d8d62cb50377e0, type: 3}
       propertyPath: m_Name
       value: MainGame
@@ -1570,19 +1582,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2802267863832071012, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2802267863832071012, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2802267863832071012, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 510
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2802267863832071012, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2991606714572548282, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2002,19 +2014,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4137576890309516619, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4137576890309516619, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4137576890309516619, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 160
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4137576890309516619, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4163781468046788561, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3855,6 +3867,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1236528075384427588, guid: b76ee0b278a428a4ca1db4b970533ae9, type: 3}
   m_PrefabInstance: {fileID: 1057278649}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1818389343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2008548025631678271, guid: 5d9fa67b97278f4439001d883e576f58, type: 3}
+  m_PrefabInstance: {fileID: 987103594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf386ae61d844382852e9a02222db84d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

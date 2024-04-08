@@ -56,6 +56,7 @@ namespace com.tinycastle.SeatSeekers
             }
 
             Grid = newGrid;
+            Width += 1;
         }
                 
         /// <summary>

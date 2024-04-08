@@ -1320,6 +1320,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5645137560224572616, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b58f7d179cd95945a372876f1f8f168, type: 3}
+    - target: {fileID: 5645137560224572616, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: fallbackSpriteSettings.Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b58f7d179cd95945a372876f1f8f168, type: 3}
     - target: {fileID: 7363850204869961865, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
       propertyPath: m_Name
       value: BoosterButtonExpand
@@ -2242,6 +2250,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5645137560224572616, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 39ee12664ccb72e428e370ac408b5292, type: 3}
+    - target: {fileID: 5645137560224572616, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: fallbackSpriteSettings.Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 39ee12664ccb72e428e370ac408b5292, type: 3}
     - target: {fileID: 7363850204869961865, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
       propertyPath: m_Name
       value: BoosterButtonJump

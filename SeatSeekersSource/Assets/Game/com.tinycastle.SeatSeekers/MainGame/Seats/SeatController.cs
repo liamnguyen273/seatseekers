@@ -1,5 +1,6 @@
 using com.brg.Common;
 using com.brg.UnityCommon.Editor;
+using com.brg.UnityComponents;
 using Lean.Touch;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ namespace com.tinycastle.SeatSeekers
         
         public bool SeatInJumpMode
         {
-            get => !FullySeated || _seatInJumpMode;
+            get => !FullySeated && _seatInJumpMode;
             set
             {
                 if (FullySeated)
@@ -79,23 +80,23 @@ namespace com.tinycastle.SeatSeekers
                        (_setCustomer2 is null && ((dx == 2 && dy == 0) || (dx == 1 && dy == -1)));
         }
 
-        public void SetCoord(int x, int y)
+        public void SetCoord(int x, int y, bool performMoveImmediately = true)
         {
             _data.X = x;
             _data.Y = y;
-            RefreshAppearance();
+            RefreshAppearance(performMoveImmediately);
         }
 
-        public void SetValue(int value)
+        public void SetValue(int value, bool performMoveImmediately = true)
         {
             _data.Value = value;
-            RefreshAppearance();
+            RefreshAppearance(performMoveImmediately);
         }
 
-        public void SetData(SeatData newData)
+        public void SetData(SeatData newData, bool performMoveImmediately = true)
         {
             _data = newData;
-            RefreshAppearance();
+            RefreshAppearance(performMoveImmediately);
         }
 
         public bool CanAssign1(Customer customer)
@@ -108,7 +109,7 @@ namespace com.tinycastle.SeatSeekers
             return IsDoubleSeat && _setCustomer2 is null && (SeatColor == (int)SeatEnum.ANY || SeatColor == customer.Color);
         }
 
-        public void AssignCustomer1(Customer customer)
+        public void AssignCustomer1(Customer customer, bool jumpImmediately = true)
         {
             if (_setCustomer1 is not null)
             {
@@ -118,11 +119,15 @@ namespace com.tinycastle.SeatSeekers
             
             _setCustomer1 = customer;
             customer.Seat = this;
-            customer.transform.SetParent(_customerSeat1.Transform);
-            customer.transform.localPosition = Vector3.zero;
+
+            if (jumpImmediately)
+            {
+                customer.transform.SetParent(_customerSeat1.Transform);
+                customer.transform.localPosition = Vector3.zero;
+            }
         }
 
-        public void AssignCustomer2(Customer customer)
+        public void AssignCustomer2(Customer customer, bool jumpImmediately = true)
         {
             if (_setCustomer2 is not null)
             {
@@ -132,8 +137,11 @@ namespace com.tinycastle.SeatSeekers
             
             _setCustomer2 = customer;
             customer.Seat = this;
-            customer.transform.SetParent(_customerSeat2.Transform);
-            customer.transform.localPosition = Vector3.zero;
+            if (jumpImmediately)
+            {
+                customer.transform.SetParent(_customerSeat2.Transform);
+                customer.transform.localPosition = Vector3.zero;
+            }
         }
 
         public bool RemoveCustomers()
@@ -175,12 +183,14 @@ namespace com.tinycastle.SeatSeekers
         private Vector3 _cumulativeDelta;
         public void OnFingerDown(LeanSelectByFinger select, LeanFinger finger)
         {
-            if (SeatInJumpMode)
+            if (!Car.AllowPickUpSeat || _pickedUp) return;
+            
+            if (SeatInJumpMode && !FullySeated)
             {
-                
+                GM.Instance.Get<MainGameManager>().OnSeatWantCustomerToJumpTo(this);
+                return;
             }
             
-            if (!Car.AllowPickUpSeat || _pickedUp) return;
             _pickedUp = true;
             _finger = finger;
             _movePosition = transform.position;
@@ -292,21 +302,23 @@ namespace com.tinycastle.SeatSeekers
             transform.localPosition = snappedPosition;
         }
 
-        private void RefreshAppearance()
+        private void RefreshAppearance(bool performMoveImmediately)
         {
             // Reset selection
             // TODO
             // OnFingerUp(null);
 
-            var pos = Car.GetCellPosition(X, Y, false);
+            if (performMoveImmediately)
+            {
+                var pos = Car.GetCellPosition(X, Y, false);
+                transform.localPosition = pos;
+            }
             
             _appearanceSingle.GameObject.SetActive(!_data.IsDouble);
             _appearanceDouble.GameObject.SetActive(_data.IsDouble);
 
             _collider.Comp.center = new Vector3(_data.IsDouble ? 0.5f : 0f, 0f, -0.5f);
             _collider.Comp.size = new Vector3(_data.IsDouble ? 1.9f : 0.9f, 0.9f, 1f);
-
-            transform.localPosition = pos;
 
             var colorIndex = SeatColor;
 
@@ -322,6 +334,7 @@ namespace com.tinycastle.SeatSeekers
             }
             
             _positionCaster.GameObject.SetActive(false);
+            _jumpModeSelectGudie.GameObject.SetActive(false);
         }
     }
 }

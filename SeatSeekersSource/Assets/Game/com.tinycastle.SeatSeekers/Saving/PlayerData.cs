@@ -47,7 +47,7 @@ namespace com.tinycastle.SeatSeekers
                     if (currentLevel < 3) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(boosterName, true, true);
+                    SetInOwnerships(GlobalConstants.BOOSTER_FREEZE_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;
@@ -57,7 +57,7 @@ namespace com.tinycastle.SeatSeekers
                     if (currentLevel < 4) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(boosterName, true, true);
+                    SetInOwnerships(GlobalConstants.BOOSTER_JUMP_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;
@@ -67,7 +67,7 @@ namespace com.tinycastle.SeatSeekers
                     if (currentLevel < 5) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(boosterName, true, true);
+                    SetInOwnerships(GlobalConstants.BOOSTER_EXPAND_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;

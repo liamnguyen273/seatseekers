@@ -50,6 +50,11 @@ namespace com.tinycastle.SeatSeekers
             popup.Show();
         }
 
+        public void ForceBoosterOff()
+        {
+            _button.Comp.ToggleValueNoEvent = false;
+        }
+
         private void OnEnable()
         {
             Accessor.ResourcesChangedEvent += OnResourceChange;
@@ -95,6 +100,10 @@ namespace com.tinycastle.SeatSeekers
                         Accessor.SetInResources(_boosterName, value, true);
                         Accessor.WriteDataAsync();
                     }
+                    else
+                    {
+                        _button.Comp.ToggleValueNoEvent = false;
+                    }
                 }
                 else
                 {
@@ -104,7 +113,11 @@ namespace com.tinycastle.SeatSeekers
             }
             else
             {
-                GM.Instance.Get<MainGameManager>().OnBoosterOff(_boosterName);
+                var allowed = GM.Instance.Get<MainGameManager>().OnBoosterOff(_boosterName);
+                if (!allowed)
+                {
+                    _button.Comp.ToggleValueNoEvent = true;
+                }
             }
         }
         
