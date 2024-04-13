@@ -5,6 +5,7 @@ using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using UnityEngine;
+using Random = System.Random;
 
 namespace com.tinycastle.SeatSeekers
 {
@@ -16,6 +17,66 @@ namespace com.tinycastle.SeatSeekers
             
             return entry != null;
         }
+
+        public static void RequestPlayMultiplayer(this GM gm, int intensity)
+        {
+            var gen = new LevelGen();
+            switch (intensity)
+            {
+                case 1:
+                    gen.CarW = 5;
+                    gen.CarH = 7;
+                    gen.GenSeatCount = 24;
+                    gen.GenColorCount = 4;
+                    break;
+                case 2:
+                    gen.CarW = 6;
+                    gen.CarH = 8;
+                    gen.GenSeatCount = 32;
+                    gen.GenColorCount = 5;
+                    break;
+                case 3:
+                    gen.CarW = 6;
+                    gen.CarH = 10;
+                    gen.GenSeatCount = 42;
+                    gen.GenColorCount = 7;
+                    break;
+                case 4:
+                    gen.CarW = 7;
+                    gen.CarH = 12;
+                    gen.GenSeatCount = 60;
+                    gen.GenColorCount = 8;
+                    break;
+                default:
+                    return;
+            }
+                        
+            var mainGame = gm.Get<MainGameManager>();
+            var loading = gm.Get<LoadingScreen>();
+            var popupManager = gm.Get<PopupManager>();
+            var accessor = gm.Get<GameSaveManager>().PlayerData;
+            var data = gm.Get<GameDataManager>().GetLeaderboardNames();
+                            
+            loading.RequestLoad(mainGame.Activate(),
+                () =>
+                {
+                    gen.LevelData = new LevelData(Array.Empty<int>(), gen.CarW, gen.CarH);
+                    GEditor.GenerateLevel(gen);
+                    popupManager.HideAllPopups(true, true);
+
+                    var entry = new LevelEntry();
+                    entry.DisplayName = "Versus";
+                    entry.SortOrder = 0;
+                    entry.Bundle = "multi";
+                    entry.Id = $"multi_{intensity}";
+
+                    var enemy = data[UnityEngine.Random.Range(0, data.Count)];
+                    
+                    mainGame.LoadCustomLevel(entry, gen.LevelData);
+                    mainGame.StartGameMultiplayer(intensity, enemy);
+                },
+                mainGame.StartGame);
+        }
         
         public static void RequestPlayLevelWithValidation(this GM gm, LevelEntry entry)
         {
@@ -24,11 +85,11 @@ namespace com.tinycastle.SeatSeekers
             var popupManager = gm.Get<PopupManager>();
             var accessor = gm.Get<GameSaveManager>().PlayerData;
 
-            var energy = accessor.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+            var energy = accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
             if (energy > 0)
             {
                 energy -= 1;
-                accessor.SetInResources(GlobalConstants.ENERGY_RESOURCE, energy, true);
+                accessor.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
                 accessor.WriteDataAsync();
                 
                 loading.RequestLoad(mainGame.Activate(),
@@ -50,19 +111,27 @@ namespace com.tinycastle.SeatSeekers
     [DisallowMultipleComponent]
     public class UnityGM : UnityComp<GM>
     {
+        public static UnityGM Instance { get; private set; }
+        
         [Header("Explicit manager references")]
         [SerializeField] private CompWrapper<UnityPopupManager> _unityPopupManager; 
         [SerializeField] private CompWrapper<UnityEffectMaker> _unityEffectMaker;
         [SerializeField] private CompWrapper<UnityAdManager> _unityAdManager;
         [SerializeField] private CompWrapper<LoadingScreen> _loadingScreen;
+        [SerializeField] private CompWrapper<WaitScreenHelper> _waitHelper;
         
         [Header("Main Game references")]
         [SerializeField] private CompWrapper<MainGameManager> _mainGameManager;
         
         private LogObj Log { get; set; }
+
+        public WaitScreenHelper WaitHelper => _waitHelper;
+        
+        public PurchaseManager Purchase { get; private set; }
         
         private void Awake()
         {
+            Instance = this;
             Log = new LogObj("GM");
             
             Application.targetFrameRate = 120;
@@ -73,6 +142,7 @@ namespace com.tinycastle.SeatSeekers
             // Make managers
             var dataManager = new GameDataManager();
             var saveManager = new GameSaveManager(new PlayerDataAccessor());
+            saveManager.AddDependencies(dataManager);
             
             var localizationManager = new LocalizationManager(saveManager, GMUtils.MakeLocalizationSuppliers());
             var analyticsEventManager = new AnalyticsEventManager(GMUtils.MakeAnalyticsAdapters());
@@ -97,6 +167,11 @@ namespace com.tinycastle.SeatSeekers
             localizationManager.AddDependencies(saveManager);
             adManager.AddDependencies(saveManager);
             
+            var purchaseManager = new PurchaseManager();
+            purchaseManager.AddDependencies(saveManager, dataManager);
+            // purchaseManager.LaunchIAPInitialization();
+            Purchase = purchaseManager;
+            
             Log.Success("Established managers' dependencies.");
                         
             // TODO: IAP
@@ -111,6 +186,7 @@ namespace com.tinycastle.SeatSeekers
                 effectMaker,
                 adManager,
                 mainGameManager,
+                purchaseManager
             });
             
             Comp = gm;
@@ -132,6 +208,9 @@ namespace com.tinycastle.SeatSeekers
         {
             Log.Success("Initialization completed. Await loading transition out.");
             // GM.Instance.Get<MainGameManager>().LoadLevel(GM.Instance.Get<GameDataManager>().GetLevelEntry("level_1"));
+
+            GM.Instance.Get<GameSaveManager>().PlayerData.InitializeLeaderboard();
+            
             var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupMainMenu>(out var behaviour);
             popup.Show();
 
@@ -161,11 +240,11 @@ namespace com.tinycastle.SeatSeekers
             var seconds = (int)Math.Ceiling(span.TotalSeconds);
 
             _timer -= seconds;
-            var energyCount = _playerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+            var energyCount = _playerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
 
-            while (energyCount < GlobalConstants.MAX_ENERGY && _timer < 0)
+            while (energyCount < Constants.MAX_ENERGY && _timer < 0)
             {
-                _timer += GlobalConstants.ENERGY_RECHARGE_TIME;
+                _timer += Constants.ENERGY_RECHARGE_TIME;
                 ++energyCount;
             }
 
@@ -184,12 +263,12 @@ namespace com.tinycastle.SeatSeekers
             {
                 _secondTimer += 1f;
                 _timer -= 1;
-                var currEnergy = _playerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
-                if (_timer < 0 && currEnergy < GlobalConstants.MAX_ENERGY)
+                var currEnergy = _playerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
+                if (_timer < 0 && currEnergy < Constants.MAX_ENERGY)
                 {
                     currEnergy += 1;
-                    _timer = GlobalConstants.ENERGY_RECHARGE_TIME;
-                    _playerData.SetInResources(GlobalConstants.ENERGY_RESOURCE, currEnergy, true);
+                    _timer = Constants.ENERGY_RECHARGE_TIME;
+                    _playerData.SetInResources(Constants.ENERGY_RESOURCE, currEnergy, true);
                 }
                 
                 _playerData.EnergyRechargeTimer = _timer;

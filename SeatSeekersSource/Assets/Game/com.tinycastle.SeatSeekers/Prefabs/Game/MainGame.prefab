@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4689282449571252717}
   - component: {fileID: 5423345926033558517}
+  - component: {fileID: 2191900500946271418}
   m_Layer: 0
   m_Name: MainGame
   m_TagString: Untagged
@@ -267,8 +268,52 @@ MonoBehaviour:
     _parent: {fileID: 6494859691964706640}
     _comp: {fileID: 0}
     _path: ./
+  _multiplayerAddon:
+    _parent: {fileID: 6494859691964706640}
+    _comp: {fileID: 2191900500946271418}
+    _path: ./
   _customerPrefab: {fileID: 0}
   _queueDistance: 0.75
+--- !u!114 &2191900500946271418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494859691964706640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b317c51c3dcb4b68a8c29fb676dc6af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyHud:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/BottomGroup/ButtonGroup/MultiplayeEnemyHud
+  _enemyPercentage:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/BottomGroup/ButtonGroup/MultiplayeEnemyHud/Image/ProgressText
+  _enemyNameText:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/BottomGroup/ButtonGroup/MultiplayeEnemyHud/Image/EnemyNameText
+  _enemyAvatar:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/BottomGroup/ButtonGroup/MultiplayeEnemyHud/Image/EnemyAvatarFrame/EnemyAvatar
+  _playerHud:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/TopGroup/LeftGroup/MultiplayerPlayerHud
+  _playerHud2:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/TopGroup/MultiplayerPlayerHud2
+  _playerPercentage:
+    _parent: {fileID: 0}
+    _comp: {fileID: 0}
+    _path: /UIGroups/BackCanvas/MainGameHud/TopGroup/MultiplayerPlayerHud2/ProgressText
 --- !u!1 &7003681804197296424
 GameObject:
   m_ObjectHideFlags: 0

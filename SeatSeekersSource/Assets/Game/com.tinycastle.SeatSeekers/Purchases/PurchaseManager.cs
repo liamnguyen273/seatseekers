@@ -1,19 +1,74 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.UnityComponents;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
+using UnityEngine.Purchasing;
 
 namespace com.tinycastle.SeatSeekers
 {
-    public class PurchaseManager
-    {
-        public static bool Purchase(ProductEntry product)
+    public partial class PurchaseManager : ManagerBase
+    {        
+        public const string ENVIRONMENT = "production";
+        
+        private IStoreController _controller;
+        private IExtensionProvider _extensions;
+        private Dictionary<string, ProductMetadata> _iapProductMetadatas;
+
+        private bool _restorePurchaseRequested;
+
+        public event EventHandler ProductMetadataAccessibleEvent;
+
+        public bool IapUsable => _controller != null && _extensions != null;
+
+        public void LaunchIAPInitialization()
         {
+            var options = new InitializationOptions().SetEnvironmentName(ENVIRONMENT);
+            UnityServices.InitializeAsync(options).ContinueWith(task =>
+            {
+                InitializeIAP();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+        
+        protected override Task<bool> InitializeBehaviourAsync()
+        {
+            _controller = null;
+            _extensions = null;
+            LaunchIAPInitialization();
+            return base.InitializeBehaviourAsync();
+        }
+
+        private ProductEntry _currentIapEntry;
+        private Action<bool> _onComplete;
+        public void Purchase(ProductEntry product, Action<bool> onComplete = null)
+        {
+            if (!Initialized)
+            {
+                onComplete?.Invoke(false);
+                return;
+            };
+
+            if (_currentIapEntry != null)
+            {
+                onComplete?.Invoke(false);
+                return;
+            }
+            
             if (product.IsIAP)
             {
-                // TODO
-                return false;
+                if (!IapUsable)
+                {
+                    onComplete?.Invoke(false);
+                    return;
+                }
+                
+                _onComplete = onComplete;
+                HandleIAPPurchase(product);
             }
 
+            // Not IAP, can handle immediately
             var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
 
             var resource = product.Currency;
@@ -22,12 +77,50 @@ namespace com.tinycastle.SeatSeekers
 
             if (price > currentResourceCount)
             {
-                return false;
+                onComplete?.Invoke(false);
             }
 
             currentResourceCount -= price;
             accessor.SetInResources(resource, currentResourceCount, true);
+            FinalizePurchaseSuccess(product);
             
+            onComplete?.Invoke(true);
+        }
+
+        
+        public ProductMetadata GetProductMetaData(string id)
+        {
+            if (!Initialized)
+            {
+                Log.Warn($"IAP is not ready, getting metadata for \"{id}\" failed, returning null.");
+                return null;
+            }
+
+            var entry = GM.Instance.Get<GameDataManager>().GetProductEntry(id);
+            if (entry == null)
+            {
+                Log.Warn($"Product \"{id}\" doesn't exist, cannot get product metadata, returning null.");
+                return null;
+            }
+
+            if (!entry.IsIAP)
+            {
+                Log.Warn($"Product \"{id}\" isn't an IAP, returning null.");
+                return null;
+            }
+            
+            if (!_iapProductMetadatas.TryGetValue(id, out var metadata))
+            {
+                Log.Error($"Cannot get metadata for product \"{id}\" returning null.");
+                return null;
+            }
+
+            return metadata;
+        }
+
+        
+        private void FinalizePurchaseSuccess(ProductEntry product)
+        {
             var resolutions = product.GetParsedBuyResolutions();
             var resolutionParams = product.GetParsedResolutionData();
 
@@ -38,12 +131,21 @@ namespace com.tinycastle.SeatSeekers
                 ResolveBuyResolution(product.Id, resolution, parameters);
             }
 
+            var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
             accessor.WriteDataAsync();
-            
-            return true;
+            _currentIapEntry = null;
+            _onComplete = null;
+        }
+        
+        private void FinalizePurchaseSuccess(string id)
+        {
+            var product = GM.Instance.Get<GameDataManager>().GetProductEntry(id);
+
+            if (product is null) return;
+            FinalizePurchaseSuccess(product);
         }
 
-        public static void ResolveBuyResolution(string productId, string resolution, string resolutionParam)
+        private static void ResolveBuyResolution(string productId, string resolution, string resolutionParam)
         {
             LogObj.Default.Info($"Resolving resolution \"{resolution}\" with params: \"{resolutionParam}\"");
 
@@ -51,7 +153,7 @@ namespace com.tinycastle.SeatSeekers
             
             switch (resolution)
             {
-                case GlobalConstants.BUY_RESOLUTION_SET_OWN:
+                case Constants.BUY_RESOLUTION_SET_OWN:
                 {
                     var tokens = resolutionParam.Split("&", StringSplitOptions.RemoveEmptyEntries);
                     foreach (var token in tokens)
@@ -62,7 +164,7 @@ namespace com.tinycastle.SeatSeekers
 
                     break;
                 }
-                case GlobalConstants.BUY_RESOLUTION_ADD_RESOURCE:
+                case Constants.BUY_RESOLUTION_ADD_RESOURCE:
                 {
                     var tokens = resolutionParam.Split("&", StringSplitOptions.RemoveEmptyEntries);
                     

@@ -69,7 +69,7 @@ namespace com.tinycastle.SeatSeekers
             return _allLevels[index].LevelData;
         }
 
-        private void GenerateLevel(LevelGen gen, bool overrideData = false)
+        public static void GenerateLevel(LevelGen gen, bool overrideData = false)
         {
             if (gen.LevelData.Playable && !overrideData)
             {

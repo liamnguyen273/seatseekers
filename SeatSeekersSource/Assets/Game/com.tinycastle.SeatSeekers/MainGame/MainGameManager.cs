@@ -31,6 +31,8 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<TextLocalizer> _timeText = "UICanvas/TopGroup/TimeText";
         [SerializeField] private CompWrapper<MainGameHud> _mainHud = "UIGroups/BackCanvas/MainGameHud";
         [SerializeField] private CompWrapper<CompPlayable> _freezePlayable;
+
+        [SerializeField] private CompWrapper<MultiplayerAddon> _multiplayerAddon = "./";
         
         [Header("Prefabs")] 
         [SerializeField] private GameObject _customerPrefab;
@@ -90,7 +92,7 @@ namespace com.tinycastle.SeatSeekers
                 else if (oldTime > 0f && value <= 0f)
                 {
                     _freezePlayable.NullableComp?.Kill();
-                    _mainHud.Comp.GetBoosterButton(GlobalConstants.BOOSTER_FREEZE_RESOURCE).ToggleOff();
+                    _mainHud.Comp.GetBoosterButton(Constants.BOOSTER_FREEZE_RESOURCE).ToggleOff();
                 }
             }
         }
@@ -104,6 +106,8 @@ namespace com.tinycastle.SeatSeekers
                 _seatInJumpMode = value;
             }
         }
+
+        public MultiplayerAddon MultiplayerAddon => _multiplayerAddon;
 
         public override IProgress Initialize()
         {
@@ -119,6 +123,8 @@ namespace com.tinycastle.SeatSeekers
             _mainHud.Comp.SetGOActive(false);
             _seatInJumpMode = false;
 
+            MultiplayerAddon.Initialize();
+
             _spawnedCustomers = new();
             _initializeProgress = new ImmediateProgress(true, 1f);
             return _initializeProgress;
@@ -133,11 +139,24 @@ namespace com.tinycastle.SeatSeekers
             return base.Activate();
         }
 
+        public override void Pause()
+        {
+            MultiplayerAddon.Pause();
+            base.Pause();
+        }
+
+        public override void Resume()
+        {
+            MultiplayerAddon.Resume();
+            base.Resume();
+        }
+
         public override IProgress Deactivate()
         {
             SetState(GameState.EXIT, false);
             SetState(GameState.OUTSIDE_GAME, false);
             _mainHud.SetGOActive(false);
+            MultiplayerAddon.Deactivate();
             return base.Deactivate();
         }
 
@@ -149,12 +168,36 @@ namespace com.tinycastle.SeatSeekers
             }
 
             _levelEntry = levelEntry;
+            _customLevelData = null;
+            SetState(GameState.LOAD_LEVEL);
+        }
+
+        private LevelData _customLevelData;
+
+        public void LoadCustomLevel(LevelEntry levelEntry, LevelData levelData)
+        {
+            if (!ValidateStateSwitch(_state, GameState.LOAD_LEVEL))
+            {
+                LogObj.Default.Error("MainGameManager", $"Cannot load level at current state {_state}");
+            }
+
+            _levelEntry = levelEntry;
+            _customLevelData = levelData;
             SetState(GameState.LOAD_LEVEL);
         }
 
         public void StartGame()
         {
             SetState(GameState.PLAYING, true);
+        }
+
+        public void StartGameMultiplayer(int intensity, string enemyName)
+        {
+            MultiplayerAddon.Activate();
+            MultiplayerAddon.StartGame(intensity, enemyName, _queue, () =>
+            {
+                SetState(GameState.PLAYING, true);
+            });
         }
 
         public void RestartGame()
@@ -225,6 +268,12 @@ namespace com.tinycastle.SeatSeekers
             
             _playerMoveTween = moveSequence.Play();
         }
+        
+        public void MultiplayerSetEnemyEndGame()
+        {
+            _isWin = false;
+            SetState(GameState.ENDING_GAME);    
+        }
 
         private Sequence GetMoveCustomerSequenceToSeats(bool blockSeating = false)
         {
@@ -286,6 +335,14 @@ namespace com.tinycastle.SeatSeekers
                     ++queueIndex;
                 }
             }
+
+            if (MultiplayerAddon.Activated)
+            {
+                moveSequence.AppendCallback(() =>
+                {
+                    MultiplayerAddon.OnPlayerMove(_queue);
+                });
+            }
             
             return moveSequence;
         }
@@ -319,7 +376,7 @@ namespace com.tinycastle.SeatSeekers
                     break;
                 case GameState.LOAD_LEVEL:
                     PerformLoadLevel();
-                    _levelText.Comp.Text = $"Level {_levelEntry?.SortOrder ?? 0}";
+                    _levelText.Comp.Text = _levelEntry?.DisplayName ?? "";
                     _usedTimeoutChance = false;
                     TimeLeft = 60 * 5f;
                     _isWin = false;
@@ -331,6 +388,13 @@ namespace com.tinycastle.SeatSeekers
                     
                     break;
                 case GameState.ENDING_GAME:
+                    if (MultiplayerAddon.Activated)
+                    {
+                        // TODO: ANIM
+                        DOVirtual.DelayedCall(1f, () => SetState(GameState.END_GAME)).Play();
+                        return;
+                    }
+                    
                     if (_isWin)
                     {
                         // TODO: ANIM
@@ -346,16 +410,24 @@ namespace com.tinycastle.SeatSeekers
                         }
                         else
                         {
-                            var popup = popupManager.GetPopup<PopupLostBehaviour>();
-                            popup.Show();
+                            SetState(GameState.END_GAME);
                         }
                     }
                     break;
                 case GameState.END_GAME:
+
+                    if (MultiplayerAddon.Activated)
+                    {
+                        var popup = popupManager.GetPopup<PopupMultiplayerEnd>(out var behaviour);
+                        behaviour.Setup(_isWin, MultiplayerAddon.EnemyName, MultiplayerAddon.Intensity);
+                        popup.Show();
+                        return;
+                    }
+                    
                     if (_isWin)
                     {
                         var popup = popupManager.GetPopup<PopupWinBehaviour>(out var behaviour);
-                        behaviour.SetCoin(_levelEntry, 50);
+                        behaviour.SetCoin(_levelEntry, CountCustomers() * 5);
                         popup.Show();
                     }
                     else
@@ -392,14 +464,14 @@ namespace com.tinycastle.SeatSeekers
         {
             switch (boosterName)
             {
-                case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
+                case Constants.BOOSTER_FREEZE_RESOURCE:
                     if (FreezeTimer > 0f) return false;
                     FreezeTimer = 30f;
                     return true;
-                case GlobalConstants.BOOSTER_JUMP_RESOURCE:
+                case Constants.BOOSTER_JUMP_RESOURCE:
                     SeatInJumpMode = true;
                     return true;
-                case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
+                case Constants.BOOSTER_EXPAND_RESOURCE:
                     var willExpand = _car.Comp.ExpandLevelByOneLane(1.5f, OnExpandComplete);
                     if (willExpand)
                     {
@@ -415,12 +487,12 @@ namespace com.tinycastle.SeatSeekers
         {
             switch (boosterName)
             {
-                case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
+                case Constants.BOOSTER_FREEZE_RESOURCE:
                     return FreezeTimer <= 0f;
-                case GlobalConstants.BOOSTER_JUMP_RESOURCE:
+                case Constants.BOOSTER_JUMP_RESOURCE:
                     SeatInJumpMode = false;
                     return true;
-                case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
+                case Constants.BOOSTER_EXPAND_RESOURCE:
                     return false;
             }
 
@@ -461,7 +533,7 @@ namespace com.tinycastle.SeatSeekers
                     }).Play();
             }
             
-            _mainHud.Comp.GetBoosterButton(GlobalConstants.BOOSTER_JUMP_RESOURCE)
+            _mainHud.Comp.GetBoosterButton(Constants.BOOSTER_JUMP_RESOURCE)
                 ?.ToggleOff();
         }
 
@@ -559,14 +631,22 @@ namespace com.tinycastle.SeatSeekers
         {
             // Set car
             LevelData data;
-            if (GM.Instance != null)
+
+            if (_customLevelData != null)
             {
-                var gmData = GM.Instance.Get<GameDataManager>();
-                data = gmData.GetLevelData(_levelEntry.Id);
+                data = _customLevelData;
             }
             else
             {
-                data = GEditor.Instance.GetLevelData(_levelEntry.Id);
+                if (GM.Instance != null)
+                {
+                    var gmData = GM.Instance.Get<GameDataManager>();
+                    data = gmData.GetLevelData(_levelEntry.Id);
+                }
+                else
+                {
+                    data = GEditor.Instance.GetLevelData(_levelEntry.Id);
+                }
             }
 
             if (data == null || !data.Playable)
@@ -632,6 +712,11 @@ namespace com.tinycastle.SeatSeekers
             var pos = _car.Comp.GetQueueStartPos(true);
             pos.z -= queueIndex * _queueDistance;
             return pos;
+        }
+
+        private int CountCustomers()
+        {
+            return _queue.SelectMany(l => l, (l, e) => e).Count();
         }
     }
 }

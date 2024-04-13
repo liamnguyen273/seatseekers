@@ -7,9 +7,6 @@ namespace com.tinycastle.SeatSeekers
 {
     public class LeaderboardItem : MonoBehaviour
     {
-        [SerializeField] private GameObject[] _normalItems;
-        [SerializeField] private GameObject[] _playerItems;
-        
         [Header("Fields")]
         [SerializeField] private TextLocalizer _rankText;
         [SerializeField] private TextLocalizer _nameText;
@@ -22,16 +19,6 @@ namespace com.tinycastle.SeatSeekers
             _rankText.Text = rank.ToString();
             _nameText.Text = name;
             _scoreText.Text = score.ToString();
-            
-            foreach (var item in _normalItems)
-            {
-                item.SetActive(!isPlayer);
-            }     
-            
-            foreach (var item in _playerItems)
-            {
-                item.SetActive(isPlayer);
-            }
 
             _avatar.sprite = GM.Instance.Get<GameDataManager>().GetAvatar(name);
 

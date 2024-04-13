@@ -32,6 +32,8 @@ namespace com.tinycastle.StickerBooker
 
         public void RefreshLeaderboard()
         {
+            GM.Instance.Get<GameSaveManager>().PlayerData.FixPlayerLeaderboard();
+            
             var leaderboard = GM.Instance.Get<GameSaveManager>().PlayerData.GetLeaderboards()
                 .OrderByDescending(x => x.Value)
                 .Select(x => x.Key);

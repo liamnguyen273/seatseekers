@@ -47,21 +47,28 @@ namespace com.tinycastle.SeatSeekers
             if (_dto.leaderboard == null || _dto.leaderboard.Count <= 0)
             {
                 InitializeLeaderboardHelper();
+                FixPlayerLeaderboard();
             }
             else
             {
                 UpdateLeaderboardAfterLaunch();
+                FixPlayerLeaderboard();
             }
         }
+
+        public void FixPlayerLeaderboard()
+        {
+            _dto.leaderboard["You"] = GetFromResources(Constants.COIN_RESOURCE) ?? 0;
+        }
         
-        public void UpdateLeaderboardAfterMatch(int youScoreMod, string opponentName, int opponentScore)
+        public void UpdateLeaderboardAfterMatch(string opponentName, int opponentScore)
         {
             const float baseAddChance = 0.1f;
             const float addChanceIntensifier = 0.05f;
             const int scoreRangeLow = 5;
             const int scoreRangeHigh = 15;
 
-            UpdateLeaderboardHelper(youScoreMod, new HashSet<string> { opponentName }, 
+            UpdateLeaderboardHelper(new HashSet<string> { opponentName }, 
                 baseAddChance,
                 addChanceIntensifier, 
                 scoreRangeLow, 
@@ -75,9 +82,9 @@ namespace com.tinycastle.SeatSeekers
 
             _dto.leaderboard["You"] = 0;
 
-            var score = 20;
-            var scoreIncrease = 12;
-            var scoreIntensifier = 5;
+            var score = 52;
+            var scoreIncrease = 24;
+            var scoreIntensifier = 16;
             foreach (var name in names)
             {
                 _dto.leaderboard[name] = score;
@@ -96,7 +103,7 @@ namespace com.tinycastle.SeatSeekers
             const int scoreRangeLow = 10;
             const int scoreRangeHigh = 25;
             
-            UpdateLeaderboardHelper(0, null, 
+            UpdateLeaderboardHelper(null, 
                 baseAddChance,
                 addChanceIntensifier, 
                 scoreRangeLow, 
@@ -111,32 +118,32 @@ namespace com.tinycastle.SeatSeekers
             
             switch (boosterName)
             {
-                case GlobalConstants.BOOSTER_FREEZE_RESOURCE:
+                case Constants.BOOSTER_FREEZE_RESOURCE:
                 {
                     if (currentLevel < 8) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(GlobalConstants.BOOSTER_FREEZE_UNLOCKED, true, true);
+                    SetInOwnerships(Constants.BOOSTER_FREEZE_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;
                 }
-                case GlobalConstants.BOOSTER_JUMP_RESOURCE:
+                case Constants.BOOSTER_JUMP_RESOURCE:
                 {
                     if (currentLevel < 12) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(GlobalConstants.BOOSTER_JUMP_UNLOCKED, true, true);
+                    SetInOwnerships(Constants.BOOSTER_JUMP_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;
                 }
-                case GlobalConstants.BOOSTER_EXPAND_RESOURCE:
+                case Constants.BOOSTER_EXPAND_RESOURCE:
                 {
                     if (currentLevel < 16) return false;
                     
                     shouldIntroduce = true;
-                    SetInOwnerships(GlobalConstants.BOOSTER_EXPAND_UNLOCKED, true, true);
+                    SetInOwnerships(Constants.BOOSTER_EXPAND_UNLOCKED, true, true);
                     WriteDataAsync();
 
                     return true;
@@ -166,7 +173,7 @@ namespace com.tinycastle.SeatSeekers
             return _dto.lastModified;
         }
         
-        private void UpdateLeaderboardHelper(int youScoreMod, in HashSet<string> noUpdates, 
+        private void UpdateLeaderboardHelper(in HashSet<string> noUpdates, 
             float baseAddChance, 
             float addChanceIntensifier, 
             int scoreRangeLow, 
@@ -192,10 +199,6 @@ namespace com.tinycastle.SeatSeekers
                 SetInLeaderboard(name, score, true);
             }
             
-            var youScore = GetFromLeaderboard("You") ?? 0;
-            youScore += youScoreMod;
-            SetInLeaderboard("You", youScore, true);
-            _modified = true;
             WriteDataAsync();
         }
     }
@@ -230,13 +233,13 @@ namespace com.tinycastle.SeatSeekers
             leaderboard = new Dictionary<string, int>();
             resources = new Dictionary<string, int>()
             {
-                { GlobalConstants.COIN_RESOURCE, 100 },
-                { GlobalConstants.GEM_RESOURCE, 10 },
-                { GlobalConstants.BOOSTER_FREEZE_RESOURCE, 3 },
-                { GlobalConstants.BOOSTER_JUMP_RESOURCE, 3 },
-                { GlobalConstants.BOOSTER_EXPAND_RESOURCE, 3 },
-                { GlobalConstants.ENERGY_RESOURCE, GlobalConstants.MAX_ENERGY },
-                { GlobalConstants.INFINITE_ENERGY_RESOURCE, 0 },
+                { Constants.COIN_RESOURCE, 100 },
+                { Constants.GEM_RESOURCE, 10 },
+                { Constants.BOOSTER_FREEZE_RESOURCE, 3 },
+                { Constants.BOOSTER_JUMP_RESOURCE, 3 },
+                { Constants.BOOSTER_EXPAND_RESOURCE, 3 },
+                { Constants.ENERGY_RESOURCE, Constants.MAX_ENERGY },
+                { Constants.INFINITE_ENERGY_RESOURCE, 0 },
             };
             tutorialPlayed = false;
             lastModified = DateTime.UtcNow;

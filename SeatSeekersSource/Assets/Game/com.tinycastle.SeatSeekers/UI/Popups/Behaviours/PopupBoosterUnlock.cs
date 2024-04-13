@@ -19,9 +19,9 @@ namespace com.tinycastle.SeatSeekers
 
         public void Setup(string boosterType)
         {
-            _boosterFreezeGroup.SetActive(boosterType == GlobalConstants.BOOSTER_FREEZE_RESOURCE);
-            _boosterJumpGroup.SetActive(boosterType == GlobalConstants.BOOSTER_JUMP_RESOURCE);
-            _boosterExpandGroup.SetActive(boosterType == GlobalConstants.BOOSTER_EXPAND_RESOURCE);
+            _boosterFreezeGroup.SetActive(boosterType == Constants.BOOSTER_FREEZE_RESOURCE);
+            _boosterJumpGroup.SetActive(boosterType == Constants.BOOSTER_JUMP_RESOURCE);
+            _boosterExpandGroup.SetActive(boosterType == Constants.BOOSTER_EXPAND_RESOURCE);
         }
     }
 }

@@ -268,10 +268,10 @@ RectTransform:
   - {fileID: 304529309511826615}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 481, y: -287}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7478291664512056793
 CanvasRenderer:
@@ -556,10 +556,10 @@ RectTransform:
   - {fileID: 7489435709244924436}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 481, y: -727}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4793873808651228819
 CanvasRenderer:
@@ -701,7 +701,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6562108745487399974
 CanvasRenderer:
@@ -956,10 +956,10 @@ RectTransform:
   - {fileID: 4283988567891765087}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 187.66666, y: -287}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3769276463150474942
 CanvasRenderer:
@@ -1106,8 +1106,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 23}
+  m_SizeDelta: {x: 0, y: -271.7705}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5666042664803273030
 CanvasRenderer:
@@ -1130,15 +1130,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 27
-    m_Right: 27
-    m_Top: 147
-    m_Bottom: 0
-  m_ChildAlignment: 1
+    m_Left: 20
+    m_Right: 20
+    m_Top: 20
+    m_Bottom: 20
+  m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 280, y: 280}
-  m_Spacing: {x: 13.333334, y: 160}
+  m_CellSize: {x: 210, y: 210}
+  m_Spacing: {x: 80, y: 160}
   m_Constraint: 1
   m_ConstraintCount: 3
   paddingSizerFallback:
@@ -1146,8 +1146,8 @@ MonoBehaviour:
     OptimizedSize:
       left: 20
       right: 20
-      top: 110
-      bottom: 0
+      top: 20
+      bottom: 20
     MinSize:
       left: 0
       right: 0
@@ -1162,24 +1162,16 @@ MonoBehaviour:
     UseMaxSize: 0
     ModLeft:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
+      SizeModifiers: []
     ModRight:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
+      SizeModifiers: []
     ModTop:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
+      SizeModifiers: []
     ModBottom:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
+      SizeModifiers: []
   customPaddingSizers:
     items: []
   cellSizerFallback:
@@ -1191,39 +1183,31 @@ MonoBehaviour:
     UseMaxSize: 0
     ModX:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
     ModY:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
   customCellSizers:
     items: []
   spacingSizerFallback:
     screenConfigName: 
-    OptimizedSize: {x: 10, y: 120}
+    OptimizedSize: {x: 80, y: 160}
     MinSize: {x: 0, y: 0}
     MaxSize: {x: 300, y: 300}
     UseMinSize: 0
     UseMaxSize: 0
     ModX:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
     ModY:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
   customSpacingSizers:
     items: []
   settingsFallback:
     Constraint: 1
     ConstraintCount: 3
-    ChildAlignment: 1
+    ChildAlignment: 4
     StartAxis: 0
     StartCorner: 0
     Fit: 0
@@ -1265,10 +1249,10 @@ RectTransform:
   - {fileID: 6285115493830133728}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 187.66666, y: -727}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4072533699729622924
 CanvasRenderer:
@@ -1410,7 +1394,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5213965189934256027
 CanvasRenderer:
@@ -2397,10 +2381,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 133
-    m_Bottom: 40
+    m_Top: 100
+    m_Bottom: 30
   m_ChildAlignment: 1
-  m_Spacing: 40
+  m_Spacing: 30
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -2690,10 +2674,10 @@ RectTransform:
   - {fileID: 6953950753009836367}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 774.3333, y: -287}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6920634547361428272
 CanvasRenderer:
@@ -2978,10 +2962,10 @@ RectTransform:
   - {fileID: 2459936160002281220}
   m_Father: {fileID: 3423086003598489604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 774.3333, y: -727}
-  m_SizeDelta: {x: 280, y: 280}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1048707831851089634
 CanvasRenderer:

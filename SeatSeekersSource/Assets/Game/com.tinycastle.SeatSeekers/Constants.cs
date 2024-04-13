@@ -1,6 +1,6 @@
 namespace com.tinycastle.SeatSeekers
 {
-    public static class GlobalConstants
+    public static class Constants
     {
         public const int MAX_ENERGY = 5;
         public const int ENERGY_RECHARGE_TIME = 5 * 60;

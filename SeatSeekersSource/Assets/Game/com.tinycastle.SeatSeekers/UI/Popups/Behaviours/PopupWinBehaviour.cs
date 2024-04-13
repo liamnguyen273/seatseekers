@@ -75,9 +75,9 @@ namespace com.tinycastle.SeatSeekers
         {
             // TODO: Show ad
             var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
-            var curr = accessor.GetFromResources(GlobalConstants.COIN_RESOURCE) ?? 0;
+            var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
             curr += _coinValue * 2;
-            accessor.SetInResources(GlobalConstants.COIN_RESOURCE, curr, true);
+            accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
             accessor.WriteDataAsync();
             _received = true;
             
@@ -99,9 +99,9 @@ namespace com.tinycastle.SeatSeekers
             if (!_received)
             {
                 var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
-                var curr = accessor.GetFromResources(GlobalConstants.COIN_RESOURCE) ?? 0;
+                var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
                 curr += _coinValue;
-                accessor.SetInResources(GlobalConstants.COIN_RESOURCE, curr, true);
+                accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
                 accessor.WriteDataAsync();
             }
 

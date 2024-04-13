@@ -30,9 +30,9 @@ namespace com.tinycastle.SeatSeekers
         {
             return boosterName switch
             {
-                GlobalConstants.BOOSTER_FREEZE_RESOURCE => _boosters[0].Comp,
-                GlobalConstants.BOOSTER_JUMP_RESOURCE => _boosters[1].Comp,
-                GlobalConstants.BOOSTER_EXPAND_RESOURCE => _boosters[2].Comp,
+                Constants.BOOSTER_FREEZE_RESOURCE => _boosters[0].Comp,
+                Constants.BOOSTER_JUMP_RESOURCE => _boosters[1].Comp,
+                Constants.BOOSTER_EXPAND_RESOURCE => _boosters[2].Comp,
                 _ => null
             };
         }

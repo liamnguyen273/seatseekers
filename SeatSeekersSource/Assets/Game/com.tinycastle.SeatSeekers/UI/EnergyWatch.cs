@@ -20,8 +20,8 @@ namespace com.tinycastle.SeatSeekers
             
             if (!Accessor.HasData) return;
             
-            var value = Accessor.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
-            var infTime = Accessor.GetFromResources(GlobalConstants.INFINITE_ENERGY_RESOURCE) ?? 0;
+            var value = Accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
+            var infTime = Accessor.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0;
             RefreshAppearance(value, infTime, Accessor.EnergyRechargeTimer);
         }
 
@@ -29,15 +29,15 @@ namespace com.tinycastle.SeatSeekers
         {
             switch (e.key)
             {
-                case GlobalConstants.ENERGY_RESOURCE:
+                case Constants.ENERGY_RESOURCE:
                 {
-                    var infTime = Accessor.GetFromResources(GlobalConstants.INFINITE_ENERGY_RESOURCE) ?? 0; 
+                    var infTime = Accessor.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0; 
                     RefreshAppearance(e.item, infTime, Accessor.EnergyRechargeTimer);
                     break;
                 }
-                case GlobalConstants.INFINITE_ENERGY_RESOURCE:
+                case Constants.INFINITE_ENERGY_RESOURCE:
                 {
-                    var energy = Accessor.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0; 
+                    var energy = Accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0; 
                     RefreshAppearance(energy, e.item, Accessor.EnergyRechargeTimer);
                     break;
                 }
@@ -46,8 +46,8 @@ namespace com.tinycastle.SeatSeekers
 
         private void OnRechargeTimerChange(object sender, int time)
         {
-            var infTime = Accessor.GetFromResources(GlobalConstants.INFINITE_ENERGY_RESOURCE) ?? 0;
-            var energy = Accessor.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
+            var infTime = Accessor.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0;
+            var energy = Accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
             RefreshAppearance(energy, infTime, Accessor.EnergyRechargeTimer);
         }
 
@@ -60,7 +60,7 @@ namespace com.tinycastle.SeatSeekers
                 if (_infTimeText.NullableComp != null) _infTimeText.Comp.Text = Utils.FormatTime(infTime);
                 if (_timeText.NullableComp != null) _timeText.Comp.Text = "Max";
             }
-            else if (energyCount >= GlobalConstants.MAX_ENERGY)
+            else if (energyCount >= Constants.MAX_ENERGY)
             {
                 if (_energyText.NullableComp != null) _energyText.Comp.Text = $"{energyCount}";
                 if (_infTimeGroup.NullableComp != null) _infTimeGroup.SetActive(false);

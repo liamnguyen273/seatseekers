@@ -4,6 +4,7 @@ using System.Linq;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using com.tinycastle.StickerBooker;
 using JSAM;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<UIButton> _buttonVip;
         [SerializeField] private CompWrapper<UIButton> _buttonSuper;
         [SerializeField] private CompWrapper<UIButton> _debugEnergyButton;
+        [SerializeField] private CompWrapper<UIButton> _buttonLeaderboard;
 
         public List<LevelPage> LevelPages { get; private set; }
         public List<LevelItem> LevelItems { get; private set; }
@@ -30,6 +32,7 @@ namespace com.tinycastle.SeatSeekers
             _debugEnergyButton.Comp.OnClicked += OnDebugEnergyButton;
             _buttonVip.Comp.OnClicked += OnVipButton;
             _buttonSuper.Comp.OnClicked += OnSuperButton;
+            _buttonLeaderboard.Comp.OnClicked += OnLeaderboardButton;
             
             LevelPages = _levelPageHost.GameObject.GetDirectOrderedChildComponents<LevelPage>().ToList();
             LevelItems = new();
@@ -39,6 +42,12 @@ namespace com.tinycastle.SeatSeekers
                 var items = page.LevelItems;
                 LevelItems.AddRange(items);
             }
+        }
+
+        private void OnLeaderboardButton()
+        {
+            var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupBehaviourLeaderboard>(out var behaviour);
+            popup.Show();
         }
 
         private void OnSuperButton()
@@ -118,12 +127,12 @@ namespace com.tinycastle.SeatSeekers
 
         private void OnDebugEnergyButton()
         {
-            var energy = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(GlobalConstants.ENERGY_RESOURCE) ?? 0;
-            if (energy < GlobalConstants.MAX_ENERGY)
+            var energy = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
+            if (energy < Constants.MAX_ENERGY)
             {
                 energy += 1;
             }
-            GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(GlobalConstants.ENERGY_RESOURCE, energy, true);
+            GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
             GM.Instance.Get<GameSaveManager>().PlayerData.WriteDataAsync();
         }
 
