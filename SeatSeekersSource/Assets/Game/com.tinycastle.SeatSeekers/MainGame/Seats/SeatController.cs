@@ -1,6 +1,7 @@
 using com.brg.Common;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using JSAM;
 using Lean.Touch;
 using UnityEngine;
 
@@ -179,10 +180,12 @@ namespace com.tinycastle.SeatSeekers
             return true;
         }
 
-        private Vector3 _movePosition;
-        private Vector3 _cumulativeDelta;
+        private Vector3 _currentMousePosition;
+        private Vector3 _currentMoveVelocity;
         public void OnFingerDown(LeanSelectByFinger select, LeanFinger finger)
         {
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, transform);
+            
             if (!Car.AllowPickUpSeat || _pickedUp) return;
             
             if (SeatInJumpMode && !FullySeated)
@@ -193,21 +196,21 @@ namespace com.tinycastle.SeatSeekers
             
             _pickedUp = true;
             _finger = finger;
-            _movePosition = transform.position;
-            _cumulativeDelta = Vector3.zero;
+            _currentMoveVelocity = Vector3.zero;
+            _currentMousePosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
             _positionCaster.GameObject.SetActive(true);
         }
 
         public void OnFingerUp(LeanSelectByFinger select, LeanFinger finger)
         {
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, transform);
+            
             if (!_pickedUp) return;
             
             _pickedUp = false;
             _finger = null;
             _positionCaster.GameObject.SetActive(false);
-            
-            _cumulativeDelta = Vector3.zero;
-            
+
             ResolveSeatDrop();
         }
 
@@ -217,45 +220,43 @@ namespace com.tinycastle.SeatSeekers
             {
                 _casterRed.GameObject.SetActive(false);
                 _casterGreen.GameObject.SetActive(true);
-                if (CheckTouchInTransformRange(_finger!.ScreenPosition))
-                {
-                    var screenDelta = _finger!.ScreenDelta;
-                    UpdateMovePosition(screenDelta);
-                    transform.position = _movePosition;
-                    SnapToGrid();
-                }
-
+                
+                // var screenDelta = _finger!.ScreenDelta;
+                _currentMousePosition = Camera.main.ScreenToWorldPoint(_finger!.ScreenPosition);
+                var currPos = transform.position;
+                var calculatedPos = Vector3.MoveTowards(currPos, _currentMousePosition, 4f);
+                calculatedPos.y = 0f;
+                var offset = calculatedPos - currPos;
+                PositionOffset(ref offset);
+                transform.position = currPos + offset;
+                SnapToGrid();
             }
         }
 
-        private bool CheckTouchInTransformRange(Vector2 screenPosition)
-        {
-            var worldTouchPoint = Camera.main.ScreenToWorldPoint(screenPosition);
-            var posW = new Vector2(worldTouchPoint.x, worldTouchPoint.z);
-            var pos = new Vector2(_movePosition.x, _movePosition.z);
-            var distance = Vector2.Distance(pos, posW);
-            return distance <= 1f;
-        }
+        // private bool CheckTouchInTransformRange(Vector2 screenPosition)
+        // {
+        //     var worldTouchPoint = Camera.main.ScreenToWorldPoint(screenPosition);
+        //     var posW = new Vector2(worldTouchPoint.x, worldTouchPoint.z);
+        //     var pos = new Vector2(_movePosition.x, _movePosition.z);
+        //     var distance = Vector2.Distance(pos, posW);
+        //     return distance <= 1f;
+        // }
 
-        private void UpdateMovePosition(Vector2 screenDelta)
+        private void PositionOffset(ref Vector3 offset)
         {
-            var screenPoint = Camera.main.WorldToScreenPoint(_movePosition);
-
-            const float distance = 0.9f;
+            offset.y = 0f;
+            var distance = 0.4f;
             var hitLeft = RaycastWithDebugLines(new Vector3(-1f, 0f, 0f), distance);
-            if (hitLeft) screenDelta.x = Mathf.Max(0, screenDelta.x);
+            if (hitLeft) offset.x = Mathf.Max(0, offset.x);
             
             var hitRight = RaycastWithDebugLines(new Vector3(1f, 0f, 0f), distance);
-            if (hitRight) screenDelta.x = Mathf.Min(0, screenDelta.x); 
+            if (hitRight) offset.x = Mathf.Min(0, offset.x); 
             
             var hitUp = RaycastWithDebugLines(new Vector3(0f, 0f, 1f), distance);
-            if (hitUp) screenDelta.y = Mathf.Min(0, screenDelta.y);            
+            if (hitUp) offset.z = Mathf.Min(0, offset.z);            
             
             var hitDown = RaycastWithDebugLines(new Vector3(0f, 0f, -1f), distance);
-            if (hitDown) screenDelta.y = Mathf.Max(0, screenDelta.y);
-                
-            var worldPoint = Camera.main.ScreenToWorldPoint(screenPoint + (Vector3)screenDelta * _sensitivity);
-            _movePosition = worldPoint;
+            if (hitDown) offset.z = Mathf.Max(0, offset.z);
         }
 
         private bool RaycastWithDebugLines(Vector3 direction, float distance)
@@ -294,12 +295,14 @@ namespace com.tinycastle.SeatSeekers
         private void SnapToGrid()
         {
             var success = Car.CheckSeatDrop(this, transform.localPosition, out var snappedPosition, out var newX, out var newY);
-
+            
             var isSame = newX == X && newY == Y;
             _casterRed.GameObject.SetActive(!isSame && !success);
             _casterGreen.GameObject.SetActive(isSame || success);
-            
-            transform.localPosition = snappedPosition;
+
+            var pos = Car.transform.TransformPoint(snappedPosition);
+            _positionCaster.Transform.position = pos;
+            // transform.localPosition = snappedPosition;
         }
 
         private void RefreshAppearance(bool performMoveImmediately)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using com.brg.UnityCommon.Editor;
 using DG.Tweening;
+using JSAM;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -114,7 +115,12 @@ namespace com.tinycastle.SeatSeekers
                 ++i;
             }
 
-            sequence.AppendCallback(ResetLookTowards);
+            sequence
+                .AppendCallback(ResetLookTowards)
+                .AppendCallback(() =>
+                {
+                    AudioManager.PlaySound(AudioLibrarySounds.sfx_yay, transform);
+                });
 
             return sequence;
         }

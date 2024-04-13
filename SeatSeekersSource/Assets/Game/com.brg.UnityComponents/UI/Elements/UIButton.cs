@@ -1,7 +1,6 @@
-using System;
 using com.brg.Common;
-using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
+using JSAM;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -99,7 +98,7 @@ namespace com.brg.UnityComponents
         private void OnUnityButtonClick()
         {
             // other things
-            // AudioManager.PlaySound(_tapSound, gameObject.transform);
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, gameObject.transform);
 
             _clickPlayable.NullableComp?.Play(null);
             _clickedEvent?.Invoke();

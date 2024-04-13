@@ -2,6 +2,7 @@ using System;
 using com.brg.Common;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using JSAM;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -12,6 +13,8 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<TextLocalizer> _coinText;
         [SerializeField] private CompWrapper<UIButton> _doubleCoinButton;
         [SerializeField] private CompWrapper<UIButton> _continueButton;
+        [SerializeField] private CompWrapper<Animator> _fireworkLeft;
+        [SerializeField] private CompWrapper<Animator> _fireworkRight;
 
         private LevelEntry _entry;
         private int _coinValue = 0;
@@ -33,8 +36,8 @@ namespace com.tinycastle.SeatSeekers
         {
             base.InnateOnShowStart();
 
-            _coinText.Comp.Text = $"{_coinValue}";
-            _doubleCoinText.Comp.Text = $"{_coinValue * 2}";
+            _coinText.Comp.Text = $"+{_coinValue}";
+            _doubleCoinText.Comp.Text = $"+{_coinValue * 2}";
             _received = false;
         }
 
@@ -53,6 +56,10 @@ namespace com.tinycastle.SeatSeekers
             {
                 LogObj.Default.Warn("Popup Win does not have an _entry, cannot save level.");
             }
+            
+            _fireworkLeft.Comp.Play("fire");
+            _fireworkRight.Comp.Play("fire");
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_fanfare, transform);
         }
 
         protected override void InnateOnHideEnd()
@@ -60,6 +67,8 @@ namespace com.tinycastle.SeatSeekers
             base.InnateOnHideEnd();
             _coinValue = 0;
             _entry = null;
+            _fireworkLeft.Comp.StopPlayback();
+            _fireworkRight.Comp.StopPlayback();
         }
 
         private void OnDoubleButton()

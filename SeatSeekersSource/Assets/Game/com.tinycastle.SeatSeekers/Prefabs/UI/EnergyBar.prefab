@@ -99,14 +99,10 @@ MonoBehaviour:
     UseMaxSize: 0
     ModX:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
     ModY:
       ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
+      SizeModifiers: []
   customBorderScales:
     items: []
   fallbackSpriteSettings:

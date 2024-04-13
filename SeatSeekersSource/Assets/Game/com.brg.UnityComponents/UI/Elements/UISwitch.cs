@@ -1,6 +1,7 @@
 using System;
 using com.brg.Common;
 using com.brg.UnityCommon.Editor;
+using JSAM;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -99,6 +100,8 @@ namespace com.brg.UnityComponents
 
         private void OnToggleValue(bool isOn)
         {
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, gameObject.transform);
+            
             SetToggleObject(isOn);
             _valueChangedEvent?.Invoke(isOn);
         }

@@ -2350,6 +2350,14 @@ MonoBehaviour:
     _parent: {fileID: 8309868686794698768}
     _comp: {fileID: 3860040109759727842}
     _path: ./TabViewLine_Simple/ViewGroup/ViewMainMenu/TopGroup/RightGroup/CoinBar/ButtonAddCoin
+  _buttonVip:
+    _parent: {fileID: 8309868686794698768}
+    _comp: {fileID: 2535952897161814752}
+    _path: ./TabViewLine_Simple/ViewGroup/ViewMainMenu/TopGroup/RightLowGroup/ButtonChestVIP
+  _buttonSuper:
+    _parent: {fileID: 8309868686794698768}
+    _comp: {fileID: 4428878973854025396}
+    _path: ./TabViewLine_Simple/ViewGroup/ViewMainMenu/TopGroup/RightLowGroup/ButtonChestSuper
   _debugEnergyButton:
     _parent: {fileID: 8309868686794698768}
     _comp: {fileID: 3549886534069889390}
@@ -3874,6 +3882,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1374087311052997318, guid: de65cba6ac19554459255d3e26db5bab, type: 3}
   m_PrefabInstance: {fileID: 572499237933553198}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2535952897161814752 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2648238349076526286, guid: de65cba6ac19554459255d3e26db5bab, type: 3}
+  m_PrefabInstance: {fileID: 572499237933553198}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2944721113659446221 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3399141598661281251, guid: de65cba6ac19554459255d3e26db5bab, type: 3}
@@ -3893,6 +3912,17 @@ GameObject:
 --- !u!114 &3549886534069889390 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3941309349503942464, guid: de65cba6ac19554459255d3e26db5bab, type: 3}
+  m_PrefabInstance: {fileID: 572499237933553198}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4428878973854025396 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4217450558731194522, guid: de65cba6ac19554459255d3e26db5bab, type: 3}
   m_PrefabInstance: {fileID: 572499237933553198}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -4373,7 +4403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412141558489731167, guid: 39d22d4f394bec54f97c73c4108626ee, type: 3}
       propertyPath: m_text
-      value: Multiplay
+      value: Multiplayer
       objectReference: {fileID: 0}
     - target: {fileID: 7412141558489731167, guid: 39d22d4f394bec54f97c73c4108626ee, type: 3}
       propertyPath: m_fontSize
@@ -4775,7 +4805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412141558489731167, guid: 39d22d4f394bec54f97c73c4108626ee, type: 3}
       propertyPath: m_text
-      value: Multiplay
+      value: Multiplayer
       objectReference: {fileID: 0}
     - target: {fileID: 7412141558489731167, guid: 39d22d4f394bec54f97c73c4108626ee, type: 3}
       propertyPath: m_fontSize

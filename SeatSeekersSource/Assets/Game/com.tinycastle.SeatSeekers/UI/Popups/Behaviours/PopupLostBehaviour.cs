@@ -1,6 +1,7 @@
 using System;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using JSAM;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -21,6 +22,12 @@ namespace com.tinycastle.SeatSeekers
         protected override void InnateOnShowStart()
         {
             base.InnateOnShowStart();
+        }
+
+        protected override void InnateOnShowEnd()
+        {
+            AudioManager.PlaySound(AudioLibrarySounds.sfx_fail, transform);
+            base.InnateOnShowEnd();
         }
 
         protected override void InnateOnHideEnd()

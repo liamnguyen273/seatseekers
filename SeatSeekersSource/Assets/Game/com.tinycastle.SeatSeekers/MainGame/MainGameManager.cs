@@ -6,6 +6,7 @@ using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using DG.Tweening;
+using JSAM;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -125,6 +126,9 @@ namespace com.tinycastle.SeatSeekers
 
         public override IProgress Activate()
         {
+            AudioManager.StopMusic(AudioLibraryMusic.music_game);
+            AudioManager.StopMusic(AudioLibraryMusic.music_mainmenu);
+            AudioManager.PlayMusic(AudioLibraryMusic.music_game, transform);
             _mainHud.SetGOActive(true);
             return base.Activate();
         }

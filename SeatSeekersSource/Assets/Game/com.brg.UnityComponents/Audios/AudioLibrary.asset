@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2204bf128383ced4f8a374a536984a4c, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: 
+  soundCategories:
+  - Sound
+  - 
+  musicCategories:
+  - Music
+  - 
+  Sounds:
+  - {fileID: 11400000, guid: 22480333859b61a46a19d5b349b1e5f2, type: 2}
+  - {fileID: 11400000, guid: 32f064d0742366c40b8f60ec8b5ead9f, type: 2}
+  - {fileID: 11400000, guid: 5d46bee99ea514044a9babd23caad13e, type: 2}
+  - {fileID: 11400000, guid: 62e202d5d24794c4cab548ba0ad449c5, type: 2}
+  - {fileID: 11400000, guid: 603977e0141cb4e45b733e27aae7b6ea, type: 2}
+  Music:
+  - {fileID: 11400000, guid: 09516b45e10bed044ba23b6d86d0418b, type: 2}
+  - {fileID: 11400000, guid: f496789c0b16ffa4ca5e771edd0d974d, type: 2}
+  useCustomNames: 0
+  generatedName: AudioLibrary
+  musicEnum: AudioLibraryMusic
+  musicEnumGenerated: AudioLibraryMusic
+  musicNamespace: 
+  musicNamespaceGenerated: 
+  soundEnum: AudioLibrarySounds
+  soundEnumGenerated: AudioLibrarySounds
+  soundNamespace: 
+  soundNamespaceGenerated: 
+  soundCategoriesToList:
+  - name: Sound
+    files:
+    - {fileID: 11400000, guid: 22480333859b61a46a19d5b349b1e5f2, type: 2}
+    - {fileID: 11400000, guid: 32f064d0742366c40b8f60ec8b5ead9f, type: 2}
+    - {fileID: 11400000, guid: 5d46bee99ea514044a9babd23caad13e, type: 2}
+    - {fileID: 11400000, guid: 62e202d5d24794c4cab548ba0ad449c5, type: 2}
+    - {fileID: 11400000, guid: 603977e0141cb4e45b733e27aae7b6ea, type: 2}
+    foldout: 1
+  - name: 
+    files: []
+    foldout: 1
+  musicCategoriesToList:
+  - name: Music
+    files:
+    - {fileID: 11400000, guid: 09516b45e10bed044ba23b6d86d0418b, type: 2}
+    - {fileID: 11400000, guid: f496789c0b16ffa4ca5e771edd0d974d, type: 2}
+    foldout: 1
+  - name: 
+    files: []
+    foldout: 1

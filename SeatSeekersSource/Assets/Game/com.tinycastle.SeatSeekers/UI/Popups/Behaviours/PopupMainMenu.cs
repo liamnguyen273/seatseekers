@@ -4,6 +4,7 @@ using System.Linq;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using JSAM;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers
@@ -15,6 +16,8 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<UIButton> _buttonNoAds;
         [SerializeField] private CompWrapper<UIButton> _buttonAddEnergy;
         [SerializeField] private CompWrapper<UIButton> _buttonAddCoin;
+        [SerializeField] private CompWrapper<UIButton> _buttonVip;
+        [SerializeField] private CompWrapper<UIButton> _buttonSuper;
         [SerializeField] private CompWrapper<UIButton> _debugEnergyButton;
 
         public List<LevelPage> LevelPages { get; private set; }
@@ -25,6 +28,8 @@ namespace com.tinycastle.SeatSeekers
             _buttonSettings.Comp.OnClicked += OnButtonSettings;
             _buttonNoAds.Comp.OnClicked += OnButtonNoAds;
             _debugEnergyButton.Comp.OnClicked += OnDebugEnergyButton;
+            _buttonVip.Comp.OnClicked += OnVipButton;
+            _buttonSuper.Comp.OnClicked += OnSuperButton;
             
             LevelPages = _levelPageHost.GameObject.GetDirectOrderedChildComponents<LevelPage>().ToList();
             LevelItems = new();
@@ -36,8 +41,24 @@ namespace com.tinycastle.SeatSeekers
             }
         }
 
+        private void OnSuperButton()
+        {
+            var popup = GM.Instance.Get<PopupManager>().GetPopup("popup_bundle_super");
+            popup.Show();
+        }
+
+        private void OnVipButton()
+        {
+            var popup = GM.Instance.Get<PopupManager>().GetPopup("popup_bundle_vip");
+            popup.Show();
+        }
+
         protected override void InnateOnShowStart()
         {
+            AudioManager.StopMusic(AudioLibraryMusic.music_game);
+            AudioManager.StopMusic(AudioLibraryMusic.music_mainmenu);
+            AudioManager.PlayMusic(AudioLibraryMusic.music_mainmenu, transform);
+            
             var levelNumber = 1;
             var levelId = $"level_{levelNumber}";
             var dataManager = GM.Instance.Get<GameDataManager>();
