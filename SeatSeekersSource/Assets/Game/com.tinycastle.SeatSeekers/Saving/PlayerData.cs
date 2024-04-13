@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using com.brg.Common;
+using com.brg.UnityComponents;
 using Newtonsoft.Json;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace com.tinycastle.SeatSeekers
 {
@@ -32,6 +35,72 @@ namespace com.tinycastle.SeatSeekers
             }
 
             return result;
+        }
+        
+        public Dictionary<string, int> GetLeaderboards()
+        {
+            return _dto.leaderboard;
+        }
+        
+        public void InitializeLeaderboard()
+        {
+            if (_dto.leaderboard == null || _dto.leaderboard.Count <= 0)
+            {
+                InitializeLeaderboardHelper();
+            }
+            else
+            {
+                UpdateLeaderboardAfterLaunch();
+            }
+        }
+        
+        public void UpdateLeaderboardAfterMatch(int youScoreMod, string opponentName, int opponentScore)
+        {
+            const float baseAddChance = 0.1f;
+            const float addChanceIntensifier = 0.05f;
+            const int scoreRangeLow = 5;
+            const int scoreRangeHigh = 15;
+
+            UpdateLeaderboardHelper(youScoreMod, new HashSet<string> { opponentName }, 
+                baseAddChance,
+                addChanceIntensifier, 
+                scoreRangeLow, 
+                scoreRangeHigh);
+        }
+
+        private void InitializeLeaderboardHelper()
+        {
+            var data = GM.Instance.Get<GameDataManager>();       
+            var names = data.GetLeaderboardNames().OrderBy(x => Random.Range(-1.0f, 1.0f));
+
+            _dto.leaderboard["You"] = 0;
+
+            var score = 20;
+            var scoreIncrease = 12;
+            var scoreIntensifier = 5;
+            foreach (var name in names)
+            {
+                _dto.leaderboard[name] = score;
+                scoreIncrease += Random.Range(0, scoreIntensifier + 1);
+                score += scoreIncrease;
+            }
+
+            _modified = true;
+            WriteDataAsync();
+        }
+        
+        private void UpdateLeaderboardAfterLaunch()
+        {
+            const float baseAddChance = 0.2f;
+            const float addChanceIntensifier = 0.05f;
+            const int scoreRangeLow = 10;
+            const int scoreRangeHigh = 25;
+            
+            UpdateLeaderboardHelper(0, null, 
+                baseAddChance,
+                addChanceIntensifier, 
+                scoreRangeLow, 
+                scoreRangeHigh);
         }
 
         public bool CheckUnlockedBooster(int currentLevel, string boosterName, out bool shouldIntroduce)
@@ -96,6 +165,39 @@ namespace com.tinycastle.SeatSeekers
         {
             return _dto.lastModified;
         }
+        
+        private void UpdateLeaderboardHelper(int youScoreMod, in HashSet<string> noUpdates, 
+            float baseAddChance, 
+            float addChanceIntensifier, 
+            int scoreRangeLow, 
+            int scoreRangeHigh)
+        {
+            var data = GM.Instance.Get<GameDataManager>();
+            
+            var addChance = baseAddChance;
+            var names = data.GetLeaderboardNames();
+            foreach (var name in names)
+            {
+                if (noUpdates?.Contains(name) ?? false) continue;
+                var chance = Random.Range(0f, 1f);
+                if (chance > addChance)
+                {
+                    addChance = Mathf.Min(addChance + addChanceIntensifier, 1f);
+                    continue;
+                }
+
+                addChance = baseAddChance;
+                var score = GetFromLeaderboard(name) ?? 0;
+                score += Random.Range(scoreRangeLow, scoreRangeHigh + 1);
+                SetInLeaderboard(name, score, true);
+            }
+            
+            var youScore = GetFromLeaderboard("You") ?? 0;
+            youScore += youScoreMod;
+            SetInLeaderboard("You", youScore, true);
+            _modified = true;
+            WriteDataAsync();
+        }
     }
     
     public partial class PlayerData
@@ -112,6 +214,7 @@ namespace com.tinycastle.SeatSeekers
         public Dictionary<string, int> resources;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [AccessorNotify]
         public Dictionary<string, int> leaderboard;
 
         public bool tutorialPlayed;
