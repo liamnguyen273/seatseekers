@@ -83,26 +83,26 @@ namespace com.tinycastle.SeatSeekers
             return base.Initialize();
         }
         
-        public void SetLevelData(LevelData data)
+        public void SetLevelData(LevelData data, Theme theme)
         {
             _currentLevelData = data;
             _expanded = false;
             _expandedLevelData = null;
             
-            RefreshGridAppearance();
+            RefreshGridAppearance(theme);
             PopulateSeatsAndObstacles();
             RefreshQueue();
             RefreshWalls();
         }
 
-        public bool ExpandLevelByOneLane(float time, Action onComplete)
+        public bool ExpandLevelByOneLane(float time, Action onComplete, Theme theme)
         {
             if (_expanded || _expandTween != null) return false;
             _expandedLevelData = new LevelData(_currentLevelData);
             _expandedLevelData.ExpandOneLaneLeft();
             _expanded = true;
             
-            var tweenA = AnimateRefreshGridAppearance(time);
+            var tweenA = AnimateRefreshGridAppearance(time, theme);
             var tweenB = AnimateSeatMovePositions(time);
             _expandTween = DOTween.Sequence().Join(tweenA).Join(tweenB)
                 .OnComplete(() =>
@@ -121,7 +121,7 @@ namespace com.tinycastle.SeatSeekers
             ClearSeatsAndObstacles();
         }
         
-        public void RefreshGridAppearance()
+        public void RefreshGridAppearance(Theme theme)
         {
             _expandTween?.Kill();
             _expandTween = null;
@@ -131,7 +131,14 @@ namespace com.tinycastle.SeatSeekers
             _gridRenderer.Comp.size = new Vector2(CurrentLevelData.Width, CurrentLevelData.Height);
             
             // TODO: Randomize grid background
-            var background = _gridBackRenderers[0].Comp;
+            for (var i = 0; i < _gridBackRenderers.Length; ++i)
+            {
+                _gridBackRenderers[i].SetGOActive(false);
+            }
+            
+            var background = _gridBackRenderers[(int)theme].Comp;
+            background.SetGOActive(true);
+            
             var config = background.GetComponent<CarBackgroundConfig>();
             if (config != null)
             {
@@ -140,13 +147,21 @@ namespace com.tinycastle.SeatSeekers
         }
 
         private Tween _expandTween;
-        private Tween AnimateRefreshGridAppearance(float time)
+        private Tween AnimateRefreshGridAppearance(float time, Theme theme)
         {
             _gridRenderer.Comp.drawMode = SpriteDrawMode.Tiled;
             _gridRenderer.Comp.tileMode = SpriteTileMode.Continuous;
             
             // TODO: Randomize grid background
-            var background = _gridBackRenderers[0].Comp;
+            
+            for (var i = 0; i < _gridBackRenderers.Length; ++i)
+            {
+                _gridBackRenderers[i].SetGOActive(false);
+            }
+            
+            var background = _gridBackRenderers[(int)theme].Comp;
+            background.SetGOActive(true);
+            
             var config = background.GetComponent<CarBackgroundConfig>();
             
             var gridCurrSize = _gridRenderer.Comp.size;
@@ -243,10 +258,12 @@ namespace com.tinycastle.SeatSeekers
 
         public void RefreshQueue()
         {
-            var firstCellPos = GetCellPosition(CurrentLevelData.Width, 0, false);
-            var gridPos = _gridRenderer.Transform.localPosition;
-            var queueStartPos = gridPos + firstCellPos + new Vector3(_carDoorOffset, 0f, 0f);
-            _queueStartPos.Transform.localPosition = queueStartPos;
+            // var x = _queueStartPos.Transform.localPosition.x;
+            // var firstCellPos = GetCellPosition(CurrentLevelData.Width, 0, false);
+            // var gridPos = _gridRenderer.Transform.localPosition;
+            // var queueStartPos = gridPos + firstCellPos + new Vector3(_carDoorOffset, 0f, 0f);
+            // queueStartPos.x = x;
+            // _queueStartPos.Transform.localPosition = queueStartPos;
         }
 
         public void RefreshWalls()
@@ -350,6 +367,11 @@ namespace com.tinycastle.SeatSeekers
         public List<(SeatController seat, bool isCustomer2, List<Vector3> path)> GetPathfinding(params Vector3[] prependPositions)
         {
             var start = CurrentLevelData.Width - 1;
+
+            if (_occupyables.ContainsKey(CurrentLevelData.Width - 1))
+            {
+                return new List<(SeatController seat, bool isCustomer2, List<Vector3> path)>();
+            }
             var engine = new DijkstraPathfindEngine<int>(start, QueryMoveCost, GetPriority,
                 GetNeighborsOf);
 
@@ -360,6 +382,7 @@ namespace com.tinycastle.SeatSeekers
             foreach (var seat in _spawnedSeats)
             {
                 var i1 = seat.X + seat.Y * CurrentLevelData.Width;
+                
                 if (engine.GetPathTo(i1, out var path))
                 {
                     var positions = path!

@@ -1327,6 +1327,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2759724057080375706, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
   m_PrefabInstance: {fileID: 2411319418042630668}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7661750238395208503 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5414095326516695355, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
+  m_PrefabInstance: {fileID: 2411319418042630668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2471175466782454757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4269,6 +4280,10 @@ MonoBehaviour:
     UnityEvent:
       m_PersistentCalls:
         m_Calls: []
+  _doneButton:
+    _parent: {fileID: 1371992022459028373}
+    _comp: {fileID: 7661750238395208503}
+    _path: ./Panel/Buttondone
   _itemHost: {fileID: 1983706915307673983}
   _playerLeaderboardItem: {fileID: 5562829532945935262}
 --- !u!224 &3996199920459206182 stripped

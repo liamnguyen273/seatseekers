@@ -7,5 +7,9 @@
     }
     public enum AudioLibraryMusic {
         music_mainmenu,
-        music_game
+        music_game,
+        BPMusic1,
+        BPMusic2,
+        BPMusic3,
+        BPMusic4
     }

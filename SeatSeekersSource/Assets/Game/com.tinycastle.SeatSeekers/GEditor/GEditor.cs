@@ -5,6 +5,7 @@ using System.Text;
 using com.brg.Common;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -47,16 +48,21 @@ namespace com.tinycastle.SeatSeekers
             Utils.WriteCsvs(_allLevels);
         }
 
-        public void GenerateAllLevels()
+#if UNITY_EDITOR
+        [MenuItem("Data/Generate Levels")]
+        public static void GenerateAllLevels()
         {
-            foreach (var levelGen in _allLevels)
+            var allLevels = Utils.ReadLevelGenCsv();
+            
+            foreach (var levelGen in allLevels)
             {
                 Debug.Log($"Generating level {levelGen.LevelName}");
                 GenerateLevel(levelGen, false);
             }
             
-            Utils.WriteCsvs(_allLevels);
+            Utils.WriteCsvs(allLevels);
         }
+#endif
 
         public LevelData GetLevelData(string name)
         {

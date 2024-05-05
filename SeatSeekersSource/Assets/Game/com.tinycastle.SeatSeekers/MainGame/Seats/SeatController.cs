@@ -1,3 +1,4 @@
+using System;
 using com.brg.Common;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
@@ -33,6 +34,9 @@ namespace com.tinycastle.SeatSeekers
         private LeanFinger _finger = null;
         
         private bool _seatInJumpMode = false;
+        private bool _droppedQueued;
+        
+        public bool Locked { get; set; }
         
         public CarController Car { get; set; }
         public SeatData Data => _data;
@@ -97,6 +101,8 @@ namespace com.tinycastle.SeatSeekers
         public void SetData(SeatData newData, bool performMoveImmediately = true)
         {
             _data = newData;
+            _droppedQueued = false;
+            Locked = false;
             RefreshAppearance(performMoveImmediately);
         }
 
@@ -186,7 +192,9 @@ namespace com.tinycastle.SeatSeekers
         {
             AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, transform);
             
-            if (!Car.AllowPickUpSeat || _pickedUp) return;
+            if (!Car.AllowPickUpSeat || Locked || _pickedUp) return;
+
+            _droppedQueued = false;
             
             if (SeatInJumpMode && !FullySeated)
             {
@@ -200,18 +208,16 @@ namespace com.tinycastle.SeatSeekers
             _currentMousePosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
             _positionCaster.GameObject.SetActive(true);
         }
-
+        
         public void OnFingerUp(LeanSelectByFinger select, LeanFinger finger)
         {
             AudioManager.PlaySound(AudioLibrarySounds.sfx_shift, transform);
             
             if (!_pickedUp) return;
-            
             _pickedUp = false;
             _finger = null;
-            _positionCaster.GameObject.SetActive(false);
 
-            ResolveSeatDrop();
+            _droppedQueued = true;
         }
 
         private void Update()
@@ -230,6 +236,14 @@ namespace com.tinycastle.SeatSeekers
                 PositionOffset(ref offset);
                 transform.position = currPos + offset;
                 SnapToGrid();
+            }
+
+            if (_droppedQueued)
+            {
+                if (!GM.Instance.Get<MainGameManager>().ResolvingPlayerAction)
+                {
+                    ResolveSeatDrop();
+                }
             }
         }
 
@@ -277,6 +291,7 @@ namespace com.tinycastle.SeatSeekers
 
         private void ResolveSeatDrop()
         {
+            _droppedQueued = false;
             var success = Car.ResolveSeatDrop(this, transform.localPosition, out var newX, out var newY);
             if (success)
             {
@@ -288,6 +303,8 @@ namespace com.tinycastle.SeatSeekers
             }
             
             SetCoord(newX, newY);
+            
+            _positionCaster.GameObject.SetActive(false);
 
             Car.MainGame.OnSeatDroppedByPlayer();
         }

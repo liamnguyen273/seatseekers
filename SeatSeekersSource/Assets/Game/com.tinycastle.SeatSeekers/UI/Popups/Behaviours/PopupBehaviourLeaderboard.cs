@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using com.brg.Common;
 using com.brg.UnityCommon;
+using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using com.tinycastle.SeatSeekers;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace com.tinycastle.StickerBooker
 {
     public class PopupBehaviourLeaderboard : PopupBehaviour
     {
+        [SerializeField] private CompWrapper<UIButton> _doneButton;
         [SerializeField] private Transform _itemHost;
         [SerializeField] private LeaderboardItem _playerLeaderboardItem;
         
@@ -19,6 +21,7 @@ namespace com.tinycastle.StickerBooker
 
         public override IProgress Initialize()
         {
+            _doneButton.Comp.OnClicked += () => Popup.Hide();
             _items = _itemHost.GetDirectOrderedChildComponents<LeaderboardItem>().ToList();
             return base.Initialize();
         }

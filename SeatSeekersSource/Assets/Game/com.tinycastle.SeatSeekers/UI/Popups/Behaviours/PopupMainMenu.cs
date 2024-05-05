@@ -64,7 +64,12 @@ namespace com.tinycastle.SeatSeekers
 
         protected override void InnateOnShowStart()
         {
-            AudioManager.StopMusic(AudioLibraryMusic.music_game);
+            var mgm = GM.Instance.Get<MainGameManager>().transform;
+            AudioManager.StopMusic(AudioLibraryMusic.music_game, mgm);
+            AudioManager.StopMusic(AudioLibraryMusic.BPMusic1, mgm);
+            AudioManager.StopMusic(AudioLibraryMusic.BPMusic2, mgm);
+            AudioManager.StopMusic(AudioLibraryMusic.BPMusic3, mgm);
+            AudioManager.StopMusic(AudioLibraryMusic.BPMusic4, mgm);
             AudioManager.StopMusic(AudioLibraryMusic.music_mainmenu);
             AudioManager.PlayMusic(AudioLibraryMusic.music_mainmenu, transform);
             

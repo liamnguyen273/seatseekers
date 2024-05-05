@@ -7,6 +7,7 @@ using com.brg.Common;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Random = System.Random;
 
 namespace com.tinycastle.SeatSeekers
 {
@@ -279,6 +280,15 @@ namespace com.tinycastle.SeatSeekers
         private bool IsLastCellOfRow(int x)
         {
             return (x + 1) % Width == 0;
+        }
+
+        public void FillDoorSeat(int genColorCount)
+        {
+            if (!Playable) return;
+            if (Grid[Width - 1] == (int)SeatEnum.NONE || Grid[Width - 1] == (int)SeatEnum.ANY)
+            {
+                Grid[Width - 1] = (int)SeatEnum.BLUE + UnityEngine.Random.Range(0, genColorCount);
+            }
         }
         
         public string MakeString()

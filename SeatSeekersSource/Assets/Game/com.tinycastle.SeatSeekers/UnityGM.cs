@@ -66,7 +66,7 @@ namespace com.tinycastle.SeatSeekers
 
                     var entry = new LevelEntry();
                     entry.DisplayName = "Versus";
-                    entry.SortOrder = 0;
+                    entry.SortOrder = -1;
                     entry.Bundle = "multi";
                     entry.Id = $"multi_{intensity}";
 
@@ -97,6 +97,7 @@ namespace com.tinycastle.SeatSeekers
                     {
                         popupManager.HideAllPopups(true, true);
                         mainGame.LoadLevel(entry);
+                        mainGame.LoadAppropriateMusic();
                     },
                     mainGame.StartGame);
             }

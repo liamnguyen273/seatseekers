@@ -27,6 +27,10 @@ MonoBehaviour:
   Music:
   - {fileID: 11400000, guid: 09516b45e10bed044ba23b6d86d0418b, type: 2}
   - {fileID: 11400000, guid: f496789c0b16ffa4ca5e771edd0d974d, type: 2}
+  - {fileID: 11400000, guid: 8bceabdf2dd8c96448823a724f46c915, type: 2}
+  - {fileID: 11400000, guid: f6ca3c814f0d5b441af41b02f7bf6302, type: 2}
+  - {fileID: 11400000, guid: d0d5fe4172e0d8746b252155ea571884, type: 2}
+  - {fileID: 11400000, guid: cc542b92be5394b43ab764456e4ce3c2, type: 2}
   useCustomNames: 0
   generatedName: AudioLibrary
   musicEnum: AudioLibraryMusic
@@ -54,6 +58,10 @@ MonoBehaviour:
     files:
     - {fileID: 11400000, guid: 09516b45e10bed044ba23b6d86d0418b, type: 2}
     - {fileID: 11400000, guid: f496789c0b16ffa4ca5e771edd0d974d, type: 2}
+    - {fileID: 11400000, guid: 8bceabdf2dd8c96448823a724f46c915, type: 2}
+    - {fileID: 11400000, guid: f6ca3c814f0d5b441af41b02f7bf6302, type: 2}
+    - {fileID: 11400000, guid: d0d5fe4172e0d8746b252155ea571884, type: 2}
+    - {fileID: 11400000, guid: cc542b92be5394b43ab764456e4ce3c2, type: 2}
     foldout: 1
   - name: 
     files: []
