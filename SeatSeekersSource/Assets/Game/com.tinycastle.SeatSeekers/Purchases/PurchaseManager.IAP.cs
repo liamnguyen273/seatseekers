@@ -55,14 +55,18 @@ namespace com.tinycastle.SeatSeekers
         public void RestorePurchases()
         {
             Log.Info("Restore purchase requested.");
-            
+#if UNITY_ANDROID || UNITY_IOS
             _restorePurchaseRequested = true;
             UnityGM.Instance.WaitHelper.StartWait();
+#endif
+            
 #if UNITY_ANDROID
             _extensions.GetExtension<IGooglePlayStoreExtensions>()
 #elif UNITY_IOS
             _extensions.GetExtension<IAppleExtensions>()
 #endif
+                
+#if UNITY_ANDROID || UNITY_IOS
             .RestoreTransactions((result, error) =>
             {
                 UnityGM.Instance.WaitHelper.EndWait();
@@ -89,6 +93,9 @@ namespace com.tinycastle.SeatSeekers
                     popup.Show();
                 }
             });
+#else
+            Log.Error("Restoring purchases are not supported.");
+#endif
         }
 
         public void OnInitializeFailed(InitializationFailureReason error)

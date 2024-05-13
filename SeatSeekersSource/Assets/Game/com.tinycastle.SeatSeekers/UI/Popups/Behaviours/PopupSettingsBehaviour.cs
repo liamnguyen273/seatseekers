@@ -79,7 +79,7 @@ namespace com.tinycastle.SeatSeekers
         
         private void OnRestoreButton()
         {
-            
+            GM.Instance.Get<PurchaseManager>().RestorePurchases();
         }
 
         private void OnPrivacyButton()
