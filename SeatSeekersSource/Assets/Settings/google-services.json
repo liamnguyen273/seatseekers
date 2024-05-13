@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922209033401",
+    "project_id": "seat-seekers",
+    "storage_bucket": "seat-seekers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922209033401:android:8e1c47ff488fab87ca0f68",
+        "android_client_info": {
+          "package_name": "com.tinycastle.seatseekers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPHZi6TAmSjAYedZxrcCUSu7DMZhcIAUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

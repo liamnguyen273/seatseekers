@@ -13,7 +13,7 @@ namespace com.tinycastle.SeatSeekers
     {
         [Header("Params")] 
         [SerializeField] private float _cellUnit = 1f;
-        [SerializeField] private float _carDoorOffset = 0.5f;
+        [SerializeField] private float _carDoorOffset = 0.7f;
 
         [Header("Components")] 
         [SerializeField] private GOWrapper _seatHost = "./SeatPoolHost";
@@ -22,6 +22,7 @@ namespace com.tinycastle.SeatSeekers
         [Header("Grid")]
         [SerializeField] private CompWrapper<SpriteRenderer> _gridRenderer = "./Grid";
         [SerializeField] private GOWrapper _queueStartPos = "./QueueStart";
+        [SerializeField] private GOWrapper _queueDecor = "./QueueStart/StageDecor";
         [SerializeField] private CompWrapper<SpriteRenderer>[] _gridBackRenderers;
         
         [Header("Walls")] 
@@ -138,6 +139,8 @@ namespace com.tinycastle.SeatSeekers
             
             var background = _gridBackRenderers[(int)theme].Comp;
             background.SetGOActive(true);
+            
+            _queueDecor.SetActive((int)theme >= (int)Theme.STAGE_1);
             
             var config = background.GetComponent<CarBackgroundConfig>();
             if (config != null)
@@ -258,12 +261,10 @@ namespace com.tinycastle.SeatSeekers
 
         public void RefreshQueue()
         {
-            // var x = _queueStartPos.Transform.localPosition.x;
-            // var firstCellPos = GetCellPosition(CurrentLevelData.Width, 0, false);
-            // var gridPos = _gridRenderer.Transform.localPosition;
-            // var queueStartPos = gridPos + firstCellPos + new Vector3(_carDoorOffset, 0f, 0f);
-            // queueStartPos.x = x;
-            // _queueStartPos.Transform.localPosition = queueStartPos;
+            var firstCellPos = GetCellPosition(CurrentLevelData.Width, 0, false);
+            var gridPos = _gridRenderer.Transform.localPosition;
+            var queueStartPos = gridPos + firstCellPos + new Vector3(_carDoorOffset, 0f, 0f);
+            _queueStartPos.Transform.localPosition = queueStartPos;
         }
 
         public void RefreshWalls()

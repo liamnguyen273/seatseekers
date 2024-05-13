@@ -334,7 +334,7 @@ namespace com.tinycastle.SeatSeekers
             var queueStartPos = GetQueuePos(0);
             var validSeats = blockSeating 
                 ? new() 
-                : _car.Comp.GetPathfinding(queueStartPos, queueStartPos + new Vector3(0f, 0f, 1.25f));
+                : _car.Comp.GetPathfinding(queueStartPos);
             
             var moveSequence = DOTween.Sequence();
             var queueIndex = 0;
