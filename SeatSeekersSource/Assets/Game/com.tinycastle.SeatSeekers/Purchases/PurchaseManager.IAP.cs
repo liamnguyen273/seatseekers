@@ -13,21 +13,31 @@ namespace com.tinycastle.SeatSeekers
     {
         private void InitializeIAP()
         {
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            var products = GM.Instance.Get<GameDataManager>().GetAllProducts();
-            foreach (var (key, entry) in products)
+            try
             {
-                if (entry.IsIAP)
+                var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+                var products = GM.Instance.Get<GameDataManager>().GetAllProducts();
+                foreach (var (key, entry) in products)
                 {
-                    builder.AddProduct(entry.Id, entry.IsConsumable ? ProductType.Consumable : ProductType.NonConsumable);
+                    if (entry.IsIAP)
+                    {
+                        builder.AddProduct(entry.Id, entry.IsConsumable ? ProductType.Consumable : ProductType.NonConsumable);
+                    }
                 }
-            }
             
-            UnityPurchasing.Initialize(this, builder);
+                UnityPurchasing.Initialize(this, builder);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
         
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
+            _controller = controller;
+            _extensions = extensions;
+            
             _iapProductMetadatas = new Dictionary<string, ProductMetadata>();
             foreach (var (id, entry) in GM.Instance.Get<GameDataManager>().GetAllProducts())
             {
@@ -46,8 +56,7 @@ namespace com.tinycastle.SeatSeekers
                 _iapProductMetadatas.Add(id, metadata);
             }
             
-            _controller = controller;
-            _extensions = extensions;
+            Log.Success("IAP initialized.");
 
             ProductMetadataAccessibleEvent?.Invoke(this, EventArgs.Empty);
         }

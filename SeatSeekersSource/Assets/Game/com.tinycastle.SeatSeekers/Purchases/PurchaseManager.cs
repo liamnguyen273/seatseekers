@@ -5,6 +5,7 @@ using com.brg.Common;
 using com.brg.UnityComponents;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
+using UnityEngine;
 using UnityEngine.Purchasing;
 
 namespace com.tinycastle.SeatSeekers
@@ -28,7 +29,7 @@ namespace com.tinycastle.SeatSeekers
             var options = new InitializationOptions().SetEnvironmentName(ENVIRONMENT);
             UnityServices.InitializeAsync(options).ContinueWith(task =>
             {
-                InitializeIAP();
+                Log.Success("Unity Serviced initialized.");
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         
@@ -37,6 +38,7 @@ namespace com.tinycastle.SeatSeekers
             _controller = null;
             _extensions = null;
             LaunchIAPInitialization();
+            InitializeIAP();
             return base.InitializeBehaviourAsync();
         }
 
