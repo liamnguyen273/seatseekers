@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using com.brg.Common;
+using com.brg.ExtraComponents;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
@@ -170,7 +171,6 @@ namespace com.tinycastle.SeatSeekers
             
             var purchaseManager = new PurchaseManager();
             purchaseManager.AddDependencies(saveManager, dataManager);
-            // purchaseManager.LaunchIAPInitialization();
             Purchase = purchaseManager;
             
             Log.Success("Established managers' dependencies.");

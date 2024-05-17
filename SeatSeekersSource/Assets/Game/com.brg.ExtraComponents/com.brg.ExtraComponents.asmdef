@@ -8,7 +8,11 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "com.brg.Common.dll",
-        "com.brg.UnityCommon.dll"
+        "com.brg.UnityCommon.dll",
+        "Firebase.App.dll",
+        "Firebase.Analytics.dll",
+        "Firebase.Platform.dll",
+        "Firebase.TaskExtension.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
