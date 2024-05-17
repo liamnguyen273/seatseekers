@@ -141,12 +141,13 @@ namespace com.tinycastle.SeatSeekers
             GM.Instance.Get<GameSaveManager>().PlayerData.WriteDataAsync();
         }
 
-        private void OnButtonAddEnergy()
+        public void OnButtonAddEnergy()
         {
-            
+            var popup = GM.Instance.Get<PopupManager>().GetPopup(out PopupRefill popupRefill);
+            popup.Show();
         }
 
-        private void OnButtonAddCoin()
+        public void OnButtonAddCoin()
         {
             
         }

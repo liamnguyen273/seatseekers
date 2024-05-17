@@ -1,4 +1,5 @@
 using System;
+using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using UnityEngine;
@@ -14,17 +15,39 @@ namespace com.tinycastle.SeatSeekers
 
         private void Awake()
         {
+#if AD_DISABLED
+            _button.Comp.Interactable = false;
+#endif
             _button.Comp.OnClicked += OnAd;
+        }
+
+        private void OnEnable()
+        {
+#if AD_DISABLED
+            return;
+#endif
         }
 
         private void OnAd()
         {
-            // TODO: Ad
+            if (_resourceToAdd == Constants.ENERGY_RESOURCE)
+            {
+                var energyCount = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(_resourceToAdd) ?? 0;
+                _button.Comp.Interactable = energyCount < Constants.MAX_ENERGY;
+
+                if (energyCount >= Constants.MAX_ENERGY) return;
+            }
             
-            var value = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(_resourceToAdd) ?? 0;
-            value += _addCount;
-            
-            GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(_resourceToAdd, value, true);
+            GM.Instance.Get<AdManager>().RequestAd(new AdRequest(AdRequestType.REWARD_AD, () =>
+            {
+                var value = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(_resourceToAdd) ?? 0;
+                value += _addCount;
+
+                GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(_resourceToAdd, value, true);
+            }, () =>
+            {
+                // Do nothing
+            }), out _);
         }
     }
 }
