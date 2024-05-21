@@ -24,13 +24,13 @@ namespace com.tinycastle.SeatSeekers
         [JsonProperty("isIap")] public bool IsIAP;  // If IAP, use service's catalog. Otherwise use the below fields
         [JsonProperty("price")] public int Price;
         [JsonProperty("currency")] public string Currency;
-        
+
         [JsonProperty("buyResolution")] public string BuyResolution; // Also serves as type
         [JsonIgnore] private string[] ParsedBuyResolutions;
         [JsonProperty("resolutionData")] public string ResolutionData;
         [JsonIgnore] private string[] ParsedResolutionData;
-
         public string[] GetParsedBuyResolutions()
+
         {
             if (ParsedBuyResolutions == null)
             {

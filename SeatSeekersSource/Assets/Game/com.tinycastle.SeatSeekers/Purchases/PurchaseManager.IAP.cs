@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using com.brg.UnityComponents;
-using Unity.Services.Core;
-using Unity.Services.Core.Environments;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
