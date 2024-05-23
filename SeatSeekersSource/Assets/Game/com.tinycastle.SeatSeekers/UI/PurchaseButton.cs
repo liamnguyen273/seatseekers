@@ -127,6 +127,7 @@ namespace com.tinycastle.SeatSeekers
         {
             var metadata = UnityGM.Instance.Purchase.GetProductMetaData(_itemId);
             if (_priceText.NullableComp != null) _priceText.Comp.Text  = $"{metadata.localizedPriceString}";
+            ForceSetBuyButton(true);
         }
 
         private void RefreshNormal()
