@@ -126,7 +126,7 @@ namespace com.tinycastle.SeatSeekers
         private void OnGetMetadata(object sender, EventArgs e)
         {
             var metadata = UnityGM.Instance.Purchase.GetProductMetaData(_itemId);
-            if (_priceText.NullableComp != null) _priceText.Comp.Text  = $"{metadata.localizedPrice}";
+            if (_priceText.NullableComp != null) _priceText.Comp.Text  = $"{metadata.localizedPriceString}";
         }
 
         private void RefreshNormal()
@@ -156,7 +156,41 @@ namespace com.tinycastle.SeatSeekers
         {
             if (_entry == null) return;
             
-            UnityGM.Instance.Purchase.Purchase(_entry);
+            UnityGM.Instance.Purchase.Purchase(_entry, (success) =>
+            {
+                if (_entry.IsIAP)
+                {
+                    RefreshIAP();
+                }
+                else
+                {
+                    RefreshNormal();
+                }
+
+                if (_entry.IsIAP)
+                {
+                    if (success)
+                    {
+                        var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupBehaviourGeneric>("popup_generic", out var behaviour);
+                        behaviour.SetupAsNotify(
+                            "Success!", 
+                            "Thank you for your purchase.",
+                            null,
+                            "OK");
+                        popup.Show();
+                    }
+                    else
+                    {
+                        var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupBehaviourGeneric>("popup_generic", out var behaviour);
+                        behaviour.SetupAsNotify(
+                            "Oh no!", 
+                            "Something went wrong, please retry later.",
+                            null,
+                            "OK");
+                        popup.Show();
+                    }
+                }
+            });
         }
     }
 }

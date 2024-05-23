@@ -30,6 +30,7 @@ namespace com.tinycastle.SeatSeekers
             UnityServices.InitializeAsync(options).ContinueWith(task =>
             {
                 Log.Success("Unity Serviced initialized.");
+                InitializeIAP();
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         
@@ -38,7 +39,6 @@ namespace com.tinycastle.SeatSeekers
             _controller = null;
             _extensions = null;
             LaunchIAPInitialization();
-            InitializeIAP();
             return base.InitializeBehaviourAsync();
         }
 
@@ -134,6 +134,12 @@ namespace com.tinycastle.SeatSeekers
             }
 
             var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
+            
+            if (!product.IsConsumable)
+            {
+                accessor.SetInOwnerships(product.Id, true, true);
+            }
+            
             accessor.WriteDataAsync();
             _currentIapEntry = null;
             _onComplete = null;

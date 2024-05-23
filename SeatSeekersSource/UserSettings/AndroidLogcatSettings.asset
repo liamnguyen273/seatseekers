@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "c780fb96",
         "name": "com.tinycastle.seatseekers",
-        "processId": 8183,
+        "processId": 8457,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -12,18 +12,30 @@
             "deviceId": "c780fb96",
             "name": "com.android.vending",
             "processId": 1955,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.google.android.apps.nbu.files",
             "processId": 4960,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
             "processId": 8183,
+            "exited": true
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 28298,
+            "exited": true
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 8457,
             "exited": false
         }
     ],
@@ -81,7 +93,7 @@
         "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "",
+        "m_Filter": "Purchase",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

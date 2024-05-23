@@ -15,6 +15,7 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<UIButton> _continueButton;
         [SerializeField] private CompWrapper<Animator> _fireworkLeft;
         [SerializeField] private CompWrapper<Animator> _fireworkRight;
+        [SerializeField] private CompWrapper<UIButton> _mainMenuButton;
 
         private LevelEntry _entry;
         private int _coinValue = 0;
@@ -30,11 +31,15 @@ namespace com.tinycastle.SeatSeekers
         {
             _doubleCoinButton.Comp.OnClicked += OnDoubleButton;
             _continueButton.Comp.OnClicked += OnContinueButton;
+            _mainMenuButton.Comp.OnClicked += OnMainMenu;
         }
 
         protected override void InnateOnShowStart()
         {
             base.InnateOnShowStart();
+            
+            _doubleCoinButton.Comp.Interactable = true;
+            _continueButton.Comp.Interactable = true;
 
             _coinText.Comp.Text = $"+{_coinValue}";
             _doubleCoinText.Comp.Text = $"+{_coinValue * 2}";
@@ -70,6 +75,12 @@ namespace com.tinycastle.SeatSeekers
             _fireworkLeft.Comp.StopPlayback();
             _fireworkRight.Comp.StopPlayback();
         }
+        
+        private void OnMainMenu()
+        {
+            var mainGame = GM.Instance.Get<MainGameManager>();
+            mainGame.TransitOut();
+        }
 
         private void OnDoubleButton()
         {
@@ -80,13 +91,18 @@ namespace com.tinycastle.SeatSeekers
             accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
             accessor.WriteDataAsync();
             _received = true;
+
+            _doubleCoinButton.Comp.Interactable = false;
+            _continueButton.Comp.Interactable = false;
             
             GoToNextLevel();
         }
 
         private void OnContinueButton()
         {
-            
+            _doubleCoinButton.Comp.Interactable = false;
+            _continueButton.Comp.Interactable = false;
+
             GoToNextLevel();
         }
 

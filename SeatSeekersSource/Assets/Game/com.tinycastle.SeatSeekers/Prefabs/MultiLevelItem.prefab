@@ -446,7 +446,7 @@ MonoBehaviour:
   useGlobalAngle: 1
   offsetAngle: 90
   offsetDistance: 12
-  offset: {x: 8.48528, y: -8.485281}
+  offset: {x: 8.485281, y: -8.485282}
   color: {r: 0, g: 0, b: 0, a: 0.6}
   inset: 0
   blendMode: 0
@@ -885,7 +885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMin.x
@@ -893,11 +893,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 148.42
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_SizeDelta.y
@@ -937,7 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -42.355
       objectReference: {fileID: 0}
     - target: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1041,7 +1041,7 @@ MonoBehaviour:
   useGlobalAngle: 1
   offsetAngle: 90
   offsetDistance: 12
-  offset: {x: 8.48528, y: -8.485281}
+  offset: {x: 8.485281, y: -8.485282}
   color: {r: 0, g: 0, b: 0, a: 0.6}
   inset: 0
   blendMode: 0
@@ -1088,11 +1088,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1538423986027266793, guid: 1049c1c95e9fe9340a4266da28ab5394, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 456
       objectReference: {fileID: 0}
     - target: {fileID: 1538423986027266793, guid: 1049c1c95e9fe9340a4266da28ab5394, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 456
       objectReference: {fileID: 0}
     - target: {fileID: 1538423986027266793, guid: 1049c1c95e9fe9340a4266da28ab5394, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1235,6 +1235,10 @@ MonoBehaviour:
     _parent: {fileID: 4181931502753635729}
     _comp: {fileID: 6965570175240650194}
     _path: ./PriceGroup
+  _decor:
+    _parent: {fileID: 4181931502753635729}
+    _comp: {fileID: 6938347193906446711}
+    _path: ./NameGroup
   _button:
     _parent: {fileID: 4181931502753635729}
     _comp: {fileID: 787553296467051492}

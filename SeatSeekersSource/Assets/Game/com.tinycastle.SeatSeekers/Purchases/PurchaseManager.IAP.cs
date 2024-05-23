@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using com.brg.Common;
 using com.brg.UnityComponents;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -18,6 +19,7 @@ namespace com.tinycastle.SeatSeekers
                 {
                     if (entry.IsIAP)
                     {
+                        Log.Info($"Product: {entry.Id} (Consumable: {entry.IsConsumable})");
                         builder.AddProduct(entry.Id, entry.IsConsumable ? ProductType.Consumable : ProductType.NonConsumable);
                     }
                 }

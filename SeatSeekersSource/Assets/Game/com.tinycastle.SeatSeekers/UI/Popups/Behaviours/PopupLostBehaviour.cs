@@ -11,12 +11,14 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<UIButton> _xButton;
         [SerializeField] private CompWrapper<UIButton> _noAdButton;
         [SerializeField] private CompWrapper<UIButton> _tryAgainButton;
+        [SerializeField] private CompWrapper<UIButton> _mainMenuButton;
 
         private void Awake()
         {
             _xButton.Comp.OnClicked += OnXButton;
             _noAdButton.Comp.OnClicked += OnNoAdsButton;
             _tryAgainButton.Comp.OnClicked += OnRetryButton;
+            _mainMenuButton.Comp.OnClicked += OnMainMenu;
         }
 
         protected override void InnateOnShowStart()
@@ -41,6 +43,12 @@ namespace com.tinycastle.SeatSeekers
         }
 
         private void OnXButton()
+        {
+            var mainGame = GM.Instance.Get<MainGameManager>();
+            mainGame.TransitOut();
+        }
+        
+        private void OnMainMenu()
         {
             var mainGame = GM.Instance.Get<MainGameManager>();
             mainGame.TransitOut();

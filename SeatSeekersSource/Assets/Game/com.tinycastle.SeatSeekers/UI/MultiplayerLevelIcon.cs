@@ -2,6 +2,7 @@ using System;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace com.tinycastle.SeatSeekers
 {
@@ -9,6 +10,7 @@ namespace com.tinycastle.SeatSeekers
     {
         [SerializeField] private GOWrapper _lockIcon = "./LockIcon";
         [SerializeField] private GOWrapper _priceGroup = "./PriceGroup";
+        [SerializeField] private CompWrapper<Image> _decor;
         [SerializeField] private CompWrapper<UIButton> _button = "./";
         [SerializeField] private CompWrapper<TextLocalizer> _priceText = "./Layout/PriceText";
         [SerializeField] private int _price;
@@ -30,6 +32,7 @@ namespace com.tinycastle.SeatSeekers
             var unlocked = CheckUnlocked();
             _lockIcon.SetActive(!unlocked);
             _priceGroup.SetActive(unlocked);
+            _decor.Comp.color = unlocked ? Color.white : new Color(0.4f, 0.4f, 0.4f, 1f);
             
             var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
             OnResourceChange(null, (Constants.COIN_RESOURCE, false, accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0));

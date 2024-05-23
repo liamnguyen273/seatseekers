@@ -74,16 +74,15 @@ crashlytics-build.properties
 [Aa]ssets/[Ss]treamingAssets/aa/*
 
 # This may be different if it is changed in Android Resolver settings
-Assets/GeneratedLocalRepo/
+SeatSeekersSource/[Aa]ssets/GeneratedLocalRepo/
+SeatSeekersSource/[Aa]ssets/StreamingAssets/google-services-desktop.json
+SeatSeekersSource/[Aa]ssets/Plugins/Android/*.aar
+SeatSeekersSource/[Aa]ssets/Plugins/iOS/Firebase/
+SeatSeekersSource/[Aa]ssets/Plugins/iOS/Firebase.meta
+SeatSeekersSource/[Aa]ssets/Plugins/tvOS/Firebase/
+SeatSeekersSource/[Aa]ssets/Assets/Plugins/tvOS/Firebase.meta
 
-Assets/StreamingAssets/google-services-desktop.json
-Assets/Plugins/Android/*.aar
-Assets/Plugins/iOS/Firebase/
-Assets/Plugins/iOS/Firebase.meta
-Assets/Plugins/tvOS/Firebase/
-Assets/Plugins/tvOS/Firebase.meta
-
-Assets/Firebase/
+SeatSeekersSource/[Aa]ssets/Assets/Firebase/
 
 node_modules/
 tools/export_psd_script/work/

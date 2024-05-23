@@ -586,6 +586,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3497965655284074276, guid: 803d17df25115b344817f1d701c71e80, type: 3}
+      propertyPath: _rightTitleButton._path
+      value: ./TitleGroup/RightButtonGroup/XButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3497965655284074276, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: _bottomButtons.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -695,15 +699,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 660
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_SizeDelta.y
@@ -711,11 +715,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 4947331424641708206, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 4974505858272397096, guid: 803d17df25115b344817f1d701c71e80, type: 3}
       propertyPath: m_SizeDelta.x
