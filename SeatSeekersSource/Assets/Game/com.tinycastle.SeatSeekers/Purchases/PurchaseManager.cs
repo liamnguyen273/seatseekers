@@ -68,6 +68,7 @@ namespace com.tinycastle.SeatSeekers
                 
                 _onComplete = onComplete;
                 HandleIAPPurchase(product);
+                return;
             }
 
             // Not IAP, can handle immediately
