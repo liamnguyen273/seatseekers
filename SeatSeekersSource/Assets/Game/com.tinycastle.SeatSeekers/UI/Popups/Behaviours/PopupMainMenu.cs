@@ -14,7 +14,9 @@ namespace com.tinycastle.SeatSeekers
     {
         [SerializeField] private GOWrapper _levelPageHost = "./LevelPages";
         [SerializeField] private CompWrapper<UIButton> _buttonSettings;
-        [SerializeField] private CompWrapper<UIButton> _buttonNoAds;
+        [SerializeField] private CompWrapper<UIButton> _buttonNoAds;   
+        [SerializeField] private CompWrapper<UIButton> _buttonSettings2;
+        [SerializeField] private CompWrapper<UIButton> _buttonNoAds2;
         [SerializeField] private CompWrapper<UIButton> _buttonAddEnergy;
         [SerializeField] private CompWrapper<UIButton> _buttonAddCoin;
         [SerializeField] private CompWrapper<UIButton> _buttonVip;
@@ -28,7 +30,9 @@ namespace com.tinycastle.SeatSeekers
         private void Awake()
         {
             _buttonSettings.Comp.OnClicked += OnButtonSettings;
+            _buttonSettings2.Comp.OnClicked += OnButtonSettings;
             _buttonNoAds.Comp.OnClicked += OnButtonNoAds;
+            _buttonNoAds2.Comp.OnClicked += OnButtonNoAds;
             _debugEnergyButton.Comp.OnClicked += OnDebugEnergyButton;
             _buttonVip.Comp.OnClicked += OnVipButton;
             _buttonSuper.Comp.OnClicked += OnSuperButton;

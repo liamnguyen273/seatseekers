@@ -84,7 +84,7 @@ namespace com.tinycastle.SeatSeekers
 
         private void OnPrivacyButton()
         {
-            
+            Application.OpenURL("https://tinycastle.website2.me/privacy-policy");
         }
         
         private void OnCreditsButton()

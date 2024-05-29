@@ -143,6 +143,7 @@ namespace com.tinycastle.SeatSeekers
             
             accessor.WriteDataAsync();
             _currentIapEntry = null;
+            _onComplete?.Invoke(true);
             _onComplete = null;
         }
         

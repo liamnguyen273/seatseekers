@@ -120,7 +120,6 @@ namespace com.tinycastle.SeatSeekers
         {
 #if UNITY_EDITOR
             FinalizePurchaseSuccess(entry);
-            _onComplete?.Invoke(true);
             return;
 #endif
             Log.Info($"Unity IAP's handling the purchase request.");
@@ -152,8 +151,8 @@ namespace com.tinycastle.SeatSeekers
             }
 
             _currentIapEntry = null;
-            _onComplete = null;
             _onComplete?.Invoke(false);
+            _onComplete = null;
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
@@ -180,8 +179,8 @@ namespace com.tinycastle.SeatSeekers
             }
             
             _currentIapEntry = null;
-            _onComplete = null;
             _onComplete?.Invoke(false);
+            _onComplete = null;
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)

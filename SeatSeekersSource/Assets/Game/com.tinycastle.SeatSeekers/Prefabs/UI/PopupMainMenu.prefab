@@ -2216,6 +2216,14 @@ MonoBehaviour:
     _parent: {fileID: 8309868686794698768}
     _comp: {fileID: 5926567074083398195}
     _path: ./TabViewLine_Simple/ViewGroup/ViewMainMenu/TopGroup/LeftGroup/ButtonNoAds
+  _buttonSettings2:
+    _parent: {fileID: 8309868686794698768}
+    _comp: {fileID: 4849952181574605125}
+    _path: ./TabViewLine_Simple/ViewGroup/ViewMultiplayer/ViewMulti/TopGroup/LeftGroup/ButtonSetting
+  _buttonNoAds2:
+    _parent: {fileID: 8309868686794698768}
+    _comp: {fileID: 4155934922049415355}
+    _path: ./TabViewLine_Simple/ViewGroup/ViewMultiplayer/ViewMulti/TopGroup/LeftGroup/ButtonNoAds
   _buttonAddEnergy:
     _parent: {fileID: 8309868686794698768}
     _comp: {fileID: 6472005783337246766}
@@ -5689,6 +5697,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7249425377658920347, guid: 2782d80916c18c648bd566c04764de84, type: 3}
   m_PrefabInstance: {fileID: 7982872252300002165}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4155934922049415355 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6297163463253781454, guid: 2782d80916c18c648bd566c04764de84, type: 3}
+  m_PrefabInstance: {fileID: 7982872252300002165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4849952181574605125 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3280487313004075568, guid: 2782d80916c18c648bd566c04764de84, type: 3}
+  m_PrefabInstance: {fileID: 7982872252300002165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5942874657468565002 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4373427376625796479, guid: 2782d80916c18c648bd566c04764de84, type: 3}
