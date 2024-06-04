@@ -138,7 +138,7 @@
 		"type": "powerups",
 		"isConsumable": true,
 		"isIap": false,
-		"price": 700,
+		"price": 300,
 		"currency": "coin",
 		"buyResolution": "add_resource",
 		"resolutionData": "1 energy"

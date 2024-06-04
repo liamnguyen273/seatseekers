@@ -604,19 +604,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontColor.b
-      value: 0.05882353
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.32156864
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontColor.r
-      value: 0.5568628
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4279194254
+      value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontSharedMaterials.Array.size
@@ -736,6 +736,10 @@ PrefabInstance:
     - target: {fileID: 4423081957097684713, guid: 05050e1a5cc9ad8408b8f4d2ccea6061, type: 3}
       propertyPath: m_Name
       value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635829797319231405, guid: 05050e1a5cc9ad8408b8f4d2ccea6061, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6983693201861269565, guid: 05050e1a5cc9ad8408b8f4d2ccea6061, type: 3}
       propertyPath: m_Pivot.x

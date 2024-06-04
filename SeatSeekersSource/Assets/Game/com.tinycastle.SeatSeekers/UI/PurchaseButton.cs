@@ -53,6 +53,11 @@ namespace com.tinycastle.SeatSeekers
         {
             if (_buyButton.NullableComp == null || _entry == null) return;
             _buyButton.Comp.Interactable = currentValue >= _entry.Price;
+
+            if (_entry.Currency == Constants.COIN_RESOURCE)
+            {
+                _buyButton.Comp.Interactable = true;
+            }
         }
 
         private void ForceSetBuyButton(bool interactable)
@@ -188,6 +193,14 @@ namespace com.tinycastle.SeatSeekers
                             "Something went wrong, please retry later.",
                             null,
                             "OK");
+                        popup.Show();
+                    }
+                }
+                else
+                {
+                    if (!success && _entry.Currency == Constants.COIN_RESOURCE)
+                    {
+                        var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupOutOfCoin>(out var behaviour);
                         popup.Show();
                     }
                 }

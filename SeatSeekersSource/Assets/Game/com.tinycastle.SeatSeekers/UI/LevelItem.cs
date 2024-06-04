@@ -46,7 +46,8 @@ namespace com.tinycastle.SeatSeekers
         {
             if (!_isUnlocked || _entry == null) return;
 
-            GM.Instance.RequestPlayLevelWithValidation(_entry);
+            var aa = false;
+            GM.Instance.RequestPlayLevelWithValidation(_entry, ref aa);
         }
     }
 }

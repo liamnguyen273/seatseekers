@@ -79,7 +79,7 @@ namespace com.tinycastle.SeatSeekers
                 mainGame.StartGame);
         }
         
-        public static void RequestPlayLevelWithValidation(this GM gm, LevelEntry entry)
+        public static void RequestPlayLevelWithValidation(this GM gm, LevelEntry entry, ref bool hasAdButtonTimer)
         {
             var mainGame = gm.Get<MainGameManager>();
             var loading = gm.Get<LoadingScreen>();
@@ -105,6 +105,12 @@ namespace com.tinycastle.SeatSeekers
             else
             {
                 var popup = popupManager.GetPopup<PopupRefill>(out var behaviour);
+                if (hasAdButtonTimer)
+                {
+                    hasAdButtonTimer = false;
+                    behaviour.Timer = 30f;
+                }
+                
                 popup.Show();
             }
         }

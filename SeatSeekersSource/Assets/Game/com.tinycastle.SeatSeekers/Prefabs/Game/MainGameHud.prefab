@@ -2289,6 +2289,12 @@ PrefabInstance:
       propertyPath: _boosterName
       value: booster_expand
       objectReference: {fileID: 0}
+    - target: {fileID: 8931753678817956883, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: m_text
+      value: 'Unlocked at
+
+        Level 16'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3286,6 +3292,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoosterButtonFreeze
       objectReference: {fileID: 0}
+    - target: {fileID: 8931753678817956883, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: m_text
+      value: 'Unlocked at
+
+        Level 8'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3418,6 +3430,12 @@ PrefabInstance:
     - target: {fileID: 8748487670442002036, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
       propertyPath: _boosterName
       value: booster_jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931753678817956883, guid: d71bcb1ae76c5e2449c4fb64cb78b275, type: 3}
+      propertyPath: m_text
+      value: 'Unlocked at
+
+        Level 12'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
