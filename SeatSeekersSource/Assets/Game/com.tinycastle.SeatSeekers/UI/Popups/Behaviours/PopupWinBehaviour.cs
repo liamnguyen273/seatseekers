@@ -55,6 +55,8 @@ namespace com.tinycastle.SeatSeekers
             {
                 var saveManager = GM.Instance.Get<GameSaveManager>();
                 saveManager.PlayerData.SetInCompletedLevels(_entry.Id, true);
+                GM.Instance.Get<PopupManager>().GetPopup(out PopupRefill refill);
+                refill.Timer = 30f;
                 saveManager.SavePlayerData();
             }
             else

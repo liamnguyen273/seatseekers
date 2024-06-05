@@ -35,7 +35,7 @@ namespace com.tinycastle.SeatSeekers
         public bool GetAdSkippability(AdRequestType type)
         {
             var success = PlayerData.TryGetFromOwnerships(Constants.AD_FREE_PACKAGE, out var has);
-            return success && has is true;
+            return type != AdRequestType.REWARD_AD && success && has is true;
         }
 
         public string GetSelectedLanguage()

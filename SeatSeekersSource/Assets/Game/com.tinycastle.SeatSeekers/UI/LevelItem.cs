@@ -31,6 +31,10 @@ namespace com.tinycastle.SeatSeekers
 
         public void SetLevel(LevelEntry levelEntry, bool isUnlocked, bool isCurrent)
         {
+#if UNITY_EDITOR
+            isUnlocked = true;
+#endif
+            
             _entry = levelEntry;
             _isCurrent = isCurrent;
             _isUnlocked = isUnlocked;

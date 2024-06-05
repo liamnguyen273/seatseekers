@@ -130,10 +130,14 @@ namespace com.tinycastle.SeatSeekers
         
         [Header("Main Game references")]
         [SerializeField] private CompWrapper<MainGameManager> _mainGameManager;
+
+        [SerializeField] private List<RectTransform> _bannerDodgables;
         
         private LogObj Log { get; set; }
 
         public WaitScreenHelper WaitHelper => _waitHelper;
+
+        public List<RectTransform> BannerDodgables => _bannerDodgables;
         
         public PurchaseManager Purchase { get; private set; }
         
@@ -228,6 +232,13 @@ namespace com.tinycastle.SeatSeekers
         private void OnInitializationLoadingOver()
         {
             Log.Success("Game started, continue to load game screens.");
+
+            var hasAdFree = GM.Instance.Get<GameSaveManager>().GetAdSkippability(AdRequestType.BANNER_AD);
+
+            foreach (var dod in BannerDodgables)
+            {
+                dod.anchorMin = new Vector2(dod.anchorMin.x, hasAdFree ? 0f : 0.08f);
+            }
         }
 
         private void Update()

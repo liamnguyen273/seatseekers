@@ -1,3 +1,4 @@
+using System;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using UnityEngine;
@@ -6,10 +7,11 @@ namespace com.tinycastle.SeatSeekers
 {
     public class PopupRefill : PopupBehaviour
     {
-        [SerializeField] private CompWrapper<UIButton> _adButton;
+        [SerializeField] private CompWrapper<TextLocalizer> _timerText;
+        [SerializeField] private CompWrapper<UIButton> _adButtonx2;
         [SerializeField] private CompWrapper<UIButton> _xButton = "./Panel/TitleGroup/RightButtonGroup/XButton";
-        
-        public float Timer { get; set; }
+
+        public float Timer { get; set; } = 30f;
         
         private void Awake()
         {
@@ -20,31 +22,34 @@ namespace com.tinycastle.SeatSeekers
         {
             if (Timer <= 0f)
             {
-                _adButton.SetGOActive(false);
+                _adButtonx2.SetGOActive(false);
             }
             else
             {
-                _adButton.SetGOActive(true);
+                _adButtonx2.SetGOActive(true);
             }
+
+            var timespan = TimeSpan.FromSeconds(Timer);
+            _timerText.Comp.Text = timespan.ToString(@"mm\:ss");
             
             base.InnateOnShowStart();
         }
 
         private void Update()
         {
-            if (Timer > 0f)
+            if (!(Timer > 0f)) return;
+            
+            Timer -= Time.unscaledDeltaTime;
+            var timespan = TimeSpan.FromSeconds(Timer);
+            _timerText.Comp.Text = timespan.ToString(@"mm\:ss");
+            if (Timer <= 0f)
             {
-                Timer -= Time.unscaledDeltaTime;
-                if (Timer <= 0f)
-                {
-                    _adButton.SetGOActive(false);
-                }
+                _adButtonx2.SetGOActive(false);
             }
         }
 
         protected override void InnateOnHideEnd()
         {
-            Timer = 0f;
             base.InnateOnHideEnd();
         }
     }
