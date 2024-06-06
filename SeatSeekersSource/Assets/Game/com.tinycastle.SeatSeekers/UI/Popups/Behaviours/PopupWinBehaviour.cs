@@ -37,7 +37,7 @@ namespace com.tinycastle.SeatSeekers
         protected override void InnateOnShowStart()
         {
             base.InnateOnShowStart();
-            
+            _adButtonTimer = true;
             _doubleCoinButton.Comp.Interactable = true;
             _continueButton.Comp.Interactable = true;
 
@@ -55,6 +55,8 @@ namespace com.tinycastle.SeatSeekers
             {
                 var saveManager = GM.Instance.Get<GameSaveManager>();
                 saveManager.PlayerData.SetInCompletedLevels(_entry.Id, true);
+                GM.Instance.Get<PopupManager>().GetPopup(out PopupRefill refill);
+                refill.Timer = 30f;
                 saveManager.SavePlayerData();
             }
             else
@@ -98,6 +100,7 @@ namespace com.tinycastle.SeatSeekers
             GoToNextLevel();
         }
 
+        private bool _adButtonTimer = true;
         private void OnContinueButton()
         {
             _doubleCoinButton.Comp.Interactable = false;
@@ -130,7 +133,7 @@ namespace com.tinycastle.SeatSeekers
             else
             {
                 GM.Instance.Get<MainGameManager>().ForceClearLevel();
-                GM.Instance.RequestPlayLevelWithValidation(nextLevel);
+                GM.Instance.RequestPlayLevelWithValidation(nextLevel, ref _adButtonTimer);
             }
         }
     }

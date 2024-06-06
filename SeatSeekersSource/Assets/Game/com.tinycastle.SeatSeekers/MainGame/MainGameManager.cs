@@ -266,7 +266,8 @@ namespace com.tinycastle.SeatSeekers
             if (_levelEntry is null) return;
             SetState(GameState.EXIT, false);
             SetState(GameState.OUTSIDE_GAME, false);
-            GM.Instance.RequestPlayLevelWithValidation(_levelEntry);
+            var hasAdButtonTimer = false;
+            GM.Instance.RequestPlayLevelWithValidation(_levelEntry, ref hasAdButtonTimer);
         }
 
         public bool HasNextLevel(out LevelEntry entry)

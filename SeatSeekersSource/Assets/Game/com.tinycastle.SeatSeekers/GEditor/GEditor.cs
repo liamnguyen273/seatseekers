@@ -79,6 +79,12 @@ namespace com.tinycastle.SeatSeekers
         {
             if (gen.LevelData.Playable && !overrideData)
             {
+                var gridC = gen.LevelData.Grid;
+                if (gridC[gen.LevelData.Width - 1] == 0)
+                {
+                    gridC[gen.LevelData.Width - 1] = (int)SeatEnum.BLUE + gen.GenColorCount - 1;
+                }
+                
                 return;
             }
 
@@ -165,6 +171,11 @@ namespace com.tinycastle.SeatSeekers
                     availableCells.RemoveAt(availableCells.Count - 1);
                     grid[cellI] = color;
                 }
+            }
+
+            if (grid[w - 1] == 0)
+            {
+                grid[w - 1] = (int)SeatEnum.BLUE + colorSeatCount;
             }
             
             logger.AppendLine($"Generation completed.");

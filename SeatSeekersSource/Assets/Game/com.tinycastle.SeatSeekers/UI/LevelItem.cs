@@ -31,6 +31,10 @@ namespace com.tinycastle.SeatSeekers
 
         public void SetLevel(LevelEntry levelEntry, bool isUnlocked, bool isCurrent)
         {
+#if UNITY_EDITOR
+            isUnlocked = true;
+#endif
+            
             _entry = levelEntry;
             _isCurrent = isCurrent;
             _isUnlocked = isUnlocked;
@@ -46,7 +50,8 @@ namespace com.tinycastle.SeatSeekers
         {
             if (!_isUnlocked || _entry == null) return;
 
-            GM.Instance.RequestPlayLevelWithValidation(_entry);
+            var aa = false;
+            GM.Instance.RequestPlayLevelWithValidation(_entry, ref aa);
         }
     }
 }

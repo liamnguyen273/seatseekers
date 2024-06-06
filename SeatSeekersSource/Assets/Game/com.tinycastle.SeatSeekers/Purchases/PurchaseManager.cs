@@ -81,6 +81,7 @@ namespace com.tinycastle.SeatSeekers
             if (price > currentResourceCount)
             {
                 onComplete?.Invoke(false);
+                return;
             }
 
             currentResourceCount -= price;

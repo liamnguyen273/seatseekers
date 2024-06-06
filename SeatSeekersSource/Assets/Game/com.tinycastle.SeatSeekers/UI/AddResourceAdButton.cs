@@ -47,6 +47,9 @@ namespace com.tinycastle.SeatSeekers
             }, () =>
             {
                 // Do nothing
+                var popup = GM.Instance.Get<PopupManager>().GetPopup(out PopupBehaviourGeneric generic);
+                generic.SetupAsNotify("Uh oh", "Reward ad is not available at the moment, try again later.");
+                popup.Show();
             }), out _);
         }
     }
