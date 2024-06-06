@@ -203,8 +203,8 @@
 		"buyResolution": "add_resource",
 		"resolutionData": "50000 coin"
 	},
-	"gold_pack_6": {
-		"id": "gold_pack_6",
+	"gold_pack_6_fix": {
+		"id": "gold_pack_6_fix",
 		"listingName": "Gold Pack 6",
 		"description": "Gold Pack 6",
 		"type": "resources",
