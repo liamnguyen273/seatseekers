@@ -207,7 +207,12 @@ namespace com.tinycastle.SeatSeekers
     public partial class PlayerData
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [AccessorNotify]
         public Dictionary<string, bool> completedLevels;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] 
+        [AccessorNotify]
+        public Dictionary<string, (int progress, int total)> questProgresses;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [AccessorNotify]
@@ -226,6 +231,10 @@ namespace com.tinycastle.SeatSeekers
 
         [AccessorNotify] public int energyRechargeTimer;
 
+        [AccessorNotify] public bool hasIAP;
+        [AccessorNotify] public bool hasPlayedMultiplayer;
+        [AccessorNotify] public bool hasReturned;
+
         [JsonConstructor]
         public PlayerData()
         {
@@ -242,9 +251,15 @@ namespace com.tinycastle.SeatSeekers
                 { Constants.ENERGY_RESOURCE, Constants.MAX_ENERGY },
                 { Constants.INFINITE_ENERGY_RESOURCE, 0 },
             };
+            
+            
             tutorialPlayed = false;
             lastModified = DateTime.UtcNow;
             energyRechargeTimer = 0;
+
+            hasIAP = false;
+            hasPlayedMultiplayer = false;
+            hasReturned = false;
         }
     }
 }
