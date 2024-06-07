@@ -8,19 +8,20 @@ namespace com.brg.Unity.Singular
     {
         private IProgress _initProgress;
         
-        public bool Initialized => SingularSDK.Initialized;
+        public bool Initialized => true;
         
         public IProgress Initialize()
         {
             if (_initProgress != null) return _initProgress;
             
+#if !UNITY_EDITOR
             var sdk = SingularSDK.Instance;
-            if (!sdk.InitializeOnAwake)
-            {
-                SingularSDK.InitializeSingularSDK();
-            }
+            SingularSDK.InitializeSingularSDK();
+#endif
 
-            return new SingleProgress(() => Initialized, () => Initialized, null, 1f);
+            LogObj.Default.Info("SingularServiceAdapter", "initialized.");
+            _initProgress = new SingleProgress(() => Initialized, () => Initialized, null, 1f);
+            return _initProgress;
         }
         
         public void SendEvent(AnalyticsEventBuilder eventBuilder)

@@ -3,45 +3,39 @@
     "m_SelectedProcess": {
         "deviceId": "c780fb96",
         "name": "com.tinycastle.seatseekers",
-        "processId": 19316,
+        "processId": 19055,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownProcessesForSerialization": [
         {
             "deviceId": "c780fb96",
-            "name": "com.android.vending",
-            "processId": 1955,
-            "exited": true
-        },
-        {
-            "deviceId": "c780fb96",
-            "name": "com.google.android.apps.nbu.files",
-            "processId": 4960,
+            "name": "com.tinycastle.seatseekers",
+            "processId": 15576,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 8183,
+            "processId": 16071,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 28298,
+            "processId": 16853,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 8457,
-            "exited": false
+            "processId": 17729,
+            "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 19316,
+            "processId": 19055,
             "exited": false
         }
     ],
@@ -99,7 +93,7 @@
         "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "Purchase",
+        "m_Filter": "levelplay",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

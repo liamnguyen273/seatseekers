@@ -98,16 +98,21 @@ public class SingularSDK : MonoBehaviour {
     void Awake() {
         Debug.Log(string.Format("SingularSDK Awake, InitializeOnAwake={0}", InitializeOnAwake));
 
-        if (Application.isEditor) {
-            return;
-        }
-
+        // if (Application.isEditor) {
+        //     return;
+        // }
+        
         if (instance)
             return;
 
         // Initialize singleton
         instance = this;
-
+        
+#if UNITY_EDITOR
+        Initialized = true;
+        return;
+#endif
+        
         // Keep this script running when another scene loads
         DontDestroyOnLoad(gameObject);
 

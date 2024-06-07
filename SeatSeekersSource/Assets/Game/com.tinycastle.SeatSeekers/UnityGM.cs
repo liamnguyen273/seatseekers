@@ -159,7 +159,6 @@ namespace com.tinycastle.SeatSeekers
             // Make managers
             var dataManager = new GameDataManager();
             var saveManager = new GameSaveManager(new PlayerDataAccessor());
-            saveManager.AddDependencies(dataManager);
             
             var localizationManager = new LocalizationManager(saveManager, GMUtils.MakeLocalizationSuppliers());
             var analyticsEventManager = new AnalyticsEventManager(GMUtils.MakeAnalyticsAdapters());
@@ -169,21 +168,23 @@ namespace com.tinycastle.SeatSeekers
             var popupManager = _unityPopupManager.Comp.Comp;
             
             var unityAdManager = _unityAdManager.Comp;
-            var adManager = new AdManager(saveManager, analyticsEventManager, GMUtils.MakeAdServiceProviders());
-            adManager.AddDependencies(consentManager);
+            var adManager = new AdManager(saveManager, null, GMUtils.MakeAdServiceProviders());
             unityAdManager.Comp = adManager;
+            
+            var purchaseManager = new PurchaseManager();
+            Purchase = purchaseManager;
 
             var mainGameManager = _mainGameManager.Comp;
             
             Log.Success("Created managers.");
             
             // Establish dependencies
+            saveManager.AddDependencies(dataManager);
             localizationManager.AddDependencies(saveManager);
+            adManager.AddDependencies(consentManager);
+            adManager.AddDependencies(analyticsEventManager);
             adManager.AddDependencies(saveManager);
-            
-            var purchaseManager = new PurchaseManager();
             purchaseManager.AddDependencies(saveManager, dataManager);
-            Purchase = purchaseManager;
             
             Log.Success("Established managers' dependencies.");
                         
@@ -191,13 +192,13 @@ namespace com.tinycastle.SeatSeekers
             var gm = new GM(new IGameComponent[]
             {
                 _loadingScreen.Comp,
-                consentManager,
                 dataManager, 
                 saveManager, 
-                localizationManager,
+                consentManager,
                 analyticsEventManager,
-                popupManager,
+                localizationManager,
                 adManager,
+                popupManager,
                 mainGameManager,
                 purchaseManager
             });
@@ -294,6 +295,11 @@ namespace com.tinycastle.SeatSeekers
                 _playerData.EnergyRechargeTimer = _timer;
             }
         }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            IronSource.Agent.onApplicationPause(pauseStatus);
+        }
     }
 
     internal static class GMUtils
@@ -304,8 +310,8 @@ namespace com.tinycastle.SeatSeekers
 
             var firebaseAdapter = new FirebaseServiceAdapter();
             list.Add(firebaseAdapter);
-            var singularAdapter = new SingularServiceAdapter();
-            list.Add(singularAdapter);
+            // var singularAdapter = new SingularServiceAdapter();
+            // list.Add(singularAdapter);
             
             return list.ToArray();
         }
