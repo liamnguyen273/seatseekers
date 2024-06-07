@@ -1,0 +1,1281 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.brg.UnityCommon</name>
+    </assembly>
+    <members>
+        <member name="T:com.brg.UnityCommon.UnityAdManager">
+            <summary>
+            Ad Manager Unity's wrapper that handle ad requests: Loading, showing and hiding ads using <see cref="T:com.brg.Common.IAdServiceProvider"/>,
+            as well as handling the result.
+            </summary>
+            <remarks>
+            A wrapper for <see cref="T:com.brg.Common.AdManager"/>
+            </remarks>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityAdManager.SetPlayables(com.brg.UnityCommon.IInOutPlayable)">
+            <summary>
+            Set playables for overlaying ads showing and hiding.
+            </summary>
+            <param name="overlayAdInOutPlayable">Playable to be set</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityAdManager.RequestAd(com.brg.Common.AdRequest)">
+            <summary>
+            Request an ad, if the ad is an overlaying ad, show the ad canvas.
+            </summary>
+            <param name="request">The ad request.</param>
+            <returns>The showing progress.</returns>
+        </member>
+        <member name="T:com.brg.UnityCommon.SpawnableEffectAttribute">
+            <summary>
+            Use this attribute to mark a MonoBehaviour as a spawnable effect
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.SpawnableEffectAttribute.#ctor(System.String,System.Type)">
+            <summary>
+            Creates a <see cref="T:com.brg.UnityCommon.SpawnableEffectAttribute"/>.
+            </summary>
+            <param name="accessorName">Name of the exposed effect.</param>
+            <param name="effectMakerClass">Type of the effect maker class.</param>
+        </member>
+        <member name="T:com.brg.UnityCommon.StandaloneEffectAttribute">
+            <summary>
+            Use this attribute to mark a class as a standalone effect.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.EffectHelper">
+            <summary>
+            A MonoBehaviour that helps effect makers (derived from <see cref="T:com.brg.UnityCommon.EffectMakerBase"/>) to initialize
+            and spawn effects during runtime.
+            </summary>
+        </member>
+        <member name="F:com.brg.UnityCommon.EffectHelper.ExplicitName">
+            <summary>
+            Name of the effect.
+            </summary>
+        </member>
+        <member name="F:com.brg.UnityCommon.EffectHelper.SpawnablePrefab">
+            <summary>
+            Prefab for the spawnable.
+            </summary>
+        </member>
+        <member name="F:com.brg.UnityCommon.EffectHelper.DesignatedHost">
+            <summary>
+            Host for the spawnable.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.EffectMakerBase">
+            <summary>
+            Abstract class for an effect maker.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.EffectMakerBase.#ctor(System.Collections.Generic.IEnumerable{com.brg.UnityCommon.EffectHelper},System.Collections.Generic.IEnumerable{com.brg.UnityCommon.IStandaloneEffect})">
+            <summary>
+            Created an effect maker.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.EffectMakerBase.InitializeBehaviourAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.EffectMakerBase.InitializeSpawnableEffects">
+            <summary>
+            Initialize all pools, should not be manually overriden.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityComp`1">
+            <summary>
+            Abstract wrapper class for a <see cref="T:com.brg.Common.GameComponent"/> that extends Unity's <see cref="T:UnityEngine.MonoBehaviour"/>.
+            </summary>
+            <typeparam name="T">Type of the <see cref="T:com.brg.Common.GameComponent"/> that this class wraps.</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Comp">
+            <summary>
+            The wrapped component.
+            </summary>
+            <exception cref="T:System.Exception">Thrown when the wrapper wrapped a null, or haven't wrapped any component,
+            or trying to set a new component when the current one has NOT finished initialization.</exception>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Initialized">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Activated">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.Paused">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp`1.InitializationProgress">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.Resume">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp`1.op_Explicit(com.brg.UnityCommon.UnityComp{`0})~`0">
+            <summary>
+            Expose the underlying component
+            </summary>
+            <param name="wrapper"></param>
+            <returns>The wrapped component.</returns>
+            <exception cref="T:System.Exception">Thrown when the wrapper wrapped a null, or haven't wrapped any component,
+            or trying to set a new component when the current one has finished initialization.</exception>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityComp">
+            <summary>
+            Abstract class for a standalone game component that can be initialized, activated, deactivated and pause.
+            <para>
+            This class should have the exact implementation as <see cref="T:com.brg.Common.GameComponent"/>
+            </para>
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.InitializationProgress">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Initialized">
+            <summary>
+            Whether the component has been successfully initialized.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Activated">
+            <summary>
+            Whether the component is activated.
+            </summary>
+            <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully.
+            </remarks>
+        </member>
+        <member name="P:com.brg.UnityCommon.UnityComp.Paused">
+            <summary>
+            Whether the component is paused.
+            </summary>
+            /// <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully, or deactivated.
+            </remarks>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.Resume">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.UnityLogWriter">
+            <summary>
+            Log Writer that uses Unity's <see cref="T:UnityEngine.Debug"/> to log.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IColliderPropagatorTarget">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.ICollider2DPropagatorTarget">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.ITriggerPropagatorTarget">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.ITrigger2DPropagatorTarget">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IPlayable">
+            <summary>
+            Interface for a single playable animation. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IPlayable.Play(System.Action)">
+            <summary>
+            Play the animation, do not replay if already playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IPlayable.Complete">
+            <summary>
+            Complete the playable.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IPlayable.Kill">
+            <summary>
+            Kill the currently playing animation. Do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IInOutPlayable">
+            <summary>
+            Interface for a set of two mutually exclusive playable animation. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.PlayIn(System.Action)">
+            <summary>
+            Play the "in" animation, do not play if "in" animation is already playing.
+            Kill the "out" animation if it is playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.PlayOut(System.Action)">
+            <summary>
+            Play the "out" animation, do not play if "out" animation is already playing.
+            Kill the "in" animation if it is playing.
+            </summary>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.CompleteIn">
+            <summary>
+            Complete the in playable if playing.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.CompleteOut">
+            <summary>
+            Complete the out playable if playing.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IInOutPlayable.Kill">
+            <summary>
+            Kill the currently "in" or "out" animation. Do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.IAnyPlayable">
+            <summary>
+            Interface for a set of (not necessarily exclusives) playable animations. Complete callback will be removed once the playable
+            finished playing, or is killed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.Play(System.String,System.Action)">
+            <summary>
+            Play animation by name, do not replay if the animation is already playing.
+            </summary>
+            <param name="animationName">Name of the animation to play.</param>
+            <param name="completeCallback">Callback to invoke on complete.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.CompleteCurrent">
+            <summary>
+            Complete the current playing playable.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.Complete(System.String)">
+            <summary>
+            Complete animation with name <paramref name="name"/> if playing.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.IAnyPlayable.Kill">
+            <summary>
+            Kill the all currently playing animation, do not invoke complete callbacks.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.ComponentPool`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.ComponentPool`1.SpawnedObjects">
+            <summary>
+            Set of all the spawned objects.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.#ctor(UnityEngine.GameObject,UnityEngine.GameObject,System.Action{`0},System.Action{`0})">
+            <summary>
+            Creates a component <typeparamref name="T"/> pool. The initial game objects are searched from direct children of <paramref name="host"/>.
+            </summary>
+            <param name="host">The host for pooled game objects.</param>
+            <param name="prefab">The prefab of the pooled game object.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.ComponentPool`1.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.TryGet(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.Return(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ComponentPool`1.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.GameObjectPool">
+            <summary>
+            Implementation of a pool for UnityEngine's <see cref="T:UnityEngine.GameObject"/> that resides on a host when in the pool.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.#ctor(UnityEngine.GameObject,UnityEngine.GameObject,System.Action{UnityEngine.GameObject},System.Action{UnityEngine.GameObject})">
+            <summary>
+            Creates a GameObject pool. The initial game objects are searched from direct children of <paramref name="host"/>.
+            </summary>
+            <param name="host">The host for pooled game objects.</param>
+            <param name="prefab">The prefab of the pooled game object.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.GameObjectPool.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.TryGet(UnityEngine.GameObject@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.Return(UnityEngine.GameObject)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.GameObjectPool.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.ObjectPool`1">
+            <summary>
+            Class for a generic implementation of object pool.
+            </summary>
+            <comment>
+            Implement destroy and max size in the future.
+            </comment>
+            <typeparam name="T">Type of the instance this pool manages.</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.ObjectPool`1.SpawnedObjects">
+            <summary>
+            Set of all the spawned objects.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Action{`0},System.Action{`0},System.Func{`0})">
+            <summary>
+            Creates an object pool
+            </summary>
+            <param name="initialInstances">Supplied list of initial instances.</param>
+            <param name="getProcessor">Action to perform on an instance before it is retrieved from <see cref="M:com.brg.UnityCommon.ObjectPool`1.Get"/>.</param>
+            <param name="returnProcessor">Action to perform on an instance after it is returned to pool.</param>
+            <param name="instanceCreator">Function to return a new instance, lest the pool ran out of instances.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.Get">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.TryGet(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.Return(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.ObjectPool`1.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.PolymorphicComponentPool`1">
+            <summary>
+            
+            </summary>
+            <remarks>"Polymorphic is not the right word for the functionality of this class.</remarks>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.PolymorphicComponentPool`1.SpawnedObjects">
+            <summary>
+            Set of all the spawned objects. Not recommended to call this as this performs a concatenation of all sub-pools.
+            </summary>
+            <remarks>
+            Use <see cref="M:com.brg.UnityCommon.PolymorphicComponentPool`1.IterateSpawnObjects"/> instead.
+            </remarks>
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.IterateSpawnObjects">
+            <summary>
+            Iterate through all spawned objects, the iteration order is not guaranteed.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.#ctor(UnityEngine.GameObject,System.Action{`0},System.Action{`0},System.ValueTuple{System.Type,System.Func{`0}}[])">
+            <summary>
+            
+            </summary>
+            <param name="host"></param>
+            <param name="getProcessor"></param>
+            <param name="returnProcessor"></param>
+            <param name="childClasses"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.Get``1">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.Get(System.Type)">
+            <summary>
+            Get an instance by Type.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.TryGet``1(``0@)">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.Return(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PolymorphicComponentPool`1.ReturnAll">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.UnityCommon.PlayerPrefsAccessor`1">
+            <summary>
+            Abstract class for a Unity's PlayerPrefs accessor.
+            </summary>
+            <typeparam name="TData">The accessor's data type.</typeparam>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsAccessor`1.#ctor(System.String)">
+            <summary>
+            Creates an accessor at the key <paramref name="key"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsAccessor`1.ReadDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsAccessor`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsAccessor`1.WriteDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.UnityCommon.PlayerPrefsSaver`1">
+            <summary>
+            Abstract class that reads and write data a key in PlayerPrefs containing a serialized <typeparamref name="T"/> instance.
+            </summary>
+            <typeparam name="T">Type of the data</typeparam>
+        </member>
+        <member name="P:com.brg.UnityCommon.PlayerPrefsSaver`1.HasModifiedData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.GetData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.SetModified(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.PlayerPrefsSaver`1.WriteDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.Utils.FromHex(System.String)">
+            <summary>
+            Gets a <see cref="T:UnityEngine.Color"/> from hex.
+            </summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.Extensions">
+            <summary>
+            Extensions for UnityCommon
+            </summary>
+            <summary>
+            Utilities for UnityCommon
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.TraversePath(UnityEngine.GameObject,System.Boolean,System.String)">
+            <summary>
+            Traverse and find a <see cref="T:UnityEngine.GameObject"/> at the path <paramref name="path"/> from <paramref name="baseGo"/> if relative, otherwise from scene root.
+            </summary>
+            <param name="baseGo">The starting point of the traversal.</param>
+            <param name="isRelative">Whether the search is relative from <paramref name="baseGo"/> or the scene root.</param>
+            <param name="path">The path to traverse.</param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RegeneratePathUpTo(UnityEngine.GameObject,UnityEngine.GameObject)">
+            <summary>
+            If <paramref name="go"/> is child of <paramref name="baseGo"/>: get path from <paramref name="baseGo"/> to <paramref name="go"/>;
+            otherwise get path from scene root.
+            </summary>
+            <param name="go">The child object.</param>
+            <param name="baseGo">The (possible) parent object.</param>
+            <returns>The path either from <paramref name="baseGo"/> to <paramref name="go"/> or path from scene root.</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RegeneratePathUpTo(UnityEngine.GameObject,UnityEngine.GameObject,System.Boolean@)">
+            <summary>
+            If <paramref name="go"/> is child of <paramref name="baseGo"/>: get path from <paramref name="baseGo"/> to <paramref name="go"/>;
+            otherwise get path from scene root.
+            </summary>
+            <param name="go">The child object.</param>
+            <param name="baseGo">The (possible) parent object.</param>
+            <param name="isRelative">Out variable to indicate whether <param name="go"> is child of <param name="baseGo"></param></param></param>
+            <returns>The path either from <paramref name="baseGo"/> to <paramref name="go"/> or path from scene root.</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetFullPath(UnityEngine.GameObject)">
+            <summary>
+            Get full path from scene root to <paramref name="obj"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetRelativePath(UnityEngine.GameObject,UnityEngine.GameObject)">
+            <summary>
+            Get path from <paramref name="parent"/> to <paramref name="obj"/>
+            </summary>
+            <param name="obj"></param>
+            <param name="parent"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetDirectOrderedChildComponents``1(UnityEngine.GameObject)">
+            <summary>
+            Get components of type <typeparamref name="T"/> that are attached to the direct children of <paramref name="go"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetDirectOrderedChildComponents``1(UnityEngine.Transform)">
+            <summary>
+            Get components of type <typeparamref name="T"/> that are attached to the direct children of <paramref name="transform"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetMonoBehaviourOfType``1(UnityEngine.Transform)">
+            <summary>
+            Scans all <see cref="T:UnityEngine.MonoBehaviour"/> of <paramref name="transform"/> and select
+            all components of type <see cref="!:T"/>.
+            </summary>
+            <param name="transform"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetMonoBehaviourOfType``1(UnityEngine.GameObject)">
+            <summary>
+            Scans all <see cref="T:UnityEngine.MonoBehaviour"/> of <paramref name="gameObject"/> and select
+            all components of type <see cref="!:T"/>.
+            </summary>
+            <param name="gameObject"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DestroyAllChildren(UnityEngine.Transform)">
+            <summary>
+            Destroy all children of <paramref name="transform"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DestroyAllChildrenImmediately(UnityEngine.Transform)">
+            <summary>
+            Destroy all children of <paramref name="transform"/> immediately.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.SetGOActive(UnityEngine.Component,System.Boolean)">
+            <summary>
+            Shorthand to toggle activity of the component's game object.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.GetRootCanvas(UnityEngine.GameObject)">
+            <summary>
+            Get Root canvas of the game object (parent-most Canvas that does not have a sorting override.
+            </summary>
+            <param name="gameObject">The GameObject to find root canvas of.</param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.FitRectTransformTo(UnityEngine.RectTransform,UnityEngine.RectTransform)">
+            <summary>
+            Reset anchor of a RectTransform, then readjust its width and height to fit into <paramref name="target"/>
+            </summary>
+            <param name="rect"></param>
+            <param name="target"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RotateByRad(UnityEngine.Vector2,System.Single)">
+            <summary>
+            Rotate a <see cref="T:UnityEngine.Vector2"/> by <paramref name="radian"/> randians.
+            </summary>
+            <returns>The rotated vector</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RotateByDeg(UnityEngine.Vector2,System.Single)">
+            <summary>
+            Rotate a <see cref="T:UnityEngine.Vector2"/> by <paramref name="degree"/> degrees.
+            </summary>
+            <returns>The rotated vector</returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.RadRotation(UnityEngine.Vector2)">
+            <summary>
+            Get the argument of a <see cref="T:UnityEngine.Vector2"/> in radians.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.DegRotation(UnityEngine.Vector2)">
+            <summary>
+            Get the argument of a <see cref="T:UnityEngine.Vector2"/> in degrees.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddX(UnityEngine.Transform,System.Single)">
+            <summary>Add to X component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddY(UnityEngine.Transform,System.Single)">
+            <summary>Add to Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddZ(UnityEngine.Transform,System.Single)">
+            <summary>Add to Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosAddXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Add to X, Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddX(UnityEngine.Transform,System.Single)">
+            <summary>Add to X component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddY(UnityEngine.Transform,System.Single)">
+            <summary>Add to Y component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddZ(UnityEngine.Transform,System.Single)">
+            <summary>Add to Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Y component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to Y and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosAddXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Add to X, Y and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultX(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to X component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultY(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultZ(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosMultXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Multiply to X, Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultX(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to X component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultY(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Y component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultZ(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to Y and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosMultXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Multiply to X, Y and Z component of a transform's position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddX(UnityEngine.Transform,System.Single)">
+            <summary>Add to X component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddY(UnityEngine.Transform,System.Single)">
+            <summary>Add to Y component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddZ(UnityEngine.Transform,System.Single)">
+            <summary>Add to Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Y component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to X and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Add to Y and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleAddXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Add to X, Y and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultX(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to X component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultY(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Y component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultZ(UnityEngine.Transform,System.Single)">
+            <summary>Multiply to Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to X and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Multiply to Y and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalScaleMultXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Multiply to X, Y and Z component of a transform's local scale</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetX(UnityEngine.Transform,System.Single)">
+            <summary>Set X component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetY(UnityEngine.Transform,System.Single)">
+            <summary>Set Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetZ(UnityEngine.Transform,System.Single)">
+            <summary>Set Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set X and Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set X and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.LocalPosSetXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Set X, Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetX(UnityEngine.Transform,System.Single)">
+            <summary>Set X component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetY(UnityEngine.Transform,System.Single)">
+            <summary>Set Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetZ(UnityEngine.Transform,System.Single)">
+            <summary>Set Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetXY(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set X and Y component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetXZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set X and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetYZ(UnityEngine.Transform,System.Single,System.Single)">
+            <summary>Set Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.PosSetXYZ(UnityEngine.Transform,System.Single,System.Single,System.Single)">
+            <summary>Set X, Y and Z component of a transform's local position</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddX(UnityEngine.Vector2,System.Single)">
+            <summary>Add to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddY(UnityEngine.Vector2,System.Single)">
+            <summary>Add to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXY(UnityEngine.Vector2,System.Single,System.Single)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddX(UnityEngine.Vector3,System.Single)">
+            <summary>Add to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddY(UnityEngine.Vector3,System.Single)">
+            <summary>Add to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddZ(UnityEngine.Vector3,System.Single)">
+            <summary>Add to Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXY(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddYZ(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Add to Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXZ(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXYZ(UnityEngine.Vector3,System.Single,System.Single,System.Single)">
+            <summary>Add to X, Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddX(UnityEngine.Vector2Int,System.Int32)">
+            <summary>Add to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddY(UnityEngine.Vector2Int,System.Int32)">
+            <summary>Add to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXY(UnityEngine.Vector2Int,System.Int32,System.Int32)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddX(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Add to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddY(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Add to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddZ(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Add to Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXY(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddYZ(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Add to Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXZ(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Add to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.AddXYZ(UnityEngine.Vector3Int,System.Int32,System.Int32,System.Int32)">
+            <summary>Add to X, Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultX(UnityEngine.Vector2,System.Single)">
+            <summary>Multiply to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultY(UnityEngine.Vector2,System.Single)">
+            <summary>Multiply to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXY(UnityEngine.Vector2,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultX(UnityEngine.Vector3,System.Single)">
+            <summary>Multiply to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultY(UnityEngine.Vector3,System.Single)">
+            <summary>Multiply to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultZ(UnityEngine.Vector3,System.Single)">
+            <summary>Multiply to Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXY(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultYZ(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Multiply to Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXZ(UnityEngine.Vector3,System.Single,System.Single)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXYZ(UnityEngine.Vector3,System.Single,System.Single,System.Single)">
+            <summary>Multiply to X, Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultX(UnityEngine.Vector2Int,System.Int32)">
+            <summary>Multiply to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultY(UnityEngine.Vector2Int,System.Int32)">
+            <summary>Multiply to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXY(UnityEngine.Vector2Int,System.Int32,System.Int32)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultX(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Multiply to X component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultY(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Multiply to Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultZ(UnityEngine.Vector3Int,System.Int32)">
+            <summary>Multiply to Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXY(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultYZ(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Multiply to Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXZ(UnityEngine.Vector3Int,System.Int32,System.Int32)">
+            <summary>Multiply to X and Y component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.MultXYZ(UnityEngine.Vector3Int,System.Int32,System.Int32,System.Int32)">
+            <summary>Multiply to X, Y and Z component of Vector</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XYVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from X and Y of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YXVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from Y and X of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XZVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from X and Z of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZXVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from Z and X of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YZVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from Y and Z of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZYVec2(UnityEngine.Vector3)">
+            <summary>Create a Vector2 from Z and Y of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XYVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from X and Y of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YXVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from Y and X of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XZVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from X and Z of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZXVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from Z and X of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YZVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from Y and Z of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZYVec2(UnityEngine.Vector3Int)">
+            <summary>Create a Vector2Int from Z and Y of <see cref="!:v"/>.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.Decompose(UnityEngine.Vector2)">
+            <summary>Decompose a Vector2.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.Decompose(UnityEngine.Vector2Int)">
+            <summary>Decompose a Vector2Int.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.Decompose(UnityEngine.Vector3)">
+            <summary>Decompose a Vector3.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.Decompose(UnityEngine.Vector3Int)">
+            <summary>Decompose a Vector3.</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XYZ(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (X, Y, Z)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YZX(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (Y, Z, X)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZXY(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (Z, X, Y)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XZY(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (X, Z, Y)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZYX(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (Z, Y, X)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YXZ(UnityEngine.Vector3)">
+            <summary>Get the Vector3 (Y, X, Z)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XYZ(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (X, Y, Z)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YZX(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (Y, Z, X)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZXY(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (Z, X, Y)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.XZY(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (X, Z, Y)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.ZYX(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (Z, Y, X)</summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Extensions.YXZ(UnityEngine.Vector3Int)">
+            <summary>Get the Vector3Int (Y, X, Z)</summary>
+        </member>
+        <member name="T:com.brg.UnityCommon.Editor.CompWrapper`1">
+            <summary>
+            Class that wraps a Unity's Component, bundling it with a path from its parent for validation purposes during runtime.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.CompWrapper`1.Transform">
+            <summary>
+            The Component's transform.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.CompWrapper`1.GameObject">
+            <summary>
+            The GameObject's game object.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.CompWrapper`1.Comp">
+            <summary>
+            The underlying Component.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.CompWrapper`1.NullableComp">
+            <summary>
+            Get the nullable comp, do not perform validation.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.#ctor(System.String)">
+            <summary>
+            Creates a CompWrapper from a path, with empty component.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.#ctor">
+            <summary>
+            Creates a CompWrapper that points to the current GameObject.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.SetUp(`0,UnityEngine.GameObject)">
+            <summary>
+            Set the wrapper with new values.
+            </summary>
+            <param name="comp">The component to set</param>
+            <param name="parent">The parent, or null if it is from scene.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.SetGOActive(System.Boolean)">
+            <summary>
+            Shorthand to toggle the underlying GameObject's active state
+            </summary>
+            <param name="active"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.SetCompEnabled(System.Boolean)">
+            <summary>
+            Set the component enabled state, if it is a MonoBehaviour.
+            </summary>
+            <param name="enabled"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.op_Implicit(System.String)~com.brg.UnityCommon.Editor.CompWrapper{`0}">
+            <summary>
+            Implicit conversion of a path into a wrapper.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.CompWrapper`1.op_Implicit(com.brg.UnityCommon.Editor.CompWrapper{`0})~`0">
+            <summary>
+            Implicit conversion from wrapper into the underlying component.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="T:com.brg.UnityCommon.Editor.GOWrapper">
+            <summary>
+            Class that wraps a GameObject, bundling it with a path from its parent for validation purposes during runtime.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.GOWrapper.Transform">
+            <summary>
+            The GameObject's transform.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.GOWrapper.GameObject">
+            <summary>
+            The GameObject's game object.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.GOWrapper.Comp">
+            <summary>
+            The GameObject's game object. Performs a validation.
+            </summary>
+        </member>
+        <member name="P:com.brg.UnityCommon.Editor.GOWrapper.NullableComp">
+            <summary>
+            Get the nullable comp, do not perform validation.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.#ctor(System.String)">
+            <summary>
+            Creates a wrapper pointed at <paramref name="path"/>.
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.#ctor">
+            <summary>
+            Creates a wrapper pointed to self.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.SetUp(UnityEngine.GameObject,UnityEngine.GameObject)">
+            <summary>
+            Set the wrapper with new values.
+            </summary>
+            <param name="comp">The GameObject</param>
+            <param name="parent">The parent, or null if it is from scene.</param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.SetActive(System.Boolean)">
+            <summary>
+            Shorthand to toggle the GameObject's active state
+            </summary>
+            <param name="active"></param>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.op_Implicit(System.String)~com.brg.UnityCommon.Editor.GOWrapper">
+            <summary>
+            Implicit conversions= of a path to GOWrapper.
+            </summary>
+            <param name="path"></param>`
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.UnityCommon.Editor.GOWrapper.op_Implicit(com.brg.UnityCommon.Editor.GOWrapper)~UnityEngine.GameObject">
+            <summary>
+            Implicit conversion of wrapper to the underlying GameObject.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="E:com.brg.Common.EventWrapper.FunctionalEvent">
+            <summary>
+            Underlying C# event.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.EventWrapper.UnityEvent">
+            <summary>
+            Underlying Unity Event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper.Invoke">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper.ClearEvents">
+            <summary>
+            Clear all subscribers of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper.op_Addition(com.brg.Common.EventWrapper,System.Action)">
+            <summary>
+            Overload for the operator + to subscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper.op_Subtraction(com.brg.Common.EventWrapper,System.Action)">
+            <summary>
+            Overload for the operator - to unsubscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`1">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`1.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="E:com.brg.Common.EventWrapper`1.FunctionalEvent">
+            <summary>
+            Underlying C# event.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.EventWrapper`1.UnityEvent">
+            <summary>
+            Underlying Unity Event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`1.Invoke(`0)">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`1.ClearEvents">
+            <summary>
+            Clear all subscribers of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`1.op_Addition(com.brg.Common.EventWrapper{`0},System.Action{`0})">
+            <summary>
+            Overload for the operator + to subscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`1.op_Subtraction(com.brg.Common.EventWrapper{`0},System.Action{`0})">
+            <summary>
+            Overload for the operator - to unsubscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`2">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`2.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="E:com.brg.Common.EventWrapper`2.FunctionalEvent">
+            <summary>
+            Underlying C# event.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.EventWrapper`2.UnityEvent">
+            <summary>
+            Underlying Unity Event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`2.Invoke(`0,`1)">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`2.ClearEvents">
+            <summary>
+            Clear all subscribers of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`2.op_Addition(com.brg.Common.EventWrapper{`0,`1},System.Action{`0,`1})">
+            <summary>
+            Overload for the operator + to subscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`2.op_Subtraction(com.brg.Common.EventWrapper{`0,`1},System.Action{`0,`1})">
+            <summary>
+            Overload for the operator - to unsubscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`3">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`3.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="E:com.brg.Common.EventWrapper`3.FunctionalEvent">
+            <summary>
+            Underlying C# event.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.EventWrapper`3.UnityEvent">
+            <summary>
+            Underlying Unity Event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`3.ClearEvents">
+            <summary>
+            Clear all subscribers of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`3.Invoke(`0,`1,`2)">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`3.op_Addition(com.brg.Common.EventWrapper{`0,`1,`2},System.Action{`0,`1,`2})">
+            <summary>
+            Overload for the operator + to subscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`3.op_Subtraction(com.brg.Common.EventWrapper{`0,`1,`2},System.Action{`0,`1,`2})">
+            <summary>
+            Overload for the operator - to unsubscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.EventWrapper`4">
+            <summary>
+            A wrapper that expose an <see cref="F:com.brg.Common.EventWrapper`4.UnityEvent"/> and a C# event.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.EventWrapper`4.UnityEvent">
+            <summary>
+            Underlying Unity Event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`4.ClearEvents">
+            <summary>
+            Clear all subscribers of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`4.Invoke(`0,`1,`2,`3)">
+            <summary>
+            Invoke the event
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`4.op_Addition(com.brg.Common.EventWrapper{`0,`1,`2,`3},System.Action{`0,`1,`2,`3})">
+            <summary>
+            Overload for the operator + to subscribe a C# action to the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.EventWrapper`4.op_Subtraction(com.brg.Common.EventWrapper{`0,`1,`2,`3},System.Action{`0,`1,`2,`3})">
+            <summary>
+            Overload for the operator - to unsubscribe a C# action to the event.
+            </summary>
+        </member>
+    </members>
+</doc>

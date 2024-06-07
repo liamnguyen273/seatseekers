@@ -25,6 +25,8 @@ namespace com.brg.UnityComponents
 
         public virtual IProgress Initialize()
         {
+            if (Initialized) return InitializationProgress;
+            
             _showStartEvent ??= new EventWrapper();
             _showEndEvent ??= new EventWrapper();
             _hideStartEvent ??= new EventWrapper();
@@ -35,8 +37,12 @@ namespace com.brg.UnityComponents
             _hideStartEvent += InnateOnHideStart;
             _hideEndEvent += InnateOnHideEnd;
 
+            Initialized = true;
+
             return InitializationProgress;
         }
+
+        public bool Initialized { get; private set; }
 
         private IProgress _initializationProgress;
         public IProgress InitializationProgress => _initializationProgress ??= new ImmediateProgress(true, 1f);

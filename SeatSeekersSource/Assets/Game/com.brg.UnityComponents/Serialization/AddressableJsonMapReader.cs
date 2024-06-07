@@ -5,6 +5,7 @@ using com.brg.Common;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace com.brg.UnityComponents
 {
@@ -25,7 +26,7 @@ namespace com.brg.UnityComponents
         private readonly string _addressableKey;
         private Dictionary<string, TData> _data;
         private bool _runningTask;
-        
+
 
         /// <inheritdoc/>
         public Dictionary<string, TData> AllData => _data ?? new Dictionary<string, TData>();
@@ -39,36 +40,132 @@ namespace com.brg.UnityComponents
             _addressableKey = addressableKey;
             _runningTask = false;
         }
-        
+
         /// <inheritdoc/>
+        /// <remarks>
+        /// On WebGL platform, do not use this method. Instead, use <see cref="ReadData(Action&lt;bool&gt;)"/>.
+        /// </remarks>
         public async Task<bool> ReadDataAsync()
         {
+#if UNITY_WEBGL
+            LogObj.Default.Error("AddressableJsonListReader.ReadDataAsync cannot be used on WebGL platform, use ReadData(Action<boo>) instead.");
+            return false;
+#else
             var oldData = _data;
             if (_runningTask) return false;
 
             _runningTask = true;
+            bool result;
+            var handle = Addressables.LoadAssetAsync<TextAsset>(_addressableKey);
+            
             try
             {
-                var handle = Addressables.LoadAssetAsync<TextAsset>(_addressableKey);
                 var task = handle.Task;
                 var json = (await task).text;
                 var data = await Task.Run(() => JsonConvert.DeserializeObject<Dictionary<string, TData>>(json));
 
                 _data = data ?? throw new Exception("Parsed json is null, this is not allowed");
                 _runningTask = false;
+                result = true;
+            }
+            catch (Exception e)
+            {
+                LogObj.Default.Warn(
+                    $"AddressableJsonMapReader cannot read data at \"{_addressableKey}\". Exception: {e}");
+                _runningTask = false;
+                _data = oldData;
+                result = false;
+            }
+            
+            Addressables.Release(handle);
+            return result;
+#endif
+        }
+        
+        /// <inheritdoc/>
+        /// <remarks>
+        /// On WebGL platform, do not use this method. Instead, use <see cref="ReadData(Action&lt;bool&gt;)"/>.
+        /// </remarks>
+        public bool ReadData()
+        {
+#if UNITY_WEBGL
+            LogObj.Default.Error("AddressableJsonMapReader.ReadData cannot be used on WebGL platform, use the override with complete callback instead.");
+            return false;
+#else
+            if (_runningTask) return false;
+
+            _runningTask = true;
+            var handle = Addressables.LoadAssetAsync<TextAsset>(_addressableKey);
+            handle.WaitForCompletion();
+            var result = OnReadDataSynchronously(handle);
+            Addressables.Release(handle);
+            return result;
+#endif
+        }
+        
+        private Action<bool> _readCompletedCallback;
+        
+        /// <summary>
+        /// Reads data at the Addressables' address, then invoke <paramref name="onReadCompleted"/> when finished.
+        /// </summary>
+        /// <remarks>
+        /// On WebGL platform, use this method over <see cref="ReadData()"/> or <see cref="ReadDataAsync"/> as they both
+        /// are not supported.
+        /// </remarks>
+        /// <param name="onReadCompleted">Callback to invoke with whether the read operation succeeded.</param>
+        public void ReadData(Action<bool> onReadCompleted)
+        {
+            if (_runningTask)
+            {
+                onReadCompleted?.Invoke(false);
+                return;
+            }
+
+            _runningTask = true;
+            _readCompletedCallback = onReadCompleted;
+            var handle = Addressables.LoadAssetAsync<TextAsset>(_addressableKey);
+            handle.Completed += OnReadHandleComplete;
+            Addressables.Release(handle);
+        }
+
+        private void OnReadHandleComplete(AsyncOperationHandle<TextAsset> handle)
+        {
+            var result = OnReadDataSynchronously(handle);
+            _readCompletedCallback?.Invoke(result);
+            _readCompletedCallback = null;
+        }
+
+        private bool OnReadDataSynchronously(AsyncOperationHandle<TextAsset> handle)
+        {
+            var oldData = _data;
+            
+            try
+            {
+                if (handle.Status != AsyncOperationStatus.Succeeded)
+                {
+                    throw new Exception($"AsyncOperation ended with status {handle.Status}");
+                }
+                
+                var json = handle.Result.text;
+                var data = JsonConvert.DeserializeObject<Dictionary<string, TData>>(json);
+
+                _data = data ?? throw new Exception("Parsed json is null, this is not allowed");
+                
+                _runningTask = false;
                 return true;
             }
             catch (Exception e)
             {
-                LogObj.Default.Warn($"AddressableJsonListReader cannot read data at \"{_addressableKey}\". Exception: {e}");
+                LogObj.Default.Warn(
+                    $"AddressableJsonMapReader cannot read data at \"{_addressableKey}\". Exception: {e}");
                 _runningTask = false;
                 _data = oldData;
                 return false;
             }
         }
-        
+
         /// <inheritdoc/>
-        public virtual TData? GetItem(string key)
+        public TData? GetItem(string key)
         {
             AllData.TryGetValue(key, out var data);
             return data;

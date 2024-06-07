@@ -1,0 +1,19 @@
+{
+    "name": "com.brg.Unity.FirebaseAnalytics",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Firebase.App.dll",
+        "Firebase.Analytics.dll",
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

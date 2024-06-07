@@ -1,0 +1,25 @@
+{
+    "name": "com.brg.Unity.AdMob",
+    "rootNamespace": "",
+    "references": [
+        "com.brg.Unity",
+        "com.brg.Unity.Consents"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll",
+        "GoogleMobileAds.Common.dll",
+        "GoogleMobileAds.dll",
+        "GoogleMobileAds.Core.dll",
+        "GoogleMobileAds.Unity.dll",
+        "GoogleMobileAds.Ump.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

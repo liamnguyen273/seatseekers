@@ -1,5 +1,3 @@
-// #define DEBUG_VIEW_PARENT
-
 using System;
 using System.Reflection;
 using com.brg.Common;

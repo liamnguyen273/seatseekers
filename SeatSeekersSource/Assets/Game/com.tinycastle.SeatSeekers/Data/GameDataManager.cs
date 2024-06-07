@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace com.tinycastle.SeatSeekers
 {
-    public partial class GameDataManager : com.brg.Common.DataManager, IProductQuery
+    public partial class GameDataManager : com.brg.Common.DataManager
     {
         public const string AVATAR_LABEL = "avatars";
         

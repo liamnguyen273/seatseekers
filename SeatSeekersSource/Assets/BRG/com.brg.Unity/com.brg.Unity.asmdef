@@ -1,0 +1,26 @@
+{
+    "name": "com.brg.Unity",
+    "rootNamespace": "",
+    "references": [
+        "LeanTransition",
+        "Unity.TextMeshPro",
+        "today.comes.saintsfield.Runtime",
+        "NaughtyAttributes.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "Newtonsoft.Json.dll",
+        "com.brg.UnityCommon.dll",
+        "DOTween.dll",
+        "DemiLib.dll",
+        "DOTweenPro.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
