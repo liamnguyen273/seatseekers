@@ -9,6 +9,7 @@ using com.brg.Unity.Singular;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using com.tinycastle.SeatSeekers;
 using UnityEngine;
 using Random = System.Random;
 
@@ -174,6 +175,9 @@ namespace com.tinycastle.SeatSeekers
             unityAdManager.Comp = adManager;
 
             var mainGameManager = _mainGameManager.Comp;
+
+            var questManager = new QuestManager(saveManager);
+            questManager.AddDependencies(saveManager);
             
             Log.Success("Created managers.");
             
@@ -194,6 +198,7 @@ namespace com.tinycastle.SeatSeekers
                 consentManager,
                 dataManager, 
                 saveManager, 
+                questManager,
                 localizationManager,
                 analyticsEventManager,
                 popupManager,

@@ -6,6 +6,7 @@ using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using com.tinycastle.StickerBooker;
+using com.tinycastle.SeatSeekers;
 using JSAM;
 using UnityEngine;
 
@@ -122,7 +123,14 @@ namespace com.tinycastle.SeatSeekers
                 // TODO: Scroll
             }
         }
-        
+
+        protected override void InnateOnShowEnd()
+        {
+            var hasProgress = GM.Instance.Get<QuestManager>().CheckQuestProgress();
+            
+            base.InnateOnShowEnd();
+        }
+
         private void OnButtonSettings()
         {
             var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupSettingsBehaviour>(out var behaviour);

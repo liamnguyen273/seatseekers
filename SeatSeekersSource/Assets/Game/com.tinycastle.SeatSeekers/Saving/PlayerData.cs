@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.Unity;
 using com.brg.UnityComponents;
-using Game.com.tinycastle.SeatSeekers;
+using com.tinycastle.SeatSeekers;
 using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -42,6 +42,11 @@ namespace com.tinycastle.SeatSeekers
         public Dictionary<string, int> GetLeaderboards()
         {
             return _dto.leaderboard;
+        }
+
+        public int GetCompletedLevelCount()
+        {
+            return _dto.completedLevels.Count(pair => pair.Value);
         }
         
         public void InitializeLeaderboard()

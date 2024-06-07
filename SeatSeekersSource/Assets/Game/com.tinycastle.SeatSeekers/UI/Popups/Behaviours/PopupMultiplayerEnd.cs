@@ -39,6 +39,7 @@ namespace com.tinycastle.SeatSeekers
             var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
             var coin = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
             coin += isPlayerWin ? winReward : loseReward;
+            if (!accessor.HasPlayedMultiplayer) accessor.HasPlayedMultiplayer = true; 
             accessor.SetInResources(Constants.COIN_RESOURCE, coin, true);
             
             var enemyScore = accessor.GetFromLeaderboard(enemyName) ?? 0;

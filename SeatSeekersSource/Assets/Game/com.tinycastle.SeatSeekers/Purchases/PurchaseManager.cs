@@ -142,6 +142,8 @@ namespace com.tinycastle.SeatSeekers
             {
                 accessor.SetInOwnerships(product.Id, true, true);
             }
+
+            if (!accessor.HasIAP) accessor.HasIAP = true;
             
             accessor.WriteDataAsync();
             _currentIapEntry = null;
