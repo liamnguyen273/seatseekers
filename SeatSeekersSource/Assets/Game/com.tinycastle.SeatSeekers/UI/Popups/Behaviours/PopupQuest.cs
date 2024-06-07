@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using com.brg.Common;
@@ -6,7 +5,6 @@ using com.brg.Unity;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
-using com.tinycastle.SeatSeekers;
 using UnityEngine;
 
 namespace com.tinycastle.SeatSeekers

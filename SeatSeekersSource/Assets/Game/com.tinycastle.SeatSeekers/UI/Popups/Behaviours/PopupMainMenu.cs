@@ -25,6 +25,8 @@ namespace com.tinycastle.SeatSeekers
         [SerializeField] private CompWrapper<UIButton> _buttonSuper;
         [SerializeField] private CompWrapper<UIButton> _debugEnergyButton;
         [SerializeField] private CompWrapper<UIButton> _buttonLeaderboard;
+        
+        [SerializeField] private CompWrapper<UIButton> _buttonQuest;   
 
         public List<LevelPage> LevelPages { get; private set; }
         public List<LevelItem> LevelItems { get; private set; }
@@ -127,8 +129,14 @@ namespace com.tinycastle.SeatSeekers
         protected override void InnateOnShowEnd()
         {
             var hasProgress = GM.Instance.Get<QuestManager>().CheckQuestProgress();
-            
+            if (hasProgress) OnQuestButton();
             base.InnateOnShowEnd();
+        }
+
+        private void OnQuestButton()
+        {
+            var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupQuest>(out var behaviour);
+            popup.Show();
         }
 
         private void OnButtonSettings()
