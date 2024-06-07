@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.Unity;
 using com.brg.UnityComponents;
+using Game.com.tinycastle.SeatSeekers;
 using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -212,7 +213,7 @@ namespace com.tinycastle.SeatSeekers
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] 
         [AccessorNotify]
-        public Dictionary<string, (int progress, int total)> questProgresses;
+        public Dictionary<string, int> questProgresses;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [AccessorNotify]
@@ -251,7 +252,7 @@ namespace com.tinycastle.SeatSeekers
                 { Constants.ENERGY_RESOURCE, Constants.MAX_ENERGY },
                 { Constants.INFINITE_ENERGY_RESOURCE, 0 },
             };
-            
+            questProgresses = QuestManager.GetNewQuestItems();
             
             tutorialPlayed = false;
             lastModified = DateTime.UtcNow;
