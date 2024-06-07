@@ -41,6 +41,8 @@ namespace com.tinycastle.SeatSeekers
             _buttonVip.Comp.OnClicked += OnVipButton;
             _buttonSuper.Comp.OnClicked += OnSuperButton;
             _buttonLeaderboard.Comp.OnClicked += OnLeaderboardButton;
+
+            _buttonQuest.Comp.OnClicked += OnQuestButton;
             
             LevelPages = _levelPageHost.GameObject.GetDirectOrderedChildComponents<LevelPage>().ToList();
             LevelItems = new();

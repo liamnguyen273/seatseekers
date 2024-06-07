@@ -23,8 +23,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
                 _subscribed = true;
             }
-            
-            return LevelPlayInitialization.Initialize();
+            LevelPlayInitialization.Initialize();
+            return new ImmediateProgress();
         }
 
         public bool Initialized => LevelPlayInitialization.Initialized;

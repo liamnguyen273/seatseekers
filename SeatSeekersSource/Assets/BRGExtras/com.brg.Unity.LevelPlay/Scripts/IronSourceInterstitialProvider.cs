@@ -26,8 +26,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceInterstitialEvents.onAdClosedEvent += InterstitialOnAdClosedEvent;
                 _subscribed = true;
             }
-            
-            return LevelPlayInitialization.Initialize();
+            LevelPlayInitialization.Initialize();
+            return new ImmediateProgress();
         }
 
         public bool Initialized => LevelPlayInitialization.Initialized;

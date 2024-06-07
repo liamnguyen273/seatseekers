@@ -174,6 +174,8 @@ namespace com.tinycastle.SeatSeekers
             var purchaseManager = new PurchaseManager();
             Purchase = purchaseManager;
 
+            var questManager = new QuestManager(saveManager);
+
             var mainGameManager = _mainGameManager.Comp;
             
             Log.Success("Created managers.");
@@ -185,6 +187,7 @@ namespace com.tinycastle.SeatSeekers
             adManager.AddDependencies(analyticsEventManager);
             adManager.AddDependencies(saveManager);
             purchaseManager.AddDependencies(saveManager, dataManager);
+            questManager.AddDependencies(saveManager);
             
             Log.Success("Established managers' dependencies.");
                         
@@ -197,6 +200,7 @@ namespace com.tinycastle.SeatSeekers
                 consentManager,
                 analyticsEventManager,
                 localizationManager,
+                questManager,
                 adManager,
                 popupManager,
                 mainGameManager,
