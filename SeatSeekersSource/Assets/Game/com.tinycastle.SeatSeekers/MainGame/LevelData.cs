@@ -411,6 +411,11 @@ namespace com.tinycastle.SeatSeekers
             }
         }
 
+        public bool ReadData()
+        {
+            throw new NotImplementedException();
+        }
+
         public LevelData GetItem(string key)
         {
             return _data[key].LevelData;

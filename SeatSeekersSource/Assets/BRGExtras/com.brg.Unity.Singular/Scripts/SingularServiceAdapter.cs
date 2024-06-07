@@ -1,0 +1,52 @@
+using System.Linq;
+using com.brg.Common;
+using UnityEngine;
+
+namespace com.brg.Unity.Singular
+{
+    public class SingularServiceAdapter : IAnalyticsServiceAdapter
+    {
+        private IProgress _initProgress;
+        
+        public bool Initialized => SingularSDK.Initialized;
+        
+        public IProgress Initialize()
+        {
+            if (_initProgress != null) return _initProgress;
+            
+            var sdk = SingularSDK.Instance;
+            if (!sdk.InitializeOnAwake)
+            {
+                SingularSDK.InitializeSingularSDK();
+            }
+
+            return new SingleProgress(() => Initialized, () => Initialized, null, 1f);
+        }
+        
+        public void SendEvent(AnalyticsEventBuilder eventBuilder)
+        {
+            if (!Initialized)
+            {
+                LogObj.Default.Info("SingularServiceAdapter", $"Event not sent. Singular is not initialized.");
+                return;
+            }
+            
+            if (!TranslateGameEventName(eventBuilder.Name, out var name))
+            {
+                LogObj.Default.Info("SingularServiceAdapter", $"Event not sent. Does not have event {eventBuilder.Name} translation.");
+                return;
+            }
+            
+            var parameters = eventBuilder.IterateParameters().ToDictionary(x => x.Item1, x => x.Item3);
+            SingularSDK.Event(parameters, name);
+            LogObj.Default.Info("SingularServiceAdapter", $"Logged event: {eventBuilder}");
+        }
+
+        public bool TranslateGameEventName(string name, out string translatedName)
+        {
+            var lowercaseName = name.ToLower();
+            translatedName = "sng_" + lowercaseName;
+            return true;
+        }
+    }
+}

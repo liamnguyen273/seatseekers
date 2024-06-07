@@ -53,6 +53,16 @@ namespace com.brg.Common
                 return true;
             }
         }
+        
+        public bool WriteData()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public bool ReadData()
+        {
+            throw new NotImplementedException();
+        }
 
         public abstract void SetModified(bool modified);
 

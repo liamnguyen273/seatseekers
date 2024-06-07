@@ -1,0 +1,20 @@
+{
+    "name": "com.brg.Unity.Consents",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll",
+        "GoogleMobileAds.dll",
+        "GoogleMobileAds.Ump.dll",
+        "GoogleMobileAds.Ump.Unity.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

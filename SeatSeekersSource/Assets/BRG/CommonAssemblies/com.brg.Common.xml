@@ -1,0 +1,2360 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.brg.Common</name>
+    </assembly>
+    <members>
+        <member name="T:com.brg.Common.DataManager">
+            <summary>
+            Abstract class that manage game data. 
+            </summary>
+            <remarks>
+            User code should override this class, and use source-generated attributes to mark
+            their data classes to be handled by the manager.
+            </remarks>
+        </member>
+        <member name="T:com.brg.Common.SaveManager">
+            <summary>
+            Abstract class for a Player Save manager.
+            Player data should be its own classes, marked with appropriated source generators attributes
+            to create getters and setters.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.SaveManager.SaveAll">
+            <summary>
+            Save all modified changes of the player data.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.SaveManager.InitializeBehaviourAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.ReadonlyAccessor`1">
+            <summary>
+            Abstract class for a readonly-accessor.
+            </summary>
+            <typeparam name="TData">The accessor data type.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyAccessor`1.OnDataRead(`0)">
+            <summary>
+            Behaviour to perform on data successfully read.
+            </summary>
+            <param name="data">The read data.</param>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyAccessor`1.ReadDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.ReadonlyAccessor`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.Accessor`1">
+            <summary>
+            Abstract class for a data accessor.
+            </summary>
+            <typeparam name="TData">The accessor data type.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.Accessor`1.HasModifiedData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.Accessor`1.ExportData">
+            <summary>
+            Get the writable data that the accessor is currently holding.
+            </summary>
+            <returns>The exported data.</returns>
+        </member>
+        <member name="M:com.brg.Common.Accessor`1.WriteDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.Accessor`1.WriteData">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.JsonReadonlySingleAccessor`1">
+            <summary>
+            Abstract class for a single JSON file readonly accessor.
+            </summary>
+            <typeparam name="TData">Type of the Json data.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.JsonReadonlySingleAccessor`1.#ctor(System.String)">
+            <summary>
+            Creates a single file JSON readonly accessor that access file at <paramref name="filePath"/>
+            </summary>
+            <param name="filePath">The path to the JSON file.</param>
+        </member>
+        <member name="M:com.brg.Common.JsonReadonlySingleAccessor`1.ReadDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonReadonlySingleAccessor`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.JsonSingleAccessor`1">
+            <summary>
+            Abstract class for a single JSON file accessor.
+            </summary>
+            <typeparam name="TData">Type of the Json data.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.JsonSingleAccessor`1.#ctor(System.String)">
+            <summary>
+            Creates a single file JSON accessor that access file at <paramref name="filePath"/>
+            </summary>
+            <param name="filePath">The path to the JSON file.</param>
+        </member>
+        <member name="M:com.brg.Common.JsonSingleAccessor`1.ReadDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonSingleAccessor`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonSingleAccessor`1.WriteDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonSingleAccessor`1.WriteData">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.DataAccessorAttribute">
+            <summary>
+            Attribute to mark a class an accessor for another class.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DataAccessorAttribute.#ctor(System.Type,System.Boolean)">
+            <summary>
+            Mark a class as an accessor for a DTO class. Source generator generates the appropriate methods for the class.
+            </summary>
+            <param name="dto">Type of the DTO.</param>
+            <param name="allowWrite">Whether to allow writing.</param>
+        </member>
+        <member name="T:com.brg.Common.ExposeInAttribute">
+            <summary>
+            Attribute to mark exposure in a data/save manager, current not in use.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ExposeInAttribute.#ctor(System.Type)">
+            <summary>
+            Creates attribute to mark exposure in a data/save manager, current not in use.
+            </summary>
+            <param name="managerType">The type of the manager to expose the class.</param>
+        </member>
+        <member name="T:com.brg.Common.DoNotAccessAttribute">
+            <summary>
+            Attribute to mark a DTO's field to not generate its getter/setter.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DoNotAccessAttribute.#ctor">
+            <summary>
+            Creates attribute to mark a DTO's field to not generate its getter/setter.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.AccessorNotifyAttribute">
+            <summary>
+            Attribute to mark a DTO's field to generate on change events alongside its property, do nothing if <see cref="T:com.brg.Common.DoNotAccessAttribute"/>
+            is also present.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AccessorNotifyAttribute.#ctor(System.String)">
+            <summary>
+            Creates attribute to mark a DTO's field change events alongside its property.
+            </summary>
+            <param name="eventName">The name of the event, if empty or null, will use a default value.</param>
+        </member>
+        <member name="T:com.brg.Common.AccessorPropertyAttribute">
+            <summary>
+            Attribute to override DTO's field's accessor property name.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AccessorPropertyAttribute.#ctor(System.String)">
+            <summary>
+            Creates attribute to override DTO's field's accessor property name.
+            </summary>
+            <param name="propertyName">The propertyName to use.</param>
+        </member>
+        <member name="T:com.brg.Common.DictionaryModificationEventArgs`2">
+            <summary>
+            Delegate for a dictionary modification event.
+            </summary>
+            <typeparam name="TKey">Type of key.</typeparam>
+            <typeparam name="TData">Type of data.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.DictionaryModificationEventArgs`2.#ctor(`0[],`1[],`1[])">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="modifiedIndexes">Indexes that are modified.</param>
+            <param name="oldValues">Old values at the modified indexes.</param>
+            <param name="newValues">New values at the modified indexes.</param>
+        </member>
+        <member name="M:com.brg.Common.DictionaryModificationEventArgs`2.#ctor(`0,`1,`1)">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="modifiedIndex">Index that is modified.</param>
+            <param name="oldValue">Old value at the modified index.</param>
+            <param name="newValue">New value at the modified index.</param>
+        </member>
+        <member name="M:com.brg.Common.DictionaryModificationEventArgs`2.#ctor(System.ValueTuple{`0,`1,`1}[])">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="tuples"></param>
+        </member>
+        <member name="T:com.brg.Common.ReadonlyDictionaryAccessor`2">
+            <summary>
+            Class to wrap a dictionary and provides safe accessing.
+            </summary>
+            <typeparam name="TKey">Dictionary key type</typeparam>
+            <typeparam name="TData">Dictionary data type</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyDictionaryAccessor`2.#ctor">
+            <summary>
+            Creates a readonly dictionary accessor
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ReadonlyDictionaryAccessor`2.Item(`0)">
+            <summary>
+            Access the dictionary's element, will return null/default if the underlying list is empty or index is out of range.
+            </summary>
+            <remarks>
+            Use <see cref="M:com.brg.Common.ReadonlyDictionaryAccessor`2.TryGet(`0,`1@)"/> if whether the accessing is successful is necessary information.
+            </remarks>
+            <param name="key">The key to access.</param>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyDictionaryAccessor`2.TryGet(`0,`1@)">
+            <summary>
+            Try get data at key <paramref name="key"/>
+            </summary>
+            <param name="key">The key to query data</param>
+            <param name="value">The data at key, if any.</param>
+            <returns>Whether the get operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyDictionaryAccessor`2.TryAddRange(System.Collections.Generic.KeyValuePair{`0,`1}[])">
+            <summary>
+            Quietly adds elements for the accessor. Should not be used to modify the underlying data,s
+            </summary>
+            <param name="pairs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyDictionaryAccessor`2.ExportData">
+            <summary>
+            Export the dictionary values.
+            </summary>
+            <returns>A copy of the underlying dictionary.</returns>
+        </member>
+        <member name="T:com.brg.Common.DictionaryAccessor`2">
+            <summary>
+            Class to wrap a dictionary and provides safe accessing and modifying of it. Additionally provides modification event
+            when modified.
+            </summary>
+            <typeparam name="TKey">Type of the dict's key.</typeparam>
+            <typeparam name="TData">Type of the dict's data.</typeparam>
+        </member>
+        <member name="E:com.brg.Common.DictionaryAccessor`2.ModifiedEvent">
+            <summary>
+            Event that is invoked when modification happened in the dictionary.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.DictionaryAccessor`2.Modified">
+            <summary>
+            Whether the underlying list is modified.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.ClearModifiedFlag">
+            <summary>
+            Clear the modifying flag
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.DictionaryAccessor`2.Item(`0)">
+            <summary>
+            Access the dictionary's element, will return null/default if the underlying list is empty or index is out of range.
+            </summary>
+            <remarks>
+            Use <see cref="!:TryGet"/> or <see cref="M:com.brg.Common.DictionaryAccessor`2.TrySet(`0,`1)"/> if whether the accessing is successful is necessary information.
+            </remarks>
+            <param name="key">The key to access.</param>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.TryAdd(`0,`1)">
+            <summary>
+            Try add an item to the dictionary, will fail if key <paramref name="key"/> already exists.
+            </summary>
+            <param name="key">The key to add at.</param>
+            <param name="data">The data to add.</param>
+            <returns>Whether the add operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.TrySet(`0,`1)">
+            <summary>
+            Set an item to the dictionary.
+            </summary>
+            <param name="key">The key to set at.</param>
+            <param name="data">The data to add</param>
+            <returns>Whether the set operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.TryAddRange(System.Collections.Generic.KeyValuePair{`0,`1}[])">
+            <summary>
+            Add multiple items to the dictionary, will fail if any key is already present.
+            </summary>
+            <param name="pairs">Data in key and value pairs</param>
+            <returns>Whether the add operation succeeded.</returns>
+        </member>
+        <member name="M:com.brg.Common.DictionaryAccessor`2.Clear(System.Boolean)">
+            <summary>
+            Clear the dictionary
+            </summary>
+            <param name="invokeModification"></param>
+        </member>
+        <member name="T:com.brg.Common.ListModificationEventArgs`1">
+            <summary>
+            Delegate for a list modification event.
+            </summary>
+            <typeparam name="T">Type of list's elements.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ListModificationEventArgs`1.#ctor(System.Int32[],`0[],`0[])">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="modifiedIndexes">Indexes that are modified.</param>
+            <param name="oldValues">Old values at the modified indexes.</param>
+            <param name="newValues">New values at the modified indexes.</param>
+        </member>
+        <member name="M:com.brg.Common.ListModificationEventArgs`1.#ctor(System.Int32,`0,`0)">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="modifiedIndex">Index that is modified.</param>
+            <param name="oldValue">Old value at the modified index.</param>
+            <param name="newValue">New value at the modified index.</param>
+        </member>
+        <member name="M:com.brg.Common.ListModificationEventArgs`1.#ctor(System.ValueTuple{System.Int32,`0,`0}[])">
+            <summary>
+            Creates a list modification event arguments.
+            </summary>
+            <param name="tuples"></param>
+        </member>
+        <member name="T:com.brg.Common.ReadonlyListAccessor`1">
+            <summary>
+            Class to wrap a list and provides safe accessing.
+            </summary>
+            <typeparam name="TData">Type of the underlying list's elements.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyListAccessor`1.#ctor">
+            <summary>
+            Creates an accessor from a list.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ReadonlyListAccessor`1.Item(System.Int32)">
+            <summary>
+            Access the list's element, will return null/default if the underlying list is empty or index is out of range.
+            </summary>
+            <remarks>
+            Use <see cref="M:com.brg.Common.ReadonlyListAccessor`1.TryGet(System.Int32,`0@)"/> if whether the accessing is successful is necessary information.
+            </remarks>
+            <param name="i">The index to access.</param>
+        </member>
+        <member name="P:com.brg.Common.ReadonlyListAccessor`1.Count">
+            <summary>
+            Get length of the list.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ReadonlyListAccessor`1.Elements">
+            <summary>
+            Get the elements of the list.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyListAccessor`1.TryGet(System.Int32,`0@)">
+            <summary>
+            Access the list's element.
+            </summary>
+            <param name="i">The index to access at.</param>
+            <param name="value">Out value of the access. Null/default if the accessing failed.</param>
+            <returns>Whether the accessing is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyListAccessor`1.ExportData">
+            <summary>
+            Export the values in the list.
+            </summary>
+            <returns>A copy of the underlying list.</returns>
+        </member>
+        <member name="M:com.brg.Common.ReadonlyListAccessor`1.TryAddRange(`0[])">
+            <summary>
+            Quietly set data for the accessor, should not be used to modified the accessor.
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="T:com.brg.Common.ListAccessor`1">
+            <summary>
+            Class to wrap a list and provides safe accessing and modifying of it. Additionally provides modification event
+            when modified.
+            </summary>
+            <typeparam name="TData">Type of the underlying list's elements.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.ListAccessor`1.Modified">
+            <summary>
+            Whether the underlying list is modified.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.ClearModifiedFlag">
+            <summary>
+            Clear the modifying flag
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.#ctor">
+            <summary> 
+            Creates an accessor from a list.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ListAccessor`1.Item(System.Int32)">
+            <summary>
+            Access the list's element, will return null/default if the underlying list is empty or index is out of range.
+            </summary>
+            <remarks>
+            Use <see cref="!:TryGet"/>, or <see cref="M:com.brg.Common.ListAccessor`1.TrySet(System.Int32,`0)"/> if whether the accessing is successful is necessary information.
+            </remarks>
+            <param name="i">The index to access.</param>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.TrySet(System.Int32,`0)">
+            <summary>
+            Set an element inside the list.
+            </summary>
+            <param name="i">The index to set at. Will allow the addition if <paramref name="i"/> is the list's size (equivalent to adding).</param>
+            <param name="value">Value to set in the list.</param>
+            <returns>Whether the set operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.TryAdd(`0)">
+            <summary>
+            Add an element to the list.
+            </summary>
+            <param name="value">Value to set in the list.</param>
+            <returns>Whether the add operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.TryAddRange(`0[])">
+            <summary>
+            Add multiple elements to the list.
+            </summary>
+            <param name="values">Values to add</param>
+            <returns>Whether the add operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.Clear(System.Boolean)">
+            <summary>
+            Clear the list
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ListAccessor`1.TryRemove(System.Int32,`0@)">
+            <summary>
+            Remove element at index <paramref name="i"/>
+            </summary>
+            <param name="i">Index to remove at</param>
+            <param name="value">The removed element.</param>
+            <returns>Whether the removal is successful.</returns>
+        </member>
+        <member name="T:com.brg.Common.IListReader`1">
+            <summary>
+            Interface for readers that read data into a list.
+            </summary>
+            <typeparam name="TData">Type of an data item.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.IListReader`1.AllData">
+            <summary>
+            Get all data of the list
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IListReader`1.GetItem(System.Int32)">
+            <summary>
+            Get an item from the list.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.IMapReader`1">
+            <summary>
+            Interface for readers that read data into a Dictionary (with string key)
+            </summary>
+            <typeparam name="TData">Type of data item</typeparam>
+        </member>
+        <member name="P:com.brg.Common.IMapReader`1.AllData">
+            <summary>
+            Get all data in a dictionary.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IMapReader`1.GetItem(System.String)">
+            <summary>
+            Get data item at key <paramref name="key"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IMapReader`1.GetNextItem(System.String)">
+            <summary>
+            Get next item at key <paramref name="key"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IMapReader`1.GetPrevItem(System.String)">
+            <summary>
+            Get previous item at key <paramref name="key"/>.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ISingleReader`1">
+            <summary>
+            Interface for readers that read a single instance of data.
+            </summary>
+            <typeparam name="TData">Instance of data</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ISingleReader`1.GetData">
+            <summary>
+            Get the read data of the reader.
+            </summary>
+            <returns>The data, if read, otherwise null.</returns>
+        </member>
+        <member name="T:com.brg.Common.ReadableMapAttribute">
+            <summary>
+            Use this attribute to mark a data class as readable into a Dictionary by <see cref="F:com.brg.Common.ReadableMapAttribute.ReaderType"/>
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ReadableListAttribute">
+            <summary>
+            Use this attribute to mark a data class as readable into a List by <see cref="F:com.brg.Common.ReadableListAttribute.ReaderType"/>
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ReadableSingleAttribute">
+            <summary>
+            Use this attribute to mark a data class as readable into a single instance by <see cref="F:com.brg.Common.ReadableSingleAttribute.ReaderType"/>
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.WritableMapAttribute">
+            <summary>
+            Use this attribute to mark a data class as writable into a Dictionary by <see cref="F:com.brg.Common.WritableMapAttribute.WriterType"/>
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.WritableListAttribute">
+            <summary>
+            Use this attribute to mark a data class as writable into a List by <see cref="F:com.brg.Common.WritableListAttribute.WriterType"/>
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.WritableSingleAttribute">
+            <summary>
+            Use this attribute to mark a data class as writable into a single instance by <see cref="F:com.brg.Common.WritableSingleAttribute.WriterType"/>
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:com.brg.Common.ExposeReadAttribute" -->
+        <!-- Badly formed XML comment ignored for member "T:com.brg.Common.ExposeWriteAttribute" -->
+        <member name="T:com.brg.Common.IReader">
+            <summary>
+            Interface for a reader that can hold its own data.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IReader.ReadDataAsync">
+            <summary>
+            Deserialize the data and hold it.
+            </summary>
+            <returns>A task that returns whether the reading process succeeded.</returns>
+        </member>
+        <member name="M:com.brg.Common.IReader.ReadData">
+            <summary>
+            Deserialize the data and hold it.
+            </summary>
+            <returns>Whether the read process succeeded.</returns>
+        </member>
+        <member name="T:com.brg.Common.IWriter">
+            <summary>
+            Interface for a writer that can hold its own data.
+            A writer also keeps track of its modified data.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IWriter.HasModifiedData">
+            <summary>
+            Whether the writer has some modified data.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IWriter.WriteDataAsync">
+            <summary>
+            Serialize any modified data to its designated location.
+            </summary>
+            <returns>A task that returns whether the writing process succeeded.</returns>
+        </member>
+        <member name="M:com.brg.Common.IWriter.WriteData">
+            <summary>
+            Serialize any modified data to its designated location.
+            </summary>
+            <returns>Whether the write process succeeded.</returns>
+        </member>
+        <member name="T:com.brg.Common.JsonFileListReader`1">
+            <summary>
+            Abstract class that reads data from a single JSON file containing serialized <typeparamref name="TData"/> instances,
+            and maintain a list of its data.
+            </summary>
+            <remarks>
+            This reader requires the JSON file exists, and its content deserializable.
+            <para>Use <see cref="T:com.brg.Common.ExposeReadAttribute"/>, <see cref="T:com.brg.Common.ReadableListAttribute"/> on
+            <typeparamref name="TData"/>'s class definition to enable source generation for the
+            user code assembly's data manager.</para>
+            </remarks>
+            <comment>Overrides this class, provides an empty constructor that invokes the constructor to that designated path.</comment>
+            <typeparam name="TData">The type of the data class.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.JsonFileListReader`1.AllData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListReader`1.#ctor(System.String)">
+            <summary>
+            Creates a Json file list reader that reads from <paramref name="filePath"/>.
+            </summary>
+            <param name="filePath">The path to reads file from.</param>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListReader`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListReader`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileListReader`1.GetItem(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.JsonFileListSaver`1">
+            <summary>
+            Abstract class that reads and write data from a single JSON file containing serialized <typeparamref name="TData"/> instances,
+            and maintain a list of its data.
+            </summary>
+            <remarks>
+            <para>Use <see cref="T:com.brg.Common.ExposeReadAttribute"/>, <see cref="T:com.brg.Common.ExposeWriteAttribute"/>, <see cref="T:com.brg.Common.ReadableListAttribute"/>
+            and <see cref="T:com.brg.Common.WritableListAttribute"/> on the <typeparamref name="TData"/>'s class definition to enable source generation for the
+            user code assembly's data manager.</para>
+            </remarks>
+            <comment>Overrides this class, provides an empty constructor that invokes the constructor to that designated path.</comment>
+            <typeparam name="TData">The type of the data class.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.JsonFileListSaver`1.MaxItemCount">
+            <summary>
+            The maximum number of data item the class can hold
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.JsonFileListSaver`1.HasModifiedData">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.JsonFileListSaver`1.AllData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.WriteDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.WriteData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.GetItem(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileListSaver`1.SetItem(System.Int32,`0)">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.JsonFileMapReader`1">
+            <summary>
+            Abstract class that reads data from a single JSON file containing serialized <typeparamref name="TData"/> instances,
+            and maintain a list of its data.
+            </summary>
+            <remarks>
+            This reader requires the JSON file exists, and its content deserializable.
+            <para>Use <see cref="T:com.brg.Common.ExposeReadAttribute"/>, <see cref="T:com.brg.Common.ReadableMapAttribute"/> on
+            <typeparamref name="TData"/>'s class definition to enable source generation for the
+            user code assembly's data manager.</para>
+            </remarks>
+            <comment>Overrides this class, provides an empty constructor that invokes the constructor to that designated path.</comment>
+            <typeparam name="TData">The type of the data class.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.JsonFileMapReader`1.AllData">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapReader`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapReader`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapReader`1.GetItem(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapReader`1.GetNextItem(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapReader`1.GetPrevItem(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.JsonFileMapSaver`1">
+            <summary>
+            Abstract class that reads and write data from a single JSON file containing serialized <typeparamref name="TData"/> instances,
+            and maintain a dictionary of its data.
+            </summary>
+            <remarks>
+            <para>Use <see cref="T:com.brg.Common.ExposeReadAttribute"/>, <see cref="T:com.brg.Common.ExposeWriteAttribute"/>, <see cref="T:com.brg.Common.ReadableListAttribute"/>
+            and <see cref="T:com.brg.Common.WritableListAttribute"/> on the <typeparamref name="TData"/>'s class definition to enable source generation for the
+            user code assembly's data manager.</para>
+            </remarks>
+            <comment>
+            Overrides this class, provides an empty constructor that invokes the constructor to that designated path.
+            <para>Data items that this class maintains does not have orders, thus <see cref="M:com.brg.Common.JsonFileMapSaver`1.GetNextItem(System.String)"/> and <see cref="M:com.brg.Common.JsonFileMapSaver`1.GetPrevItem(System.String)"/>
+            will always return null.</para>
+            </comment>
+            <typeparam name="TData">The type of the data class.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.JsonFileMapSaver`1.MaxItemCount">
+            <summary>
+            The maximum number of data item the class can hold
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.JsonFileMapSaver`1.HasModifiedData">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.JsonFileMapSaver`1.AllData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.ReadDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.WriteDataAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.WriteData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.GetItem(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.GetNextItem(System.String)">
+            <summary>
+            This class does not support getting next item, will always return null!
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.GetPrevItem(System.String)">
+            <summary>
+            This class does not support getting previous item, will always return null!
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.JsonFileMapSaver`1.SetItem(System.String,`0)">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.JsonFileSingleSaver`1">
+            <summary>
+            Abstract class that reads and write data from a single JSON file containing serialized <typeparamref name="TData"/> instances,
+            and maintain a dictionary of its data.
+            </summary>
+            <remarks>
+            <para>Use <see cref="T:com.brg.Common.ExposeReadAttribute"/>, <see cref="T:com.brg.Common.ExposeWriteAttribute"/>, <see cref="T:com.brg.Common.ReadableSingleAttribute"/>
+            and <see cref="T:com.brg.Common.WritableSingleAttribute"/> on the <typeparamref name="TData"/>'s class definition to enable source generation for the
+            user code assembly's data manager.</para>
+            </remarks>
+            <comment>
+            Overrides this class, provides an empty constructor that invokes the constructor to that designated path.
+            </comment>
+            <typeparam name="TData">The type of the data class.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.JsonFileSingleSaver`1.HasModifiedData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.ReadDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.ReadData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.WriteDataAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.WriteData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.GetData">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.JsonFileSingleSaver`1.SetModified(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.IListWriter`1">
+            <summary>
+            Interface for writers that writes into a list.
+            </summary>
+            <typeparam name="TData">Type of the data class</typeparam>
+        </member>
+        <member name="M:com.brg.Common.IListWriter`1.SetItem(System.Int32,`0)">
+            <summary>
+            Set an item data at index <paramref name="index"/>.
+            </summary>
+            <remarks>
+            Implementations of this interface should decide whether setting an item in an index bigger than the
+            current list is allowed.
+            </remarks>
+            <param name="index">Index the add/replace the data item.</param>
+            <param name="data">The data to add/replace</param>
+            <returns>Whether the set action is allowed and performed.</returns>
+        </member>
+        <member name="T:com.brg.Common.IMapWriter`1">
+            <summary>
+            Interface for writers that write into a Dictionary.
+            </summary>
+            <typeparam name="TData">Type of the data class.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.IMapWriter`1.SetItem(System.String,`0)">
+            <summary>
+            Set an item data at key <paramref name="key"/>.
+            </summary>
+            <remarks>
+            Implementations of this interface should decide whether the operation should succeed.
+            </remarks>
+            <param name="key">Key to add/replace the data item.</param>
+            <param name="data">The data to add/replace</param>
+            <returns>Whether the set action is allowed and performed.</returns>
+        </member>
+        <member name="T:com.brg.Common.ISingleWriter`1">
+            <summary>
+            Interface for writers that write into a single instance.
+            </summary>
+            <typeparam name="TData">Type of the data class.</typeparam>
+        </member>
+        <member name="M:com.brg.Common.ISingleWriter`1.SetModified(System.Boolean)">
+            <summary>
+            Set the data as modified.
+            </summary>
+            <param name="modified">Whether the data is modified</param>
+        </member>
+        <member name="T:com.brg.Common.IActivatable">
+            <summary>
+            Interface for an activatable. Objects with behaviours that can be turned off, on and
+            paused should implement this interface.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IActivatable.Activated">
+            <summary>
+            Whether the component is activated.
+            </summary>
+            <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully.
+            </remarks>
+        </member>
+        <member name="P:com.brg.Common.IActivatable.Paused">
+            <summary>
+            Whether the component is paused.
+            </summary>
+            /// <remarks>
+            Will always return <c>false</c> if the component has not initialized successfully, or deactivated.
+            </remarks>
+        </member>
+        <member name="M:com.brg.Common.IActivatable.Activate">
+            <summary>
+            Activate the Component. The activation may takes longer than one frame.
+            Use the returned <see cref="T:com.brg.Common.IProgress"/> to wait for activation.
+            </summary>
+            <returns>The activation <see cref="T:com.brg.Common.IProgress"/>.</returns>
+        </member>
+        <member name="M:com.brg.Common.IActivatable.Deactivate">
+            <summary>
+            Deactivate the Component. The deactivation may takes longer than one frame.
+            Use the returned <see cref="T:com.brg.Common.IProgress"/> to wait for deactivation.
+            </summary>
+            <returns>The deactivation <see cref="T:com.brg.Common.IProgress"/>.</returns>
+        </member>
+        <member name="M:com.brg.Common.IActivatable.Pause">
+            <summary>
+            Pause the execution of the component. Calling this should do nothing if the component
+            is deactivated.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IActivatable.Resume">
+            <summary>
+            Resume the execution of the component. Calling this should do nothing if the component
+            is deactivated.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.GameComponent">
+            <summary>
+            Base class for a Game Component.
+            A game component is expected to <see cref="M:com.brg.Common.GameComponent.Initialize"/> before activation
+            and expected to activate before pausing or resuming.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Initialized">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Activated">
+            <inheritdoc/>
+        </member>
+        <member name="P:com.brg.Common.GameComponent.Paused">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Pause">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.Resume">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.LogSuccess(System.String)">
+            <summary>
+            Shorthand for logging info.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.LogInfo(System.String)">
+            <summary>
+            Shorthand for logging info.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.LogWarning(System.String)">
+            <summary>
+            Shorthand for logging warning.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.GameComponent.LogError(System.String)">
+            <summary>
+            Shorthand for logging error.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.IGameComponent">
+            <summary>
+            Interface for a Game Component.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.IInitializable">
+            <summary>
+            Interface that adheres to a component that can be initialized.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IInitializable.Initialized">
+            <summary>
+            Whether the component has been successfully initialized.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IInitializable.Initialize">
+            <summary>
+            Initialize the component, the initialization can take more than one frame.
+            <para>
+            Calling <see cref="M:com.brg.Common.IInitializable.Initialize"/> again during an initialization should not do anything.
+            </para>
+            </summary>
+            <returns>An <see cref="T:com.brg.Common.IProgress"/> item indicating the progress.</returns>
+        </member>
+        <member name="T:com.brg.Common.InitializationPolicy">
+            <summary>
+            Enumeration of initialization behaviour.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.InitializationPolicy.ONLY_ONCE">
+            <summary>
+            Should only initialize once. Cannot re-initialize if failed.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.InitializationPolicy.ALLOW_REINITIALIZATION_ON_FAIL">
+            <summary>
+            Initialization can be run again, if the previous attempt failed.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.InitializationPolicy.ALLOW_REINITIALIZATION">
+            <summary>
+            Initialization can be re-run whenever, as long as not in the middle of a previous initialization.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.InitializationPolicyAttribute">
+            <summary>
+            Attribute on a <see cref="T:com.brg.Common.ManagerBase"/> to denote how a manager of the class
+            should initialize.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.InitializationPolicyAttribute.Policy">
+            <summary>
+            The policy.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.InitializationPolicyAttribute.#ctor(com.brg.Common.InitializationPolicy)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.InitializationPolicyAttribute"/>.
+            </summary>
+            <param name="policy">The policy to set.</param>
+        </member>
+        <member name="T:com.brg.Common.ProgressLeniency">
+            <summary>
+            Enumeration for progress leniency
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.ProgressLeniency.REQUIRE_ALL_SUCCEEDED">
+            <summary>
+            Requires all child progresses to succeed to return a success.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.ProgressLeniency.REQUIRE_AT_LEAST_ONE_SUCCEEDED">
+            <summary>
+            Requires at least one successful child progresses (if any) to succeed.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.ProgressLeniency.REQUIRE_NONE_SUCCEEDED">
+            <summary>
+            Whether the progress is successful does not depend on its child progresses.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ProgressLeniencyAttribute">
+            <summary>
+            Attribute to designate how a progress group should be successful.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ProgressLeniencyAttribute.Policy">
+            <summary>
+            The policy.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ProgressLeniencyAttribute.#ctor(com.brg.Common.ProgressLeniency)">
+            <summary>
+            Sets progress leniency with <paramref name="policy"/>.
+            </summary>
+            <param name="policy"></param>
+        </member>
+        <member name="T:com.brg.Common.ManagerBase">
+            <summary>
+            Abstract class that provides basic behaviour for a Manager component that can be initialized, activated and paused.
+            <remarks>
+            A manager can have a list of initialization dependencies. They first need to successfully initialize
+            for the manager to perform its own initialization.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ManagerBase.InitTask">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ManagerBase.Log">
+            <summary>
+            A log object with the manager's name for it to use.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ManagerBase.Dependencies">
+            <summary>
+            THe manager's dependencies.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.#ctor">
+            <summary>
+            Constructor for <see cref="T:com.brg.Common.ManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.InitializeBehaviourAsync">
+            <summary>
+            Asynchronous initialization behaviour that runs after all dependencies.
+            </summary>
+            <remarks>
+            Override this method to implement initialization behaviour, if any.
+            </remarks>
+            <returns>Whether the initialization is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.AddDependencies(com.brg.Common.IInitializable[])">
+            <summary>
+            Add dependencies to the manager, should only be called before <see cref="M:com.brg.Common.ManagerBase.Initialize"/> is called.
+            </summary>
+            <remarks>A manager's initialization only starts after all its dependencies are initialized successfully.</remarks>
+            <param name="others"></param>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.Initialize">
+            <summary>
+            Initialize the manager, the initialization only starts when all dependencies finished successfully.
+            </summary>
+            <returns>The initialization progress.</returns>
+        </member>
+        <member name="M:com.brg.Common.ManagerBase.CheckAllowInitialization(System.String@)">
+            <summary>
+            Check whether this manager can run initialization. Initialization code fails to run because:
+            <list type="bullet">
+            <item>Initialization is already running.</item>
+            <item>Initialization ran but failed, and its <see cref="T:com.brg.Common.InitializationPolicy"/> do not allow it from running again.</item>
+            <item>Initialization ran, and its <see cref="T:com.brg.Common.InitializationPolicy"/> do not allow it from running again.</item>
+            </list>
+            </summary>
+            <param name="failedReason">The reason that the manager failed.</param>
+            <returns>Whether this manager can run initialization.</returns>
+        </member>
+        <member name="T:com.brg.Common.ParentManagerBase">
+            <summary>
+            Class for a Manager that, upon initialization, initialize all its children IInitializables.
+            The child managers may not be the parent's dependencies, but the parent's initialization only should
+            complete if they finish.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ParentManagerBase.#ctor(System.Collections.Generic.IEnumerable{com.brg.Common.IInitializable})">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.ParentManagerBase"/> with its child managers.
+            </summary>
+            <param name="managers">The child managers of the parent.</param>
+        </member>
+        <member name="M:com.brg.Common.ParentManagerBase.Initialize">
+            <summary>
+            Initialize all children, and returns a progress that waits for all children to complete.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.Common.ParentManagerBase.InitializeBehaviourAsync">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.ImmediateProgress">
+            <summary>
+            Class for an <see cref="T:com.brg.Common.IProgress"/> that completes immediately.
+            </summary>
+            <remarks>
+            Useful for initializations or activations that ends in the same frame.
+            </remarks>
+        </member>
+        <member name="P:com.brg.Common.ImmediateProgress.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ImmediateProgress.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ImmediateProgress.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ImmediateProgress.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ImmediateProgress.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.ImmediateProgress.#ctor(System.Boolean,System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.ImmediateProgress"/>.
+            </summary>
+            <param name="successState">The result of the object.</param>
+            <param name="totalProgress">The total progress.</param>
+        </member>
+        <member name="T:com.brg.Common.IProgress">
+            <summary>
+            Interface for a Progress, an item that allows querying for a progressing task (loading, reading files, etc.)
+            </summary>
+            <remarks>
+            TODO: Should support failure message in the future.
+            </remarks>
+        </member>
+        <member name="P:com.brg.Common.IProgress.Finished">
+            <summary>
+            Whether the Progress is finished. Usually indicated by <see cref="P:com.brg.Common.IProgress.Progress"/> reaching <see cref="P:com.brg.Common.IProgress.TotalProgress"/>
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IProgress.Successful">
+            <summary>
+            Whether the Progress is successful, should return <c>null</c> if the Progress has not finished.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IProgress.Progress">
+            <summary>
+            Get a <see cref="T:System.Single"/> showing the current progress of the Progress.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IProgress.TotalProgress">
+            <summary>
+            Get a <see cref="T:System.Single"/> showing the total progress of the Progress.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IProgress.PercentageProgress">
+            <summary>
+            The percentage of the progress. Value is in range [0,1]
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.IProgress.Task">
+            <summary>
+            Get a <see cref="P:com.brg.Common.IProgress.Task"/> that completes when the progress is completed,
+            returning its success or failure.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ProgressGroup">
+            <summary>
+            A concrete class for an <see cref="T:com.brg.Common.IProgress"/> that calculates the progress of multiple progresses.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ProgressGroup.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ProgressGroup.Successful">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.ProgressGroup.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ProgressGroup.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.ProgressGroup.Task">
+            <inheritdoc />
+        </member>
+        <member name="T:com.brg.Common.SingleProgress">
+            <summary>
+            Concrete class for a <see cref="T:com.brg.Common.IProgress"/> that is intended to use for a single progress.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.SingleProgress.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleProgress.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleProgress.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleProgress.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleProgress.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.SingleProgress.#ctor(System.Func{System.Boolean},System.Func{System.Boolean},System.Func{System.Single},System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleProgress"/>.
+            </summary>
+            <param name="finishGetter">Function to retrieves whether the progress completed.</param>
+            <param name="successGetter">Function to retrieves whether the progress is successful.</param>
+            <param name="progressGetter">Function to retrieves the progress.</param>
+            <param name="totalProgress">The total progress of the <see cref="T:com.brg.Common.SingleProgress"/>.</param>
+        </member>
+        <member name="M:com.brg.Common.SingleProgress.#ctor(System.Func{System.Boolean},System.Func{System.Boolean},System.Func{System.Single},System.Func{System.Single})">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleProgress"/>.
+            </summary>
+            <param name="finishGetter">Function to retrieves whether the progress completed.</param>
+            <param name="successGetter">Function to retrieves whether the progress is successful.</param>
+            <param name="progressGetter">Function to retrieves the progress.</param>
+            <param name="totalProgressGetter">Function to retrieves the progress of the <see cref="T:com.brg.Common.SingleProgress"/>.</param>
+        </member>
+        <member name="T:com.brg.Common.SingleTaskBoolProgress">
+            <summary>
+            A concrete class for an <see cref="T:com.brg.Common.IProgress"/> wrapped over a <see cref="P:com.brg.Common.SingleTaskBoolProgress.Task"/> that returns bool.
+            This class is not responsible for running the task which should be controlled by the user code.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.SingleTaskBoolProgress.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskBoolProgress.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskBoolProgress.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskBoolProgress.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskBoolProgress.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.SingleTaskBoolProgress.#ctor(System.Threading.Tasks.Task{System.Boolean},System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleTaskBoolProgress"/> that interprets a <see cref="P:com.brg.Common.SingleTaskBoolProgress.Task"/> that returns bool.
+            </summary>
+            <param name="task"></param>
+            <param name="totalProgress"></param>
+        </member>
+        <member name="T:com.brg.Common.SingleTaskProgress`1">
+            <summary>
+            A concrete class for an <see cref="T:com.brg.Common.IProgress"/> wrapped over a <see cref="P:com.brg.Common.SingleTaskProgress`1.Task"/>.
+            This class is not responsible for running the task which should be controlled by the user code.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.SingleTaskProgress`1.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskProgress`1.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskProgress`1.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskProgress`1.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTaskProgress`1.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.SingleTaskProgress`1.#ctor(System.Threading.Tasks.Task{`0},System.Func{`0,System.Boolean},System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleTaskProgress`1"/> that interprets a <see cref="T:System.Threading.Tasks.Task`1"/>.
+            </summary>
+            <param name="task">The task.</param>
+            <param name="resultInterpreter">Function to interprets the result of the task to whether success (true) or failed (false).</param>
+            <param name="totalProgress">The total progress.</param>
+        </member>
+        <member name="T:com.brg.Common.SingleTCSBoolProgress">
+            <summary>
+            A concrete class for an <see cref="T:com.brg.Common.IProgress"/> wrapped over a <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/> that returns bool.
+            This class is not responsible for running the task which should be controlled by the user code.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.SingleTCSBoolProgress.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSBoolProgress.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSBoolProgress.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSBoolProgress.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSBoolProgress.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.SingleTCSBoolProgress.#ctor(System.Threading.Tasks.TaskCompletionSource{System.Boolean},System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleTaskProgress`1"/> that interprets a <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/> that returns bool.
+            </summary>
+            <param name="tcs">The <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/> to wrap.</param>
+            <param name="totalProgress">The total progress.</param>
+        </member>
+        <member name="T:com.brg.Common.SingleTCSProgress`1">
+            <summary>
+            A concrete class for an <see cref="T:com.brg.Common.IProgress"/> wrapped over a <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/>.
+            This class is not responsible for running the task which should be controlled by the user code.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.SingleTCSProgress`1.Finished">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSProgress`1.Successful">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSProgress`1.Progress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSProgress`1.TotalProgress">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.SingleTCSProgress`1.Task">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.SingleTCSProgress`1.#ctor(System.Threading.Tasks.TaskCompletionSource{`0},System.Func{`0,System.Boolean},System.Single)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.SingleTaskProgress`1"/> that interprets a <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/>.
+            </summary>
+            <param name="tcs">The <see cref="T:System.Threading.Tasks.TaskCompletionSource`1"/> to wrap.</param>
+            <param name="resultInterpreter">Function to interprets the result of the task to whether success (true) or failed (false).</param>
+            <param name="totalProgress">The total progress.</param>
+        </member>
+        <member name="T:com.brg.Common.IUpdatable">
+            <summary>
+            Interface for a class that has behaviour that is invoked every frames.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.GMBase">
+            <summary>
+            Abstract class that acts as a base singleton and mediator for a game application. Allowing access to other
+            single-instance managers.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.GMBase.Get``1">
+            <summary>
+            Get the single-instance manager of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type of the manager to get.</typeparam>
+            <returns>The single instance of the manager.</returns>
+            <exception cref="T:System.Exception">Thrown if GM does not manage the type.</exception>
+        </member>
+        <member name="T:com.brg.Common.ILanguageCodeQuery">
+            <summary>
+            Interface for querying the language during runtime.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILanguageCodeQuery.GetSelectedLanguage">
+            <summary>
+            Get user selected language, if the user has not selected any.
+            </summary>
+            <returns>null if there is no selected language, a language code otherwise.</returns>
+        </member>
+        <member name="M:com.brg.Common.ILanguageCodeQuery.GetDefaultLanguage">
+            <summary>
+            Get the default language of the system.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILanguageCodeQuery.SetSelectedLanguage(System.String)">
+            <summary>
+            Set <paramref name="languageCode"/> as the selected user language.
+            </summary>
+            <param name="languageCode">The language code to set as selected.</param>
+        </member>
+        <member name="T:com.brg.Common.DefaultLanguageCodeQuery">
+            <summary>
+            Implementation of a default <see cref="T:com.brg.Common.ILanguageCodeQuery"/>, 
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.ILocalizationSupplier">
+            <summary>
+            Interface for a localization supplier that can translate a key to text.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILocalizationSupplier.Translate(System.String,System.String@)">
+            <summary>
+            Translate key <paramref name="key"/> into a translated string.
+            </summary>
+            <param name="key">The key to translate.</param>
+            <param name="translatedString">The translated key. If translation is not possible, return <paramref name="key"/> instread.</param>
+            <returns>Whether the translation is possible.</returns>
+        </member>
+        <member name="M:com.brg.Common.ILocalizationSupplier.LoadAsync">
+            <summary>
+            Load the supplier asynchronously, the process may involve de-serialization and take more than one frame.
+            </summary>
+            <returns>A task that returns whether the load operation is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.ILocalizationSupplier.UnloadAsync">
+            <summary>
+            Unload the supplier asynchronously, the process may take more than one frame.
+            </summary>
+            <returns>A task that returns whether the unload operation is successful.</returns>
+        </member>
+        <member name="T:com.brg.Common.LocalizableText">
+            <summary>
+            Struct containing data for a localizable text (represented by a key <see cref="F:com.brg.Common.LocalizableText.Key"/> and its <see cref="F:com.brg.Common.LocalizableText._parameters"/>.
+            <para>The struct itself does not contains a translated text.</para>
+            </summary>
+            <remarks>
+            Use <see cref="M:com.brg.Common.LocalizableText.Clone"/> to get a deep copy of the Localizable text.
+            </remarks>
+        </member>
+        <member name="F:com.brg.Common.LocalizableText.Key">
+            <summary>
+            The key of the text to match via a <see cref="T:com.brg.Common.LocalizationManager"/>
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.LocalizableText._parameters">
+            <summary>
+            Parameters that is replaced into the translated text.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.#ctor(System.String)">
+            <summary>
+            Creates a localizable text from a string with no parameters.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.#ctor(com.brg.Common.LocalizableText)">
+            <summary>
+            Creates a localizable text from another.
+            </summary>
+            <remarks>The <see cref="F:com.brg.Common.LocalizableText._parameters"/> will only be a shallow clone.
+            <para>Use <see cref="M:com.brg.Common.LocalizableText.Clone"/> to get a deep copy.</para>
+            </remarks>
+            <param name="other"></param>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.SetParameter(System.String,System.Object)">
+            <summary>
+            Set a parameter. Overrides if already exists.
+            </summary>
+            <param name="name">Name of the parameter</param>
+            <param name="value">Reference to the parameter</param>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.RemoveParameter(System.String)">
+            <summary>
+            Remove a parameter.
+            </summary>
+            <param name="name">Parameter name to remove</param>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.IterateParameters">
+            <summary>
+            Iterate through the parameters.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.Clone">
+            <summary>
+            Get a deep copy of the object.
+            </summary>
+            <returns>An object cast-able to <see cref="T:com.brg.Common.LocalizableText"/>.</returns>
+        </member>
+        <member name="M:com.brg.Common.LocalizableText.op_Implicit(System.String)~com.brg.Common.LocalizableText">
+            <summary>
+            Converts a string to a <see cref="T:com.brg.Common.LocalizableText"/> with no parameters.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LocalizationManager">
+            <summary>
+            Class for a manager that handles localizations, using <see cref="T:com.brg.Common.ILocalizationSupplier"/>, usually
+            one for each languages. 
+            </summary>
+        </member>
+        <member name="E:com.brg.Common.LocalizationManager.LanguageChangeEvent">
+            <summary>
+            Event that invokes on language change.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LocalizationManager.ActiveLanguageCode">
+            <summary>
+            The active language code that LocalizationManager will try to translate when call <see cref="M:com.brg.Common.LocalizationManager.Translate(System.String,System.String@)"/>,
+            may not always be the same as <see cref="P:com.brg.Common.LocalizationManager.SelectedLanguageCode"/>.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LocalizationManager.SelectedLanguageCode">
+            <summary>
+            The explicitly selected language code. Returns null if not none are selected.
+            <para>Can be different than <see cref="P:com.brg.Common.LocalizationManager.ActiveLanguageCode"/>, if the appropriate <see cref="T:com.brg.Common.ILocalizationSupplier"/>
+            is not supplied.</para>
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizationManager.#ctor(com.brg.Common.ILanguageCodeQuery,System.Collections.Generic.IEnumerable{com.brg.Common.ILocalizationSupplier})">
+            <summary>
+            Creates a LocalizationManager.
+            </summary>
+            <param name="query">The language code query, if null, an instance of <see cref="T:com.brg.Common.DefaultLanguageCodeQuery"/>
+            will be used.</param>
+            <param name="suppliers">Localization suppliers to use with the manager.</param>
+        </member>
+        <member name="M:com.brg.Common.LocalizationManager.Translate(System.String,System.String@)">
+            <summary>
+            Retrieve the translated text for key <see cref="!:key"/> in the current active language.
+            </summary>
+            <param name="key">The key</param>
+            <param name="translatedText">The translated text, if not translatable, will return <paramref name="key"/> itself.</param>
+            <returns>Whether the key is translated.</returns>
+        </member>
+        <member name="M:com.brg.Common.LocalizationManager.SelectLanguage(System.String)">
+            <summary>
+            Use <paramref name="languageCode"/> as the selected language code, and attempt to load the supplier for
+            said language, as well as unload the current supplier, if any.
+            <para>Will return a failed <see cref="T:com.brg.Common.IProgress"/> if called in the middle of another language selection.</para>
+            </summary>
+            <param name="languageCode">The language code to select.</param>
+            <returns>An <see cref="T:com.brg.Common.IProgress"/> for the load and unload of the suppliers.</returns>
+        </member>
+        <member name="T:com.brg.Common.LocalizeHelper">
+            <summary>
+            Class helping with automatic localization by holding a local reference to a <see cref="T:com.brg.Common.LocalizableText"/>
+            and automatically translate upon <see cref="T:com.brg.Common.LocalizationManager"/>'s language selection.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LocalizeHelper.Text">
+            <summary>
+            The localizable text.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LocalizeHelper.LocalizedText">
+            <summary>
+            The localized text, if it is not localized, localize first.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.#ctor">
+            <summary>
+            Create a localizer with empty text.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.#ctor(System.String)">
+            <summary>
+            Create a localizer with text <paramref name="text"/> and no parameters.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.#ctor(com.brg.Common.LocalizeHelper)">
+            <summary>
+            Create a localizer from the text of <paramref name="other"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.#ctor(com.brg.Common.LocalizableText)">
+            <summary>
+            Create a localizer from <paramref name="text"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.CloneText">
+            <summary>
+            Get a deep-copy of the underlying <see cref="T:com.brg.Common.LocalizableText"/>
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.SetParameter(System.String,System.Object)">
+            <summary>
+            Set a parameter in the underlying <see cref="T:com.brg.Common.LocalizableText"/>. Overrides if already exists.
+            </summary>
+            <param name="name">Name of the parameter</param>
+            <param name="value">Reference to the parameter</param>
+        </member>
+        <member name="M:com.brg.Common.LocalizeHelper.RemoveParameter(System.String)">
+            <summary>
+            Remove a parameter in the underlying <see cref="T:com.brg.Common.LocalizableText"/>.
+            </summary>
+            <param name="name">Parameter name to remove</param>
+        </member>
+        <member name="T:com.brg.Common.ILogWriter">
+            <summary>
+            Interface for a log writer
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILogWriter.Success(System.String)">
+            <summary>
+            Write success log.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILogWriter.Info(System.String)">
+            <summary>
+            Write info log
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILogWriter.Warn(System.String)">
+            <summary>
+            Write warning log.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.ILogWriter.Error(System.String)">
+            <summary>
+            Write error log.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LogObj">
+            <summary>
+            Class that helps writing logs.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogObj.Writer">
+            <summary>
+            Static writer for all <see cref="T:com.brg.Common.LogObj"/>.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.LogObj.Default">
+            <summary>
+            Default <see cref="T:com.brg.Common.LogObj"/> for logging without allocating a dedicated <see cref="T:com.brg.Common.LogObj"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogObj.#ctor">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.LogObj"/> with no name.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogObj.#ctor(System.String)">
+            <summary>
+            Creates a <see cref="T:com.brg.Common.LogObj"/> with name <paramref name="name"/>;
+            </summary>
+            <param name="name">Name of the <see cref="T:com.brg.Common.LogObj"/></param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.SetName(System.String)">
+            <summary>
+            Sets name of the <see cref="T:com.brg.Common.LogObj"/>.
+            </summary>
+            <param name="name">Name for the <see cref="T:com.brg.Common.LogObj"/>.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Success(System.Object)">
+            <summary>
+            Log for success.
+            </summary>
+            <param name="message">Message to log.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Success(System.String,System.Object)">
+            <summary>
+            Log for success.
+            </summary>
+            <param name="message">Message to log.</param>
+            <param name="overridenName">Name to prepend the log instead of the <see cref="T:com.brg.Common.LogObj"/>'s name.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Info(System.Object)">
+            <summary>
+            Log for info.
+            </summary>
+            <param name="message">Message to log.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Info(System.String,System.Object)">
+            <summary>
+            Log for info.
+            </summary>
+            <param name="message">Message to log.</param>
+            <param name="overridenName">Name to prepend the log instead of the <see cref="T:com.brg.Common.LogObj"/>'s name.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Warn(System.Object)">
+            <summary>
+            Log as a warning.
+            </summary>
+            <param name="message">Message to log.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Warn(System.String,System.Object)">
+            <summary>
+            Log as a warning.
+            </summary>
+            <param name="message">Message to log.</param>
+            <param name="overridenName">Name to prepend the log instead of the <see cref="T:com.brg.Common.LogObj"/>'s name.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Error(System.Object)">
+            <summary>
+            Log as an error.
+            </summary>
+            <param name="message">Message to log.</param>
+        </member>
+        <member name="M:com.brg.Common.LogObj.Error(System.String,System.Object)">
+            <summary>
+            Log as an error.
+            </summary>
+            <param name="message">Message to log.</param>
+            <param name="overridenName">Name to prepend the log instead of the <see cref="T:com.brg.Common.LogObj"/>'s name.</param>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.BTResult">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.BTResult.FAILED">
+            <summary>The task failed to run.</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.BTResult.SUCCESS">
+            <summary>The task has run to succession.</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.BTResult.RUNNING">
+            <summary>The task is running.</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.BTResult.CANNOT_RUN">
+            <summary>The task cannot run yet, equivalent to <see cref="F:com.brg.Common.LogicComponents.BTResult.FAILED"/>.</summary>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.IObjectPool`1">
+            <summary>
+            Interface for an object pool.
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IObjectPool`1.Get">
+            <summary>
+            Get an instance from the pool.
+            </summary>
+            <returns>Return the instance of the pool</returns>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IObjectPool`1.TryGet(`0@)">
+            <summary>
+            Try get an instance from the pool.
+            </summary>
+            <param name="instance">The instance</param>
+            <returns>Whether the action is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IObjectPool`1.Return(`0)">
+            <summary>
+            Return an instance to the pool.
+            </summary>
+            <param name="obj">The instance to return.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IObjectPool`1.ReturnAll">
+            <summary>
+            Return all spawned instance to the pool.
+            </summary>
+            <remarks>
+            Makes sure all instances are not referenced before or after calling this method.
+            </remarks>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.IPolymorphicObjectPool`1">
+            <summary>
+            Interface for an object pool that handles spawning specific instances of child classes of <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IPolymorphicObjectPool`1.Get``1">
+            <summary>
+            Get an instance from the pool.
+            </summary>
+            <returns>Return the instance of the pool</returns>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IPolymorphicObjectPool`1.TryGet``1(``0@)">
+            <summary>
+            Try get an instance from the pool.
+            </summary>
+            <param name="instance">The instance</param>
+            <returns>Whether the action is successful.</returns>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IPolymorphicObjectPool`1.Return(`0)">
+            <summary>
+            Return an instance to the pool.
+            </summary>
+            <param name="obj">The instance to return.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IPolymorphicObjectPool`1.ReturnAll">
+            <summary>
+            Return all spawned instance to the pool.
+            </summary>
+            <remarks>
+            Makes sure all instances are not referenced before or after calling this method.
+            </remarks>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.ExplicitStateMachine`1">
+            <summary>
+            Class for a state machine that switches state by explicitly calling <see cref="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.SwitchState(System.String)"/>.
+            </summary>
+            <typeparam name="T">Type of the context</typeparam>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Initialized">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Activated">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Paused">
+            <inheritdoc />
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Running">
+            <summary>
+            Whether the state machine is actively updating its context via states.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.CurrentStateName">
+            <summary>
+            Get name of current state.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.ExplicitStateMachine`1.CurrentState">
+            <summary>
+            Get current state.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.#ctor(System.Collections.Generic.IEnumerable{com.brg.Common.LogicComponents.IState{`0}},System.Type,`0,System.Boolean,System.Boolean)">
+            <summary>
+            Creates an explicit state machine with a set of state and a start state.
+            </summary>
+            <param name="states">The states of the machine.</param>
+            <param name="startState">The start state that is entered when <see cref="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Activate"/> is called.</param>
+            <param name="context">The context of the state machine.</param>
+            <param name="reInvokeEnter">Whether to re-invoke the current state's <see cref="M:com.brg.Common.LogicComponents.IState`1.OnEnter(`0@)"/> if switch to the same state.</param>
+            <param name="reInvokeExit">Whether to re-invoke the current state's <see cref="M:com.brg.Common.LogicComponents.IState`1.OnExit(`0@)"/> if switch to the same state.</param>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="startState"/> does not exist in the supplied states.</exception>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.#ctor(System.Collections.Generic.IEnumerable{com.brg.Common.LogicComponents.IState{`0}},System.String,`0,System.Boolean,System.Boolean)">
+            <summary>
+            Creates an explicit state machine with a set of state and a start state.
+            </summary>
+            <param name="states">The states of the machine.</param>
+            <param name="startState">The start state that is entered when <see cref="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Activate"/> is called.</param>
+            <param name="context">The context of the state machine.</param>
+            <param name="reInvokeEnter">Whether to re-invoke the current state's <see cref="M:com.brg.Common.LogicComponents.IState`1.OnEnter(`0@)"/> if switch to the same state.</param>
+            <param name="reInvokeExit">Whether to re-invoke the current state's <see cref="M:com.brg.Common.LogicComponents.IState`1.OnExit(`0@)"/> if switch to the same state.</param>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="startState"/> does not exist in the supplied states.</exception>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Initialize">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Activate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Deactivate">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.Update(System.Single)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.SwitchState``1">
+            <summary>
+            Explicitly switch the state of the state machine. First calling <see cref="M:com.brg.Common.LogicComponents.IState`1.OnExit(`0@)"/> on the old,
+            then<see cref="M:com.brg.Common.LogicComponents.IState`1.OnEnter(`0@)"/> on the new state.
+            </summary>
+            <typeparam name="TType">The type of state to enter.</typeparam>
+            <returns>Whether the switch is successful. Returns false when the new state does not exist or unknown.</returns>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.ExplicitStateMachine`1.SwitchState(System.String)">
+            <summary>
+            Explicitly switch the state of the state machine. First calling <see cref="M:com.brg.Common.LogicComponents.IState`1.OnExit(`0@)"/> on the old,
+            then<see cref="M:com.brg.Common.LogicComponents.IState`1.OnEnter(`0@)"/> on the new state.
+            </summary>
+            <param name="identifier">The identifier of the state</param>
+            <returns>Whether the switch is successful. Returns false when the new state does not exist or unknown.</returns>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.IStateContext">
+            <summary>
+            Placeholder interface for a state context.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.IStateMachine`1">
+            <summary>
+            Interface for a state machine for a context of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">Type of the context</typeparam>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.AdHocState`1">
+            <summary>
+            Class for a state for context <typeparamref name="T"/>. Used to quickly create a state
+            without creating new class.
+            </summary>
+            <typeparam name="T">Type of the context</typeparam>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.AdHocState`1.EnterDelegate">
+            <summary>
+            Delegate for a context action upon entering a state.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.AdHocState`1.UpdateDelegate">
+            <summary>
+            Delegate for a context action during the state.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.AdHocState`1.ExitDelegate">
+            <summary>
+            Delegate for a context action upon exiting a state.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.AdHocState`1.StateIdentifier">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.AdHocState`1.#ctor(System.String,com.brg.Common.LogicComponents.AdHocState{`0}.EnterDelegate,com.brg.Common.LogicComponents.AdHocState{`0}.UpdateDelegate,com.brg.Common.LogicComponents.AdHocState{`0}.ExitDelegate)">
+            <summary>
+            Creates an ad-hoc state from delegates.
+            </summary>
+            <param name="identifier">Identifier of the state</param>
+            <param name="onEnter">The delegate to be invoked on enter</param>
+            <param name="onUpdate">The delegate to be invoked on update</param>
+            <param name="onExit">The delegate to be invoked on exit</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.AdHocState`1.OnEnter(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.AdHocState`1.OnUpdate(`0@,System.Single)">
+            <inheritdoc/>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.AdHocState`1.OnExit(`0@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.IState`1">
+            <summary>
+            Interface for a state for context <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">Type of the state context.</typeparam>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.IState`1.StateIdentifier">
+            <summary>
+            Get the identifier for the state.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IState`1.OnEnter(`0@)">
+            <summary>
+            This method is called when the context enters the state.
+            </summary>
+            <param name="context">The context instance.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IState`1.OnUpdate(`0@,System.Single)">
+            <summary>
+            This method is called to update the context during the time it is in the state.
+            </summary>
+            <param name="context">The context instance.</param>
+            <param name="dt">The time in seconds to update.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.IState`1.OnExit(`0@)">
+            <summary>
+            This method is called when the context exits the state.
+            </summary>
+            <param name="context">The context instance.</param>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.CountdownTimer">
+            <summary>
+            Class that helps timing behaviours that requires manual update.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.LogicComponents.CountdownTimer.Setting">
+            <summary>
+            Struct for timer settings
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.CountdownTimer.Setting.InitialInterval">
+            <summary>Interval before the first invocation</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.CountdownTimer.Setting.Interval">
+            <summary>Interval between invocations.</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.CountdownTimer.Setting.ResetCumulatively">
+            <summary>Whether to reset the timer cumulatively (add interval to the timer instead of setting it).</summary>
+        </member>
+        <member name="F:com.brg.Common.LogicComponents.CountdownTimer.Setting.MaxInvocation">
+            <summary>Max number of invocations.</summary>
+        </member>
+        <member name="E:com.brg.Common.LogicComponents.CountdownTimer.InvokeEvent">
+            <summary>
+            Event to be invoked when timer reached zero.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.CountdownTimer.TotalTime">
+            <summary>
+            Total time that the timer has accumulated. Resets if <see cref="M:com.brg.Common.LogicComponents.CountdownTimer.Reset"/> is called.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.CountdownTimer.Timer">
+            <summary>
+            Time before the next invocation. Resets if <see cref="M:com.brg.Common.LogicComponents.CountdownTimer.Reset"/> is called.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.LogicComponents.CountdownTimer.Paused">
+            <summary>
+            Whether the timer is paused
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.#ctor(com.brg.Common.LogicComponents.CountdownTimer.Setting)">
+            <summary>
+            Creates a manual timer.
+            </summary>
+            <param name="setting">Interval between performing actions.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.Tick(System.Single)">
+            <summary>
+            Update the timer.
+            </summary>
+            <param name="dt">Duration of the frame.</param>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.Pause">
+            <summary>
+            Pause the timer, <see cref="M:com.brg.Common.LogicComponents.CountdownTimer.Tick(System.Single)"/> invocations will not update the timer.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.Resume">
+            <summary>
+            Resume the timer.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.Reset">
+            <summary>
+            Reset the timer's state, equivalent to calling constructor with the same arguments.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.LogicComponents.CountdownTimer.MakeOneTimeTimer(System.Single)">
+            <summary>
+            Make a <see cref="T:com.brg.Common.LogicComponents.CountdownTimer"/> that invokes only once, after <paramref name="delay"/>.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.AdManager">
+            <summary>
+            Manager that handle ad requests: Loading, showing and hiding ads using <see cref="T:com.brg.Common.IAdServiceProvider"/>,
+            as well as handling the result.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AdManager.#ctor(com.brg.Common.IUserAdQuery,com.brg.Common.AnalyticsEventManager,System.Collections.Generic.IEnumerable{com.brg.Common.IAdServiceProvider})">
+            <summary>
+            Creates an ad manager instance with a list an ad query-er and a list of providers.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AdManager.InitializeBehaviourAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:com.brg.Common.AdManager.RequestAd(com.brg.Common.AdRequest,System.Boolean@)">
+            <summary>
+            Request an ad to be shown.
+            </summary>
+            <param name="request"></param>
+            <param name="isOverlay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.Common.AdManager.RequestCancelAd(com.brg.Common.AdRequestType,System.Boolean)">
+            <summary>
+            Request cancelling all showing ads of type <see cref="!:type"/>.
+            </summary>
+            <param name="type">Type of ads to cancel.</param>
+            <param name="invokeFailedCallback">Whether to invoke the <see cref="F:com.brg.Common.AdRequest.AdFailedCallback"/> callback when cancelled.</param>
+        </member>
+        <member name="T:com.brg.Common.AdRequest">
+            <summary>
+            Struct for an ad request.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequest.Type">
+            <summary> Type if the ad request. </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequest.AdSuccessfulCallback">
+            <summary> Action to invoke on an successful showing. </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequest.AdFailedCallback">
+            <summary> Action to invoke on an failed showing. </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequest.Timeout">
+            <summary> Time in seconds that the request can wait for the ad to show before invoking a failed request. </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequestType.INTERSTITIAL_AD">
+            <summary>
+            Ad that enters, either during or after gameplay that can be skipped.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequestType.REWARD_AD">
+            <summary>
+            Ad that rewards the player with something if watched till the end.
+            </summary>
+        </member>
+        <member name="F:com.brg.Common.AdRequestType.BANNER_AD">
+            <summary>
+            Ad that persists and takes up a small corner of the screen.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.IAdServiceProvider">
+            <summary>
+            Interface for an ad service provider.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IAdServiceProvider.CanHandleRequest(com.brg.Common.AdRequestType)">
+            <summary>
+            Whether this service can handle an ad request of type <paramref name="type"/>.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IAdServiceProvider.IsOverlayingAd(com.brg.Common.AdRequestType)">
+            <summary>
+            Whether this service renders an ad request of type <paramref name="type"/> as fullscreen overlay
+            (user cannot interact with the game at all during the showing), or not (e.g. banner ads).
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IAdServiceProvider.LoadAdAsync(com.brg.Common.AdRequestType,System.Threading.CancellationToken)">
+            <summary>
+            Performs a task that loads an ad, return an immediate task of true if an ad is already loaded and ready to show.
+            </summary>
+            <param name="type">The type of ad.</param>
+            <param name="ct">The cancellation token to cancel the loading task.</param>
+            <returns>A task that returns whether the ad is loaded successfully.</returns>
+        </member>
+        <member name="M:com.brg.Common.IAdServiceProvider.ShowAdAsync(com.brg.Common.AdRequestType,System.Threading.CancellationToken)">
+            <summary>
+            Show the loaded ad, return a task that returns whether the ad is registered as "fully completed" (e.g.
+            an interstitial ad always return true if shown, but a reward ad should only do so if the user fully watched the ad).
+            </summary>
+            <remarks>
+            If the ad of type <see cref="!:type"/> has not loaded, return an immediate task with result false.
+            </remarks>
+            <param name="type">The type of ad to show.</param>
+            <param name="ct">The cancellation token to cancel the showing task.</param>
+            <param name="ct"></param>
+            <returns>A task that returns when the ad is completed.</returns>
+        </member>
+        <member name="T:com.brg.Common.IUserAdQuery">
+            <summary>
+            Interface for component that allows querying for whether the user has ad-skip-ability
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IUserAdQuery.GetAdSkippability(com.brg.Common.AdRequestType)">
+            <summary>
+            Get whether a type of ad can be skipped (bypassing showing altogether, but skill return a success status.
+            </summary>
+            <param name="type">Type of ad</param>
+            <returns>Whether this type of ad can be skipped.</returns>
+        </member>
+        <member name="T:com.brg.Common.AnalyticsEventBuilder">
+            <summary>
+            Class that provides builder to create analytics events.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.AnalyticsEventBuilder.Manager">
+            <summary>
+            Back reference to the parent <see cref="T:com.brg.Common.AnalyticsEventManager"/> that is used to send the events.
+            </summary>
+        </member>
+        <member name="P:com.brg.Common.AnalyticsEventBuilder.Name">
+            <summary>
+            Name of the event.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.IterateParameters">
+            <summary>
+            Iterate through all the parameters of the events.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.ValueTuple{System.String,System.Type,System.Object})">
+            <summary>
+            Add a parameter for the event.
+            </summary>
+            <param name="packedParam">Parameter to add.</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.ValueTuple{System.String,System.Type,System.Object}[])">
+            <summary>
+            Add parameters for the event.
+            </summary>
+            <param name="packedParams">Parameters to add.</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.String,System.String)">
+            <summary>
+            Shorthand to add a string parameter.
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="value">Parameter value</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.String,System.Int32)">
+            <summary>
+            Shorthand to add an integer parameter.
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="value">Parameter value</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.String,System.Single)">
+            <summary>
+            Shorthand to add a float parameter.
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="value">Parameter value</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.String,System.Double)">
+            <summary>
+            Shorthand to add a double parameter.
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="value">Parameter value</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.Add(System.String,System.Boolean)">
+            <summary>
+            Shorthand to add a boolean parameter.
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="value">Parameter value</param>
+            <returns>The current builder</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventBuilder.SendEvent">
+            <summary>
+            Shorthand to send the event using the builder's associated manager.
+            </summary>
+        </member>
+        <member name="T:com.brg.Common.AnalyticsEventManager">
+            <summary>
+            Manager that handles analytics events, sending them to analytics services via <see cref="T:com.brg.Common.IAnalyticsServiceAdapter"/>s,
+            after translating the event format appropriately.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventManager.#ctor(com.brg.Common.IAnalyticsServiceAdapter[])">
+            <summary>
+            Constructs the <see cref="T:com.brg.Common.AnalyticsEventManager"/> that sends events to <paramref name="adapters"/>.
+            </summary>
+            <param name="adapters">The adapters for the services to be handled.</param>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventManager.MakeEvent(System.String)">
+            <summary>
+            Create an event builder to construct an event that can be sent later.
+            </summary>
+            <param name="name">Game event name.</param>
+            <returns>An analytics event builder with no parameters.</returns>
+        </member>
+        <member name="M:com.brg.Common.AnalyticsEventManager.SendEvent(com.brg.Common.AnalyticsEventBuilder)">
+            <summary>
+            Send an event through the adapters.
+            </summary>
+            <param name="eventBuilder"></param>
+        </member>
+        <member name="T:com.brg.Common.IAnalyticsServiceAdapter">
+            <summary>
+            Interface for an analytics server adapter.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.IAnalyticsServiceAdapter.SendEvent(com.brg.Common.AnalyticsEventBuilder)">
+            <summary>
+            Register an event to the service.
+            </summary>
+            <remarks>
+            Implements this method to transform the event builder to the appropriate
+            format of the service.
+            </remarks>
+            <param name="eventBuilder">The event to send</param>
+        </member>
+        <member name="M:com.brg.Common.IAnalyticsServiceAdapter.TranslateGameEventName(System.String,System.String@)">
+            <summary>
+            Translate a game event name to the service's specific event name.
+            </summary>
+            <remarks>
+            Default implementation simply do not translate, and use the game event name.
+            </remarks>
+            <param name="name">The game event name.</param>
+            <param name="translatedName">The translated event name.</param>
+            <returns>Whether the service has the game event.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.RunTaskWithTimeout``1(System.Threading.Tasks.Task{``0},System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="task"></param>
+            <param name="timeout"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+            <exception cref="T:System.TimeoutException"></exception>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitWhile(System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks while condition is true or timeout occurs.
+            </summary>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="frequency">The frequency at which the condition will be check, in milliseconds.</param>
+            <param name="timeout">Timeout in milliseconds.</param>
+            <exception cref="T:System.TimeoutException"></exception>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitUntil(System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks until condition is true or timeout occurs.
+            </summary>
+            <param name="condition">The break condition.</param>
+            <param name="frequency">The frequency at which the condition will be checked.</param>
+            <param name="timeout">The timeout in milliseconds.</param>
+            <returns></returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitWhileAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32)">
+            <summary>
+            Blocks while condition is true or task is canceled.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitWhileVerboseAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32)">
+            <summary>
+            Blocks while condition is true or task is canceled.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitUntilAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32)">
+            <summary>
+            Blocks until condition is true or task is canceled.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitUntilVerboseAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32)">
+            <summary>
+            Blocks until condition is true or task is canceled.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitWhileAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks while condition is true or timeout occurs.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <param name="timeout"></param>
+            <exception cref="T:System.TimeoutException">Thrown after timeout milliseconds</exception>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitWhileVerboseAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks while condition is true or timeout occurs.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <param name="timeout"></param>
+            <exception cref="T:System.TimeoutException">Thrown after timeout milliseconds</exception>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitUntilAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks until condition is true or timeout occurs.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <param name="timeout"></param>
+            <exception cref="T:System.TimeoutException">Thrown after timeout milliseconds</exception>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+        <member name="M:com.brg.Common.Utils.WaitUntilVerboseAsync(System.Threading.CancellationToken,System.Func{System.Boolean},System.Int32,System.Int32)">
+            <summary>
+            Blocks until condition is true or timeout occurs.
+            </summary>
+            <param name="ct"> Cancellation token.</param>
+            <param name="condition">The condition that will perpetuate the block.</param>
+            <param name="pollDelay">The delay at which the condition will be polled, in milliseconds.</param>
+            <param name="timeout"></param>
+            <exception cref="T:System.TimeoutException">Thrown after timeout milliseconds</exception>
+            <returns><see cref="T:System.Threading.Tasks.Task" />.</returns>
+        </member>
+    </members>
+</doc>

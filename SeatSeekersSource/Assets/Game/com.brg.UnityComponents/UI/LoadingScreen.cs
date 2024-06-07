@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using com.brg.Common;
+using com.brg.Unity;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace com.brg.UnityComponents
@@ -73,11 +72,6 @@ namespace com.brg.UnityComponents
             {
                 OnProgressDone();
             }
-        }
-
-        private void OnDestroy()
-        {
-            GM.Instance = null;
         }
 
         public void RequestLoad(IProgress item,  

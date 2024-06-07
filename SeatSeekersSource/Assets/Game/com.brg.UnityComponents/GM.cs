@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using com.brg.Common;
-using com.brg.UnityCommon;
-using com.brg.UnityCommon.Editor;
-using UnityEngine;
 
-namespace com.brg.UnityComponents
+namespace com.brg.Unity
 {
     public class GM : GMBase
     {
@@ -12,7 +9,6 @@ namespace com.brg.UnityComponents
 
         public GM(IEnumerable<IGameComponent> managers) : base(managers)
         {
-            
         }
     }
 }

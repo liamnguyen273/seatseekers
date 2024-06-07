@@ -1,0 +1,39 @@
+{
+    "name": "today.comes.saintsfield.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9b261077c7a2ac34886513ec1345f8e0",
+        "GUID:69448af7b92c7f342b298e06a37122aa",
+        "GUID:86c9d8e67265f41469be06142c397d17"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "DOTweenEditor.dll",
+        "DOTween.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.addressables",
+            "expression": "",
+            "define": "SAINTSFIELD_ADDRESSABLE"
+        },
+        {
+            "name": "com.dbrizov.naughtyattributes",
+            "expression": "",
+            "define": "SAINTSFIELD_NAUGHYTATTRIBUTES"
+        },
+        {
+            "name": "com.unity.ai.navigation",
+            "expression": "",
+            "define": "SAINTSFIELD_AI_NAVIGATION"
+        }
+    ],
+    "noEngineReferences": false
+}

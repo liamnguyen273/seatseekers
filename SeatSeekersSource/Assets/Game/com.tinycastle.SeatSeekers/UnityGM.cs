@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using com.brg.Common;
-using com.brg.ExtraComponents;
+using com.brg.Unity;
+using com.brg.Unity.Consents;
+using com.brg.Unity.FirebaseAnalytics;
+using com.brg.Unity.LevelPlay;
+using com.brg.Unity.Singular;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
@@ -123,7 +127,6 @@ namespace com.tinycastle.SeatSeekers
         
         [Header("Explicit manager references")]
         [SerializeField] private CompWrapper<UnityPopupManager> _unityPopupManager; 
-        [SerializeField] private CompWrapper<UnityEffectMaker> _unityEffectMaker;
         [SerializeField] private CompWrapper<UnityAdManager> _unityAdManager;
         [SerializeField] private CompWrapper<LoadingScreen> _loadingScreen;
         [SerializeField] private CompWrapper<WaitScreenHelper> _waitHelper;
@@ -150,6 +153,8 @@ namespace com.tinycastle.SeatSeekers
             Log.Info($"Target framerate: {Application.targetFrameRate}.");
             
             DontDestroyOnLoad(this);
+
+            var consentManager = new ConsentManager();
             
             // Make managers
             var dataManager = new GameDataManager();
@@ -162,13 +167,10 @@ namespace com.tinycastle.SeatSeekers
             var unityPopupManager = _unityPopupManager.Comp;
             unityPopupManager.AttachComps();
             var popupManager = _unityPopupManager.Comp.Comp;
-
-            var unityEffectMaker = _unityEffectMaker.Comp;
-            unityEffectMaker.AttachComps();
-            var effectMaker = _unityEffectMaker.Comp.Comp;
-
+            
             var unityAdManager = _unityAdManager.Comp;
-            var adManager = new AdManager(saveManager, GMUtils.MakeAdServiceProviders());
+            var adManager = new AdManager(saveManager, analyticsEventManager, GMUtils.MakeAdServiceProviders());
+            adManager.AddDependencies(consentManager);
             unityAdManager.Comp = adManager;
 
             var mainGameManager = _mainGameManager.Comp;
@@ -189,12 +191,12 @@ namespace com.tinycastle.SeatSeekers
             var gm = new GM(new IGameComponent[]
             {
                 _loadingScreen.Comp,
+                consentManager,
                 dataManager, 
                 saveManager, 
                 localizationManager,
                 analyticsEventManager,
                 popupManager,
-                effectMaker,
                 adManager,
                 mainGameManager,
                 purchaseManager
@@ -299,16 +301,11 @@ namespace com.tinycastle.SeatSeekers
         public static IAnalyticsServiceAdapter[] MakeAnalyticsAdapters()
         {
             var list = new List<IAnalyticsServiceAdapter>();
-            
-#if HAS_FIREBASE
+
             var firebaseAdapter = new FirebaseServiceAdapter();
             list.Add(firebaseAdapter);
-#endif
-
-#if HAS_APPSFLYER
-            var appsflyerAdapter = new AppFlyerServiceAdapter();
-            list.Add(appsflyerAdapter);
-#endif
+            var singularAdapter = new SingularServiceAdapter();
+            list.Add(singularAdapter);
             
             return list.ToArray();
         }
@@ -317,10 +314,12 @@ namespace com.tinycastle.SeatSeekers
         {
             var list = new List<IAdServiceProvider>();
 
-#if TO_DO
-            var firebaseAdapter = new FirebaseServiceAdapter();
-            list.Add(firebaseAdapter);
-#endif
+            var inter = new IronSourceInterstitialProvider();
+            var reward = new IronSourceRewardedProvider();
+            var banner = new IronSourceBannerProvider();
+            list.Add(inter);
+            list.Add(reward);
+            list.Add(banner);
             
             return list.ToArray();
         }

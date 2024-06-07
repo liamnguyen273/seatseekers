@@ -29,12 +29,16 @@ namespace com.brg.UnityComponents
         
         public virtual IProgress Initialize()
         {
+            if (Initialized) return InitializationProgress;
+            Initialized = true;
             InOutPlayable = MakeInOutPlayable();
             ImmediateInOutPlayable = MakeImmediateInOutPlayable();
             SetState(UIAnimState.NONE);
             PlayHideImmediately();
             return InitializationProgress;
         }
+
+        public bool Initialized { get; private set; }
 
         protected abstract IInOutPlayable MakeInOutPlayable();
         protected abstract IInOutPlayable MakeImmediateInOutPlayable();

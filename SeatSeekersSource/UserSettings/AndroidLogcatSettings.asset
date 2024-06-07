@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "c780fb96",
         "name": "com.tinycastle.seatseekers",
-        "processId": 8457,
+        "processId": 19316,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -36,6 +36,12 @@
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
             "processId": 8457,
+            "exited": false
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 19316,
             "exited": false
         }
     ],

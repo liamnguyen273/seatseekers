@@ -1,0 +1,21 @@
+{
+    "name": "com.brg.Unity.LevelPlay",
+    "rootNamespace": "",
+    "references": [
+        "Unity.LevelPlay",
+        "com.brg.Unity.Consents"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll",
+        "GoogleMobileAds.Ump.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

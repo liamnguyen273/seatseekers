@@ -1,0 +1,19 @@
+{
+    "name": "com.brg.Unity.GameAnalytics",
+    "rootNamespace": "",
+    "references": [
+        "GameAnalyticsSDK"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.brg.Common.dll",
+        "com.brg.UnityCommon.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
