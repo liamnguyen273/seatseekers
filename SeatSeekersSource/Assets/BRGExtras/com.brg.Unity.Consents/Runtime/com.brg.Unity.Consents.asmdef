@@ -1,7 +1,9 @@
 {
     "name": "com.brg.Unity.Consents",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:00c479e63b1c74419820a39073267645"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
