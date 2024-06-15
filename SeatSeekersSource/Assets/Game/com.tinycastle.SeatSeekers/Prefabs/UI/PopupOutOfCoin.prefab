@@ -195,69 +195,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8918952471898836814, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3078712768709186496}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
 --- !u!224 &4269103022849546439 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2759724057080375706, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
   m_PrefabInstance: {fileID: 2121869408578990429}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6219717374044479590 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5414095326516695355, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
-  m_PrefabInstance: {fileID: 2121869408578990429}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7400567544966364691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7400567544966364691 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8918952471898836814, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
   m_PrefabInstance: {fileID: 2121869408578990429}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3078712768709186496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7400567544966364691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffeb0a8941da4529b6c2985eeb30ca3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemId: refill
-  _nameText:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 0}
-    _path: 
-  _descText:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 0}
-    _path: 
-  _priceText:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 0}
-    _path: ./Appearance/Layout2/ValueText
-  _buyButton:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 6219717374044479590}
-    _path: ./
-  _boughtTag:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 0}
-    _path: 
-  _currencyIcon:
-    _parent: {fileID: 7400567544966364691}
-    _comp: {fileID: 7400567544966364691}
-    _path: ./
 --- !u!1001 &6942543959438467973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1699,64 +1648,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8918952471898836814, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4284758779241208158}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
 --- !u!1 &140630744707890551 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8918952471898836814, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
   m_PrefabInstance: {fileID: 8806194158471524921}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4284758779241208158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140630744707890551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffeb0a8941da4529b6c2985eeb30ca3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemId: refill
-  _nameText:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 0}
-    _path: 
-  _descText:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 0}
-    _path: 
-  _priceText:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 0}
-    _path: ./Appearance/Layout2/ValueText
-  _buyButton:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 3537394909515473666}
-    _path: ./
-  _boughtTag:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 0}
-    _path: 
-  _currencyIcon:
-    _parent: {fileID: 140630744707890551}
-    _comp: {fileID: 140630744707890551}
-    _path: ./
---- !u!114 &3537394909515473666 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5414095326516695355, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}
-  m_PrefabInstance: {fileID: 8806194158471524921}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140630744707890551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f12e52855b6e48b5868b096d576d80d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6663463254640073635 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2759724057080375706, guid: ff553a253b8b999429a713bc7515bb9b, type: 3}

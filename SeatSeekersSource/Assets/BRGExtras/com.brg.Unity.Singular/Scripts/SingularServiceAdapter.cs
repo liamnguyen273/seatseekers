@@ -8,6 +8,7 @@ namespace com.brg.Unity.Singular
     {
         private IProgress _initProgress;
         
+        // Test, really
         public bool Initialized => true;
         
         public IProgress Initialize()

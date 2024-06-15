@@ -180,6 +180,8 @@ namespace com.tinycastle.SeatSeekers
             
             Log.Success("Created managers.");
             
+            LevelPlayInitialization.Initialize();
+            
             // Establish dependencies
             saveManager.AddDependencies(dataManager);
             localizationManager.AddDependencies(saveManager);
@@ -246,6 +248,10 @@ namespace com.tinycastle.SeatSeekers
             {
                 dod.anchorMin = new Vector2(dod.anchorMin.x, hasAdFree ? 0f : 0.08f);
             }
+
+            GM.Instance.Get<AnalyticsEventManager>().MakeEvent("test")
+                .Add("test_params", "test_value")
+                .SendEvent();
         }
 
         private void Update()
@@ -274,7 +280,14 @@ namespace com.tinycastle.SeatSeekers
             }
 
             if (_timer < 0) _timer = 0;
+            
+            _playerData.SetInResources(Constants.ENERGY_RESOURCE, energyCount);
 
+            if (energyCount >= Constants.MAX_ENERGY)
+            {
+                _playerData.EnergyRechargeTimer = Constants.ENERGY_RECHARGE_TIME;
+            }
+            
             _secondTimer = 1f; // Check every second
         }
 
@@ -288,12 +301,27 @@ namespace com.tinycastle.SeatSeekers
             {
                 _secondTimer += 1f;
                 _timer -= 1;
+
+                var infEnergyTime = _playerData.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0;
+
+                if (infEnergyTime > 0)
+                {
+                    infEnergyTime -= 1;
+                    _timer = Constants.ENERGY_RECHARGE_TIME;
+                    _playerData.SetInResources(Constants.INFINITE_ENERGY_RESOURCE, infEnergyTime, true);
+                }
+                
                 var currEnergy = _playerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
                 if (_timer < 0 && currEnergy < Constants.MAX_ENERGY)
                 {
                     currEnergy += 1;
                     _timer = Constants.ENERGY_RECHARGE_TIME;
                     _playerData.SetInResources(Constants.ENERGY_RESOURCE, currEnergy, true);
+                }
+                                    
+                if (currEnergy >= Constants.MAX_ENERGY)
+                {
+                    _timer = Constants.ENERGY_RECHARGE_TIME;
                 }
                 
                 _playerData.EnergyRechargeTimer = _timer;
@@ -314,8 +342,8 @@ namespace com.tinycastle.SeatSeekers
 
             var firebaseAdapter = new FirebaseServiceAdapter();
             list.Add(firebaseAdapter);
-            // var singularAdapter = new SingularServiceAdapter();
-            // list.Add(singularAdapter);
+            var singularAdapter = new SingularServiceAdapter();
+            list.Add(singularAdapter);
             
             return list.ToArray();
         }

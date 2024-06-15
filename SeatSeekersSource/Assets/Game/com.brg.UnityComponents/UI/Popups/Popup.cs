@@ -84,6 +84,8 @@ namespace com.brg.UnityComponents
 
 		public override IProgress Initialize()
 		{
+			if (Initialized) return new ImmediateProgress();
+			
 			if (_explicitName is "" or "")
 			{
 				_explicitName = name;
@@ -111,6 +113,8 @@ namespace com.brg.UnityComponents
 			}
 
 			_animation.OnStateChangeAction += OnAnimStateChange;
+
+			Initialized = true;
 			
 			LogObj.Default.Success(_explicitName, $"Popup \"{_explicitName}\" has completed initialization.");
 			return new ImmediateProgress(true, 1f);

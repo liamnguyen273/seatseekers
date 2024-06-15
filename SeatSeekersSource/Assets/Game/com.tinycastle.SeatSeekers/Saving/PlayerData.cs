@@ -236,10 +236,13 @@ namespace com.tinycastle.SeatSeekers
         [DoNotAccess] public DateTime lastModified;
 
         [AccessorNotify] public int energyRechargeTimer;
-
+        
         [AccessorNotify] public bool hasIAP;
         [AccessorNotify] public bool hasPlayedMultiplayer;
         [AccessorNotify] public bool hasReturned;
+
+        [AccessorNotify] public DateTime dailyRewardTime;
+        [AccessorNotify] public int dailyRewardProgress;
 
         [JsonConstructor]
         public PlayerData()
@@ -261,11 +264,15 @@ namespace com.tinycastle.SeatSeekers
             
             tutorialPlayed = false;
             lastModified = DateTime.UtcNow;
+
             energyRechargeTimer = 0;
 
             hasIAP = false;
             hasPlayedMultiplayer = false;
             hasReturned = false;
+            
+            dailyRewardTime = DateTime.UtcNow;
+            dailyRewardProgress = 0;
         }
     }
 }

@@ -130,8 +130,26 @@ namespace com.tinycastle.SeatSeekers
 
         protected override void InnateOnShowEnd()
         {
-            var hasProgress = GM.Instance.Get<QuestManager>().CheckQuestProgress();
-            if (hasProgress) OnQuestButton();
+            // Check daily:
+            var willShowDailyRewards = PopupDailyRewards.Check();
+            var hasQuestProgress = GM.Instance.Get<QuestManager>().CheckQuestProgress();
+            
+            var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupDailyRewards>(out var dailyRewardsBehaviour);
+            if (willShowDailyRewards && hasQuestProgress)
+            {
+                dailyRewardsBehaviour.OnHideEnd(OnQuestButton);
+            }
+            
+            if (willShowDailyRewards)
+            {
+                popup.Show();
+            }
+
+            if (hasQuestProgress && !willShowDailyRewards)
+            {
+                OnQuestButton();
+            }
+            
             base.InnateOnShowEnd();
         }
 

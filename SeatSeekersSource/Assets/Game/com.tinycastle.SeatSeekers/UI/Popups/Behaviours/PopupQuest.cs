@@ -25,9 +25,9 @@ namespace com.tinycastle.SeatSeekers
         protected override void InnateOnShowStart()
         {
             var quests = GM.Instance.Get<QuestManager>().GetQuestForUIs()
-                .OrderBy(tuple =>
+                .OrderByDescending(tuple =>
                 {
-                    if (tuple.progress == -1) return 999f;
+                    if (tuple.progress == -1) return -1000f;
                     return (float)tuple.progress / tuple.total;
                 });
 

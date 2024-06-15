@@ -34,6 +34,8 @@ namespace com.tinycastle.SeatSeekers
             
             _gotGroup.SetActive(got);
             _progressGroup.SetActive(!got);
+
+            _getButton.Comp.Interactable = !got && progress == tuple.total;
             
             _icon.Comp.sprite = sprite;
         }

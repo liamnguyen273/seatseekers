@@ -8,11 +8,11 @@ namespace com.brg.Unity.LevelPlay
     public static class LevelPlayInitialization
     {
 #if UNITY_ANDROID
-        private const string APP_KEY = "1ea9de905";
+        private const string APP_KEY = "85460dcd";
 #elif UNITY_IOS
-        private const string APP_KEY = "1ea9e228d";
+        private const string APP_KEY = "8545d445";
 #else
-        private const string APP_KEY = "";
+        private const string APP_KEY = "unexpected_platform";
         #endif
 
         private static IProgress _initProgress;
@@ -23,7 +23,9 @@ namespace com.brg.Unity.LevelPlay
         public static IProgress Initialize()
         {
             if (_initProgress != null) return _initProgress;
-
+            _tcs = new TaskCompletionSource<bool>();
+            _initProgress = new SingleTCSBoolProgress(_tcs, 1f);
+            
             var progress = GoogleCMP.Initialize();
             progress.Task.ContinueWith((t) =>
             {
@@ -32,11 +34,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSource.Agent.setConsent(status is ConsentStatus.NotRequired or ConsentStatus.Obtained);
                 
                 IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
-                _tcs = new TaskCompletionSource<bool>();
-                _initProgress = new SingleTCSBoolProgress(_tcs, 1f);
 
                 IronSource.Agent.setManualLoadRewardedVideo(true);
-                
                 IronSource.Agent.init(APP_KEY);
             });
 

@@ -3544,7 +3544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4036006871616249363, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_Spacing
-      value: 14
+      value: 23.125
       objectReference: {fileID: 0}
     - target: {fileID: 4071905476512042293, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3644,7 +3644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5309366270691374650, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_Spacing
-      value: 2.8
+      value: 4.625
       objectReference: {fileID: 0}
     - target: {fileID: 6326357739081017778, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3664,7 +3664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7477164790381459565, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_Spacing
-      value: 65.333336
+      value: 107.916664
       objectReference: {fileID: 0}
     - target: {fileID: 8519905043814610957, guid: cbbd62157c2714a4db2433f22a58287f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5078,6 +5078,10 @@ PrefabInstance:
       value: QUEST
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: a9077a1bf9294494fb3fa8fe35e3f66b, type: 2}
@@ -5094,6 +5098,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 7617560890313360275, guid: a9077a1bf9294494fb3fa8fe35e3f66b, type: 2}
@@ -5105,13 +5113,59 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+      propertyPath: m_fontSharedMaterials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697568113398150517, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+      propertyPath: m_fontSharedMaterials.Array.data[0]
+      value: 
+      objectReference: {fileID: 7617560890313360275, guid: a9077a1bf9294494fb3fa8fe35e3f66b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6478474768745884836, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2867461209030020322}
   m_SourcePrefab: {fileID: 100100000, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
 --- !u!224 &1103344421225793484 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8219678028340659418, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
   m_PrefabInstance: {fileID: 9033645233258529558}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2645264449848176562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6478474768745884836, guid: cb25d1495a4c8f8449a7bee5dca380c3, type: 3}
+  m_PrefabInstance: {fileID: 9033645233258529558}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2867461209030020322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2645264449848176562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 1
+  spread: 0
+  useGlobalAngle: 1
+  offsetAngle: 90
+  offsetDistance: 8
+  offset: {x: 5.6568537, y: -5.6568546}
+  color: {r: 0, g: 0, b: 0, a: 0.6}
+  inset: 0
+  blendMode: 0
+  useCasterAlpha: 1
+  ignoreCasterColor: 0
+  colorBleedMode: 2
+  disableFitCompensation: 0
+  shadowAsSibling: 0
+  cutout: 0
+  baked: 0
+  modifiedFromInspector: 0
+  bakedShadows: []
