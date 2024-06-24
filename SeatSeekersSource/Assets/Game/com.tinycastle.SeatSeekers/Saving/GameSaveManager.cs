@@ -8,10 +8,12 @@ namespace com.tinycastle.SeatSeekers
     public partial class GameSaveManager : com.brg.Common.SaveManager, ILanguageCodeQuery, IUserAdQuery
     {
         public PlayerDataAccessor PlayerData { get; }
+        public PlayerExtraDataAccessor ExtraData { get; }
 
-        public GameSaveManager(PlayerDataAccessor playerData)
+        public GameSaveManager(PlayerDataAccessor playerData, PlayerExtraDataAccessor extraData)
         {
             PlayerData = playerData;
+            ExtraData = extraData;
         }
 
         protected override async Task<bool> InitializeBehaviourAsync()
@@ -25,11 +27,17 @@ namespace com.tinycastle.SeatSeekers
         {
             base.SaveAll();
             PlayerData.WriteDataAsync();
+            ExtraData.WriteDataAsync();
         }
 
         public void SavePlayerData()
         {
             PlayerData.WriteDataAsync();
+        }
+
+        public void SaveExtraData()
+        {
+            ExtraData.WriteDataAsync();
         }
 
         public bool GetAdSkippability(AdRequestType type)

@@ -55,7 +55,24 @@ namespace com.tinycastle.SeatSeekers
             if (_entry != null)
             {
                 var saveManager = GM.Instance.Get<GameSaveManager>();
+                var has = saveManager.PlayerData.GetFromCompletedLevels(_entry.Id) ?? false;
                 saveManager.PlayerData.SetInCompletedLevels(_entry.Id, true);
+
+                if (!has)
+                {
+                    var extraData = GM.Instance.Get<GameSaveManager>().ExtraData;
+                    GM.Instance.Get<AnalyticsEventManager>().MakeEvent("sng_level_achieved")
+                        .Add("sng_attr_level", _entry.SortOrder)
+                        .Add("ltv", extraData.Ltv)
+                        .Add("interstitial_views", extraData.InterstitialViews)
+                        .Add("rewarded_views", extraData.RewardedViews)
+                        .Add("time", extraData.Time)
+                        .Add("day", DateTime.UtcNow.ToLongDateString())
+                        .SendEvent();
+
+                    CheckMilestone(_entry);
+                }
+                
                 GM.Instance.Get<PopupManager>().GetPopup(out PopupRefill refill);
                 refill.Timer = 30f;
                 saveManager.SavePlayerData();
@@ -92,7 +109,7 @@ namespace com.tinycastle.SeatSeekers
             var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
             curr += _coinValue * 2;
             accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
-            accessor.WriteDataAsync();
+            GM.Instance.Get<GameSaveManager>().SaveAll();
             _received = true;
 
             _doubleCoinButton.Comp.Interactable = false;
@@ -122,7 +139,7 @@ namespace com.tinycastle.SeatSeekers
                 var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
                 curr += _coinValue;
                 accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
-                accessor.WriteDataAsync();
+                GM.Instance.Get<GameSaveManager>().SaveAll();
             }
 
             var canGoNext = mainGame.HasNextLevel(out var nextLevel);
@@ -136,6 +153,33 @@ namespace com.tinycastle.SeatSeekers
                 GM.Instance.Get<MainGameManager>().ForceClearLevel();
                 GM.Instance.RequestPlayLevelWithValidation(nextLevel, ref _adButtonTimer);
             }
+        }
+
+        private void CheckMilestone(LevelEntry entry)
+        {
+            var eventName = entry.SortOrder switch
+            {
+                5 => "00",
+                10 => "01",
+                25 => "02",
+                50 => "03",
+                100 => "04",
+                150 => "05",
+                200 => "06",
+                _ => null
+            };
+
+            if (eventName == null) return;
+
+            eventName = $"mn_milestone_{eventName}";
+            
+            var extraData = GM.Instance.Get<GameSaveManager>().ExtraData;
+            GM.Instance.Get<AnalyticsEventManager>().MakeEvent(eventName)
+                .Add("ltv", extraData.Ltv)
+                .Add("interstitial_views", extraData.InterstitialViews)
+                .Add("rewarded_views", extraData.RewardedViews)
+                .Add("time", extraData.Time)
+                .SendEvent();
         }
     }
 }

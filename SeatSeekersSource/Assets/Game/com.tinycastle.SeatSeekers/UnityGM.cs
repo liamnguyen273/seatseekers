@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.Unity;
 using com.brg.Unity.Consents;
@@ -85,26 +86,21 @@ namespace com.tinycastle.SeatSeekers
         
         public static void RequestPlayLevelWithValidation(this GM gm, LevelEntry entry, ref bool hasAdButtonTimer)
         {
-            var mainGame = gm.Get<MainGameManager>();
-            var loading = gm.Get<LoadingScreen>();
             var popupManager = gm.Get<PopupManager>();
             var accessor = gm.Get<GameSaveManager>().PlayerData;
 
             var energy = accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
-            if (energy > 0)
+            var inf = accessor.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0;
+            if (energy > 0 || inf > 0)
             {
-                energy -= 1;
-                accessor.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
-                accessor.WriteDataAsync();
-                
-                loading.RequestLoad(mainGame.Activate(),
-                    () =>
-                    {
-                        popupManager.HideAllPopups(true, true);
-                        mainGame.LoadLevel(entry);
-                        mainGame.LoadAppropriateMusic();
-                    },
-                    mainGame.StartGame);
+                if (inf <= 0)
+                {
+                    energy -= 1;
+                    accessor.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
+                    GM.Instance.Get<GameSaveManager>().SaveAll();
+                }
+
+                gm.RequestPlayLevel(entry);
             }
             else
             {
@@ -117,6 +113,35 @@ namespace com.tinycastle.SeatSeekers
                 
                 popup.Show();
             }
+        }
+
+        public static void RequestPlayLevel(this GM gm, LevelEntry entry)
+        {
+            var mainGame = gm.Get<MainGameManager>();
+            var loading = gm.Get<LoadingScreen>();
+            var popupManager = gm.Get<PopupManager>();
+
+            loading.RequestLoad(mainGame.Activate(),
+                () =>
+                {
+                    popupManager.HideAllPopups(true, true);
+                    mainGame.LoadLevel(entry);
+                    mainGame.LoadAppropriateMusic();
+                },
+                mainGame.StartGame);
+        }
+        
+        public static void RequestPlayLevelWithoutLoading(this GM gm, LevelEntry entry)
+        {
+            var mainGame = gm.Get<MainGameManager>();
+            var loading = gm.Get<LoadingScreen>();
+            var popupManager = gm.Get<PopupManager>();
+
+            mainGame.Activate();
+            popupManager.HideAllPopups(true, true);
+            mainGame.LoadLevel(entry);
+            mainGame.LoadAppropriateMusic();
+            mainGame.StartGame();
         }
     }
     
@@ -141,7 +166,6 @@ namespace com.tinycastle.SeatSeekers
         public WaitScreenHelper WaitHelper => _waitHelper;
 
         public List<RectTransform> BannerDodgables => _bannerDodgables;
-        
         public PurchaseManager Purchase { get; private set; }
         
         private void Awake()
@@ -158,7 +182,7 @@ namespace com.tinycastle.SeatSeekers
             
             // Make managers
             var dataManager = new GameDataManager();
-            var saveManager = new GameSaveManager(new PlayerDataAccessor());
+            var saveManager = new GameSaveManager(new PlayerDataAccessor(), new PlayerExtraDataAccessor());
             
             var localizationManager = new LocalizationManager(saveManager, GMUtils.MakeLocalizationSuppliers());
             var analyticsEventManager = new AnalyticsEventManager(GMUtils.MakeAnalyticsAdapters());
@@ -183,13 +207,13 @@ namespace com.tinycastle.SeatSeekers
             LevelPlayInitialization.Initialize();
             
             // Establish dependencies
-            saveManager.AddDependencies(dataManager);
-            localizationManager.AddDependencies(saveManager);
-            adManager.AddDependencies(consentManager);
-            adManager.AddDependencies(analyticsEventManager);
-            adManager.AddDependencies(saveManager);
-            purchaseManager.AddDependencies(saveManager, dataManager);
-            questManager.AddDependencies(saveManager);
+            // saveManager.AddDependencies(dataManager);
+            // localizationManager.AddDependencies(saveManager);
+            // adManager.AddDependencies(consentManager);
+            // adManager.AddDependencies(analyticsEventManager);
+            // adManager.AddDependencies(saveManager);
+            // purchaseManager.AddDependencies(saveManager, dataManager);
+            // questManager.AddDependencies(saveManager);
             
             Log.Success("Established managers' dependencies.");
                         
@@ -203,7 +227,7 @@ namespace com.tinycastle.SeatSeekers
                 analyticsEventManager,
                 localizationManager,
                 questManager,
-                adManager,
+                unityAdManager,
                 popupManager,
                 mainGameManager,
                 purchaseManager
@@ -230,12 +254,24 @@ namespace com.tinycastle.SeatSeekers
             // GM.Instance.Get<MainGameManager>().LoadLevel(GM.Instance.Get<GameDataManager>().GetLevelEntry("level_1"));
 
             GM.Instance.Get<GameSaveManager>().PlayerData.InitializeLeaderboard();
-            
-            var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupMainMenu>(out var behaviour);
-            popup.Show();
-
             _playerData = GM.Instance.Get<GameSaveManager>().PlayerData;
             InitializeEnergyWatch();
+            
+            var count = GM.Instance.Get<GameSaveManager>().PlayerData.GetCompletedLevelCount();
+
+            if (count == 0)
+            {
+                var entry = GM.Instance.Get<GameDataManager>().GetLevelEntry("level_1");
+                GM.Instance.RequestPlayLevelWithoutLoading(entry);
+            }
+            else
+            {
+                            
+                var popup = GM.Instance.Get<PopupManager>().GetPopup<PopupMainMenu>(out var behaviour);
+                popup.Show();
+            }
+            
+            GM.Instance.Get<UnityAdManager>().Comp.PreloadAds();
         }
         
         private void OnInitializationLoadingOver()
@@ -249,10 +285,24 @@ namespace com.tinycastle.SeatSeekers
                 dod.anchorMin = new Vector2(dod.anchorMin.x, hasAdFree ? 0f : 0.08f);
             }
 
-            GM.Instance.Get<AnalyticsEventManager>().MakeEvent("test")
-                .Add("test_params", "test_value")
-                .SendEvent();
+            GM.Instance.Get<GameSaveManager>().PlayerData.OwnershipsChangedEvent += OnOwnershipChanged;
+            var adFree = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromOwnerships(Constants.AD_FREE_PACKAGE) ?? false;
+            OnOwnershipChanged(this, (Constants.AD_FREE_PACKAGE, false, adFree));
+            
+            // GM.Instance.Get<AnalyticsEventManager>().MakeEvent("test")
+            //     .Add("test_params", "test_value")
+            //     .SendEvent();
         }
+
+        private void OnOwnershipChanged(object sender, (string key, bool isRemoved, bool item) e)
+        {
+            if (e is { key: Constants.AD_FREE_PACKAGE, item: true })
+            {
+                IronSource.Agent.destroyBanner();
+            }
+        }
+
+        public static float PlayTime { get; set; }
 
         private void Update()
         {
@@ -260,6 +310,8 @@ namespace com.tinycastle.SeatSeekers
             {
                 UpdateEnergyWatch(Time.deltaTime);
             }
+
+            PlayTime += Time.unscaledDeltaTime;
         }
 
         private void InitializeEnergyWatch()
@@ -270,25 +322,31 @@ namespace com.tinycastle.SeatSeekers
             var span = nowTime - lastSaveTime;
             var seconds = (int)Math.Ceiling(span.TotalSeconds);
 
-            _timer -= seconds;
+            LogObj.Default.Info("GM", $"Total offline seconds: {seconds}");
+
             var energyCount = _playerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
 
-            while (energyCount < Constants.MAX_ENERGY && _timer < 0)
+            while (energyCount < Constants.MAX_ENERGY && seconds > 0)
             {
-                _timer += Constants.ENERGY_RECHARGE_TIME;
-                ++energyCount;
+                seconds -= Constants.ENERGY_RECHARGE_TIME;
+                energyCount += 1;
             }
-
-            if (_timer < 0) _timer = 0;
-            
-            _playerData.SetInResources(Constants.ENERGY_RESOURCE, energyCount);
 
             if (energyCount >= Constants.MAX_ENERGY)
             {
-                _playerData.EnergyRechargeTimer = Constants.ENERGY_RECHARGE_TIME;
+                _timer = _playerData.EnergyRechargeTimer;
             }
+            else if (seconds > 0)
+            {
+                _timer = Mathf.Max(0, _timer - seconds);
+            }
+
             
+            if (_timer < 0) _timer = 0;
+            
+            _playerData.SetInResources(Constants.ENERGY_RESOURCE, energyCount, true);
             _secondTimer = 1f; // Check every second
+            _playerData.EnergyRechargeTimer = _timer;
         }
 
         private PlayerDataAccessor _playerData;
@@ -327,6 +385,7 @@ namespace com.tinycastle.SeatSeekers
                 _playerData.EnergyRechargeTimer = _timer;
             }
         }
+
 
         private void OnApplicationPause(bool pauseStatus)
         {

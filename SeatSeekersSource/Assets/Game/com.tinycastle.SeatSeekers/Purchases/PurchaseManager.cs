@@ -144,8 +144,8 @@ namespace com.tinycastle.SeatSeekers
             }
 
             if (!accessor.HasIAP) accessor.HasIAP = true;
-            
-            accessor.WriteDataAsync();
+
+            GM.Instance.Get<GameSaveManager>().SaveAll();
             _currentIapEntry = null;
             _onComplete?.Invoke(true);
             _onComplete = null;

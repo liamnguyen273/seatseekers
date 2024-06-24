@@ -99,7 +99,7 @@ namespace com.tinycastle.SeatSeekers
                         var value = Accessor.GetFromResources(_boosterName) ?? 0;
                         value = Math.Max(0, value - 1);
                         Accessor.SetInResources(_boosterName, value, true);
-                        Accessor.WriteDataAsync();
+                        GM.Instance.Get<GameSaveManager>().SaveAll();
                     }
                     else
                     {

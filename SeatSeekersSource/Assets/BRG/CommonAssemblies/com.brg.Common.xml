@@ -1686,6 +1686,19 @@
             <param name="message">Message to log.</param>
             <param name="overridenName">Name to prepend the log instead of the <see cref="T:com.brg.Common.LogObj"/>'s name.</param>
         </member>
+        <member name="T:com.brg.Common.GenerateToStringAttribute">
+            <summary>
+            Attribute to mark a class/struct for generate readable, json-like string.
+            </summary>
+        </member>
+        <member name="M:com.brg.Common.GenerateToStringAttribute.#ctor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="pretty">Pretty print the string.</param>
+            <param name="includeFields">Includes fields in the string.</param>
+            <param name="includePrivates">Includes private properties (and fields if <paramref name="includeFields"/> is true).</param>
+        </member>
         <member name="T:com.brg.Common.LogicComponents.IObjectPool`1">
             <summary>
             Interface for an object pool.

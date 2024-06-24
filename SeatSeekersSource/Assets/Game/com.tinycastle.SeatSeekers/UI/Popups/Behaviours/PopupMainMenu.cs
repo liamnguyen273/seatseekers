@@ -179,7 +179,7 @@ namespace com.tinycastle.SeatSeekers
                 energy += 1;
             }
             GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
-            GM.Instance.Get<GameSaveManager>().PlayerData.WriteDataAsync();
+            GM.Instance.Get<GameSaveManager>().SaveAll();
         }
 
         public void OnButtonAddEnergy()

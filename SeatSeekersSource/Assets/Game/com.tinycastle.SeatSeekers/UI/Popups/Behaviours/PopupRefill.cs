@@ -1,4 +1,5 @@
 using System;
+using com.brg.Unity;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using UnityEngine;
@@ -8,7 +9,9 @@ namespace com.tinycastle.SeatSeekers
     public class PopupRefill : PopupBehaviour
     {
         [SerializeField] private CompWrapper<TextLocalizer> _timerText;
+        [SerializeField] private CompWrapper<UIButton> _adButton;
         [SerializeField] private CompWrapper<UIButton> _adButtonx2;
+        [SerializeField] private CompWrapper<UIButton> _refillButton;
         [SerializeField] private CompWrapper<UIButton> _xButton = "./Panel/TitleGroup/RightButtonGroup/XButton";
 
         public float Timer { get; set; } = 30f;
@@ -20,6 +23,16 @@ namespace com.tinycastle.SeatSeekers
 
         protected override void InnateOnShowStart()
         {
+            var currHeart = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
+
+            if (currHeart >= Constants.MAX_ENERGY)
+            {
+                _adButton.Comp.Interactable = false;
+                Timer = 0f;
+                _adButtonx2.SetGOActive(false);
+                _refillButton.Comp.Interactable = false;
+            }
+            
             if (Timer <= 0f)
             {
                 _adButtonx2.SetGOActive(false);
@@ -37,7 +50,18 @@ namespace com.tinycastle.SeatSeekers
 
         private void Update()
         {
-            if (!(Timer > 0f)) return;
+            var currHeart = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(Constants.ENERGY_RESOURCE) ??
+                            0;
+
+            if (currHeart >= Constants.MAX_ENERGY)
+            {
+                _adButton.Comp.Interactable = false;
+                Timer = 0f;
+                _adButtonx2.SetGOActive(false);
+                _refillButton.Comp.Interactable = false;
+            }
+            
+            if (Timer <= 0f) return;
             
             Timer -= Time.unscaledDeltaTime;
             var timespan = TimeSpan.FromSeconds(Timer);
@@ -46,11 +70,6 @@ namespace com.tinycastle.SeatSeekers
             {
                 _adButtonx2.SetGOActive(false);
             }
-        }
-
-        protected override void InnateOnHideEnd()
-        {
-            base.InnateOnHideEnd();
         }
     }
 }

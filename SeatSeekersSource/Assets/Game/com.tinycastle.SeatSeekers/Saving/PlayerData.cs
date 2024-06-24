@@ -244,6 +244,8 @@ namespace com.tinycastle.SeatSeekers
         [AccessorNotify] public DateTime dailyRewardTime;
         [AccessorNotify] public int dailyRewardProgress;
 
+        public bool isFirstTime;
+        
         [JsonConstructor]
         public PlayerData()
         {

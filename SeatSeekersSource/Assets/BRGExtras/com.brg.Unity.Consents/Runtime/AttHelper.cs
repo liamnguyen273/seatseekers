@@ -28,7 +28,7 @@ namespace com.brg.Unity.ATT
             }
 #endif
         
-            _requestProgress = new SingleProgress(Determined, Determined, null, 1f);
+            _requestProgress = new SingleProgress(Determined, Determined, () => Determined() ? 1f : 0f, 1f);
             return _requestProgress;
         }
 

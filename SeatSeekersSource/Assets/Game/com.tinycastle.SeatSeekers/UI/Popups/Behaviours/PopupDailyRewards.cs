@@ -159,7 +159,7 @@ namespace com.tinycastle.SeatSeekers
                     _hasDailyRewards = false;
                     accessor.DailyRewardProgress += 1;
                     accessor.DailyRewardTime = GetNowTime();
-                    accessor.WriteDataAsync();
+                    GM.Instance.Get<GameSaveManager>().SaveAll();
                 }
             }
 

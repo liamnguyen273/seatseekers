@@ -40,7 +40,7 @@ namespace com.tinycastle.SeatSeekers
                 if (energyCount >= Constants.MAX_ENERGY) return;
             }
             
-            GM.Instance.Get<AdManager>().RequestAd(new AdRequest(AdRequestType.REWARD_AD, () =>
+            GM.Instance.Get<UnityAdManager>().RequestAd(new AdRequest(AdRequestType.REWARD_AD, () =>
             {
                 var value = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(_resourceToAdd) ?? 0;
                 value += _addCount;
@@ -52,7 +52,7 @@ namespace com.tinycastle.SeatSeekers
                 var popup = GM.Instance.Get<PopupManager>().GetPopup(out PopupBehaviourGeneric generic);
                 generic.SetupAsNotify("Uh oh", "Reward ad is not available at the moment, try again later.");
                 popup.Show();
-            }), out _);
+            }));
         }
     }
 }

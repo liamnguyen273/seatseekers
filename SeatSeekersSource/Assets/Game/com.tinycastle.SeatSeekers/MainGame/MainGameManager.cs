@@ -484,23 +484,51 @@ namespace com.tinycastle.SeatSeekers
                         return;
                     }
                     
-                    if (_isWin)
-                    {
-                        var popup = popupManager.GetPopup<PopupWinBehaviour>(out var behaviour);
-                        behaviour.SetCoin(_levelEntry, CountCustomers() * 5);
-                        popup.Show();
-                    }
-                    else
-                    {
-                        var popup = popupManager.GetPopup<PopupLostBehaviour>(out var behaviour);
-                        popup.Show();
-                    }
+                    CheckAndShowConcludePopups(popupManager);
                     break;
                 case GameState.EXIT:
                     ClearLevel();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+        }
+
+        private int _adDelay = 1;
+        private void CheckAndShowConcludePopups(PopupManager popupManager)
+        {
+            _adDelay -= 1;
+            
+            Action next = () =>
+            {
+                if (_isWin)
+                {
+                    var popup = popupManager.GetPopup<PopupWinBehaviour>(out var behaviour);
+                    behaviour.SetCoin(_levelEntry, CountCustomers() * 5);
+                    popup.Show();
+                }
+                else
+                {
+                    var popup = popupManager.GetPopup<PopupLostBehaviour>(out var behaviour);
+                    popup.Show();
+                }
+            };
+
+            if (_adDelay <= 0)
+            {
+                GM.Instance.Get<UnityAdManager>().RequestAd(new AdRequest(AdRequestType.INTERSTITIAL_AD, () =>
+                {
+                    _adDelay = 3;
+                    next();
+                }, () =>
+                {
+                    _adDelay = 1;
+                    next();
+                }));
+            }
+            else
+            {
+                next();
             }
         }
 

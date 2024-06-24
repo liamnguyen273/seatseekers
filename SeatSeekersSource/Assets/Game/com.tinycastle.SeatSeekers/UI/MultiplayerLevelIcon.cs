@@ -65,7 +65,7 @@ namespace com.tinycastle.SeatSeekers
             coin -= _price;
             
             accessor.SetInResources(Constants.COIN_RESOURCE, coin, true);
-            accessor.WriteDataAsync();
+            GM.Instance.Get<GameSaveManager>().SaveAll();
             
             GM.Instance.RequestPlayMultiplayer(_intensity);
         }

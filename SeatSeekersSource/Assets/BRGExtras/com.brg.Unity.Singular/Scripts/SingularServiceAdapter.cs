@@ -21,7 +21,7 @@ namespace com.brg.Unity.Singular
 #endif
 
             LogObj.Default.Info("SingularServiceAdapter", "initialized.");
-            _initProgress = new SingleProgress(() => Initialized, () => Initialized, null, 1f);
+            _initProgress = new ImmediateProgress(true);
             return _initProgress;
         }
         

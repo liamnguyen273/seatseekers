@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using com.brg.Common;
 using com.brg.Unity;
+using com.brg.Unity.Singular;
 using com.brg.UnityComponents;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -208,6 +210,10 @@ namespace com.tinycastle.SeatSeekers
             }
 
             FinalizePurchaseSuccess(purchaseEvent.purchasedProduct.definition.id);
+            
+            SingularHelper.SendSingularIAPEvent(purchaseEvent.purchasedProduct, false);
+
+            
             return PurchaseProcessingResult.Complete;
         }
     }

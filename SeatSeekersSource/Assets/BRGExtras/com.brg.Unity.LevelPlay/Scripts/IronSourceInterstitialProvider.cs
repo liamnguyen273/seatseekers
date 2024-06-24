@@ -34,7 +34,7 @@ namespace com.brg.Unity.LevelPlay
         
         public bool CanHandleRequest(AdRequestType type)
         {
-            return type is AdRequestType.INTERSTITIAL_AD;
+            return Initialized && type is AdRequestType.INTERSTITIAL_AD;
         }
 
         public bool IsOverlayingAd(AdRequestType type)

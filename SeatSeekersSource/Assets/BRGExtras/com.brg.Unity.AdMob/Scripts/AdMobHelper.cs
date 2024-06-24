@@ -75,7 +75,7 @@ namespace com.brg.Unity.AdMob
                 _initProgress ??= new SingleProgress(
                     () => !_initializing,
                     () => _initialized,
-                    () => _initialized ? 0f : 1f, 
+                    () => _initialized ? 1f : 0f, 
                     () => 1f);
                 return _initProgress;
             }

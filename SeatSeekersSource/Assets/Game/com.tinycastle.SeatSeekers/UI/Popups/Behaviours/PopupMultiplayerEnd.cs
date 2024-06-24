@@ -46,7 +46,7 @@ namespace com.tinycastle.SeatSeekers
             enemyScore += isPlayerWin ? loseReward : winReward;
             accessor.FixPlayerLeaderboard();
             accessor.SetInLeaderboard(enemyName, enemyScore, true);
-            accessor.WriteDataAsync();
+            GM.Instance.Get<GameSaveManager>().SaveAll();
         }
 
         private static int GetReward(int intensity, bool isWin)

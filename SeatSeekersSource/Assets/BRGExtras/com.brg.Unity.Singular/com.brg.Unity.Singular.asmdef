@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Singular",
-        "com.brg.Unity"
+        "com.brg.Unity",
+        "UnityEngine.Purchasing"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
