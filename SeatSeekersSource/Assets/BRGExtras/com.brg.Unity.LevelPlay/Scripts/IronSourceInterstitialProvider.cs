@@ -10,12 +10,11 @@ namespace com.brg.Unity.LevelPlay
         private bool _loaded;
         private bool _showingAd;
         private bool _adResult;
-
-        private bool _subscribed;
         
         public IProgress Initialize()
         {
-            if (!_subscribed)
+            LevelPlayInitialization.Initialize();
+            LevelPlayInitialization.InitTask.ContinueWith((t) =>
             {
                 IronSourceInterstitialEvents.onAdReadyEvent += InterstitialOnAdReadyEvent;
                 IronSourceInterstitialEvents.onAdLoadFailedEvent += InterstitialOnAdLoadFailed;
@@ -24,9 +23,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceInterstitialEvents.onAdShowSucceededEvent += InterstitialOnAdShowSucceededEvent;
                 IronSourceInterstitialEvents.onAdShowFailedEvent += InterstitialOnAdShowFailedEvent;
                 IronSourceInterstitialEvents.onAdClosedEvent += InterstitialOnAdClosedEvent;
-                _subscribed = true;
-            }
-            LevelPlayInitialization.Initialize();
+                IronSource.Agent.loadInterstitial();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
             return new ImmediateProgress();
         }
 
@@ -34,7 +32,7 @@ namespace com.brg.Unity.LevelPlay
         
         public bool CanHandleRequest(AdRequestType type)
         {
-            return Initialized && type is AdRequestType.INTERSTITIAL_AD;
+            return type == AdRequestType.INTERSTITIAL_AD;
         }
 
         public bool IsOverlayingAd(AdRequestType type)
@@ -44,7 +42,7 @@ namespace com.brg.Unity.LevelPlay
 
         public void RequestPreloadAd()
         {
-            IronSource.Agent.loadInterstitial();
+            // IronSource.Agent.loadInterstitial();
         }
 
         public async Task<bool> LoadAdAsync(AdRequestType type, CancellationToken ct)

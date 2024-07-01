@@ -1,6 +1,7 @@
 using System;
 using com.brg.Common;
 using com.brg.Unity;
+using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
 using JSAM;
@@ -104,18 +105,27 @@ namespace com.tinycastle.SeatSeekers
 
         private void OnDoubleButton()
         {
-            // TODO: Show ad
-            var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
-            var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
-            curr += _coinValue * 2;
-            accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
-            GM.Instance.Get<GameSaveManager>().SaveAll();
-            _received = true;
+            if (_received) return;
 
-            _doubleCoinButton.Comp.Interactable = false;
-            _continueButton.Comp.Interactable = false;
+            GM.Instance.Get<UnityAdManager>().RequestAd(new AdRequest(AdRequestType.REWARD_AD, () =>
+            {
+                var accessor = GM.Instance.Get<GameSaveManager>().PlayerData;
+                var curr = accessor.GetFromResources(Constants.COIN_RESOURCE) ?? 0;
+                curr += _coinValue * 2;
+                accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
+                GM.Instance.Get<GameSaveManager>().SaveAll();
+                _received = true;
+                            
+                GoToNextLevel();
+            }, () =>
+            {
+                // Do nothing
+                var popup = GM.Instance.Get<PopupManager>().GetPopup(out PopupBehaviourGeneric generic);
+                generic.SetupAsNotify("Uh oh", "Reward ad is not available at the moment, try again later.");
+                popup.Show();
+            }));
             
-            GoToNextLevel();
+            _doubleCoinButton.Comp.Interactable = false;
         }
 
         private bool _adButtonTimer = true;

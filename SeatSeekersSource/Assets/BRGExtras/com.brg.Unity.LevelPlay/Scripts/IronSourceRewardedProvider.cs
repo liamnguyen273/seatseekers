@@ -10,12 +10,11 @@ namespace com.brg.Unity.LevelPlay
         private bool _loaded;
         private bool _showingAd;
         private bool _adResult;
-
-        private bool _subscribed;
         
         public IProgress Initialize()
         {
-            if (!_subscribed)
+            LevelPlayInitialization.Initialize();
+            LevelPlayInitialization.InitTask.ContinueWith((t) =>
             {
                 IronSourceRewardedVideoEvents.onAdReadyEvent += RewardedVideoOnAdReadyEvent;
                 IronSourceRewardedVideoEvents.onAdLoadFailedEvent += RewardedVideoOnAdLoadFailedEvent;
@@ -24,10 +23,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
                 IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
                 IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
-                
-                _subscribed = true;
-            }
-            LevelPlayInitialization.Initialize();
+                IronSource.Agent.loadRewardedVideo();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
             return new ImmediateProgress();
         }
 
@@ -35,7 +32,7 @@ namespace com.brg.Unity.LevelPlay
         
         public bool CanHandleRequest(AdRequestType type)
         {
-            return Initialized && type is AdRequestType.REWARD_AD;
+            return type == AdRequestType.REWARD_AD;
         }
 
         public bool IsOverlayingAd(AdRequestType type)
@@ -45,11 +42,13 @@ namespace com.brg.Unity.LevelPlay
 
         public void RequestPreloadAd()
         {
-            IronSource.Agent.loadRewardedVideo();
+            
         }
 
         public async Task<bool> LoadAdAsync(AdRequestType type, CancellationToken ct)
         {
+            await Task.Delay(3000, ct);
+            
             if (!_loading || _showingAd) return true;
             
             LoadAdIfNotAlready();

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using com.brg.Common;
 using com.brg.Unity.Consents;
@@ -8,9 +9,9 @@ namespace com.brg.Unity.LevelPlay
     public static class LevelPlayInitialization
     {
 #if UNITY_ANDROID
-        private const string APP_KEY = "85460dcd";
+        private const string APP_KEY = "1ea9de905";
 #elif UNITY_IOS
-        private const string APP_KEY = "8545d445";
+        private const string APP_KEY = "1ea9e228d";
 #else
         private const string APP_KEY = "unexpected_platform";
         #endif
@@ -18,6 +19,9 @@ namespace com.brg.Unity.LevelPlay
         private static IProgress _initProgress;
         private static TaskCompletionSource<bool> _tcs;
 
+        public static event Action ShouldInitializeEvent;
+
+        public static Task<bool> InitTask => _tcs.Task;
         public static bool Initialized => _tcs.Task.IsCompletedSuccessfully && _tcs.Task.Result;
 
         public static IProgress Initialize()
@@ -34,10 +38,9 @@ namespace com.brg.Unity.LevelPlay
                 IronSource.Agent.setConsent(status is ConsentStatus.NotRequired or ConsentStatus.Obtained);
                 
                 IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
-
                 IronSource.Agent.setManualLoadRewardedVideo(true);
-                IronSource.Agent.init(APP_KEY);
-            });
+                IronSource.Agent.init(APP_KEY, IronSourceAdUnits.BANNER, IronSourceAdUnits.INTERSTITIAL, IronSourceAdUnits.REWARDED_VIDEO);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
 
             return _initProgress;
         }

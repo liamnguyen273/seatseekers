@@ -10,6 +10,8 @@ using com.brg.Unity.Singular;
 using com.brg.UnityCommon;
 using com.brg.UnityCommon.Editor;
 using com.brg.UnityComponents;
+using DG.Tweening;
+using JSAM;
 using UnityEngine;
 using Random = System.Random;
 
@@ -170,6 +172,9 @@ namespace com.tinycastle.SeatSeekers
         
         private void Awake()
         {
+            AudioManager.MusicMuted = false;
+            AudioManager.SoundMuted = false;
+            
             Instance = this;
             Log = new LogObj("GM");
             
@@ -195,6 +200,18 @@ namespace com.tinycastle.SeatSeekers
             var adManager = new AdManager(saveManager, null, GMUtils.MakeAdServiceProviders());
             unityAdManager.Comp = adManager;
             
+            unityAdManager.SetPlayables(new TweenInOutPlayable(() =>
+            {
+                AudioManager.MusicMuted = true;
+                AudioManager.SoundMuted = true;
+                return unityAdManager._canvas.Comp.DOFade(1f, 0.5f);
+            }, () =>
+            {
+                AudioManager.MusicMuted = false;
+                AudioManager.SoundMuted = false;
+                return unityAdManager._canvas.Comp.DOFade(0f, 0.5f);
+            }));
+            
             var purchaseManager = new PurchaseManager();
             Purchase = purchaseManager;
 
@@ -207,12 +224,12 @@ namespace com.tinycastle.SeatSeekers
             LevelPlayInitialization.Initialize();
             
             // Establish dependencies
-            // saveManager.AddDependencies(dataManager);
+            saveManager.AddDependencies(dataManager);
             // localizationManager.AddDependencies(saveManager);
-            // adManager.AddDependencies(consentManager);
+            adManager.AddDependencies(consentManager);
             // adManager.AddDependencies(analyticsEventManager);
             // adManager.AddDependencies(saveManager);
-            // purchaseManager.AddDependencies(saveManager, dataManager);
+            purchaseManager.AddDependencies(saveManager, dataManager);
             // questManager.AddDependencies(saveManager);
             
             Log.Success("Established managers' dependencies.");

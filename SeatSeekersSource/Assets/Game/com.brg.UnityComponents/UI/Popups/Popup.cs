@@ -80,7 +80,7 @@ namespace com.brg.UnityComponents
 			}
 		}
 
-		public override IProgress InitializationProgress => new ImmediateProgress(true, 1f);
+		public IProgress InitializationProgress => new ImmediateProgress(true, 1f);
 
 		public override IProgress Initialize()
 		{

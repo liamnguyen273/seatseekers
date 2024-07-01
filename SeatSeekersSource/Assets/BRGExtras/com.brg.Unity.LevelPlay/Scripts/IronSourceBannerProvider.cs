@@ -8,12 +8,12 @@ namespace com.brg.Unity.LevelPlay
     {
         private bool _loading;
         private bool _loaded;
-        private bool _subscribed;
         private TaskCompletionSource<bool> _showTcs;
         
         public IProgress Initialize()
         {
-            if (!_subscribed)
+            LevelPlayInitialization.Initialize();
+            LevelPlayInitialization.InitTask.ContinueWith((t) =>
             {
                 IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
                 IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
@@ -21,9 +21,8 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
                 IronSourceBannerEvents.onAdScreenDismissedEvent += BannerOnAdScreenDismissedEvent;
                 IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
-                _subscribed = true;
-            }
-            LevelPlayInitialization.Initialize();
+                LoadBanner();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
             return new ImmediateProgress();
         }
 
@@ -31,7 +30,7 @@ namespace com.brg.Unity.LevelPlay
         
         public bool CanHandleRequest(AdRequestType type)
         {
-            return Initialized && type is AdRequestType.BANNER_AD;
+            return type == AdRequestType.BANNER_AD;
         }
 
         public bool IsOverlayingAd(AdRequestType type)
@@ -86,6 +85,7 @@ namespace com.brg.Unity.LevelPlay
             {
                 _loading = false;
                 _loaded = true;
+                IronSource.Agent.displayBanner();
             }
             else
             {
@@ -100,7 +100,11 @@ namespace com.brg.Unity.LevelPlay
             LogObj.Default.Info(nameof(IronSourceBannerProvider), $"Banner failed to load. Error:\n{ironSourceError}");
             _loading = false;
             _loaded = false;
-            LoadBanner();
+            
+            Task.Delay(5000).ContinueWith((t) =>
+            {
+                LoadBanner();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void BannerOnAdClickedEvent(IronSourceAdInfo adInfo) 

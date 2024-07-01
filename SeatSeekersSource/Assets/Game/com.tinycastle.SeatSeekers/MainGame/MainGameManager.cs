@@ -94,7 +94,7 @@ namespace com.tinycastle.SeatSeekers
         public bool AllowPickUpSeat => _state == GameState.PLAYING;
 
         private IProgress _initializeProgress;
-        public override IProgress InitializationProgress => _initializeProgress ?? new ImmediateProgress(false, 1f);
+        public IProgress InitializationProgress => _initializeProgress ?? new ImmediateProgress(false, 1f);
 
         public float FreezeTimer
         {

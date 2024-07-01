@@ -44,6 +44,10 @@ namespace com.tinycastle.SeatSeekers
             {
                 var value = GM.Instance.Get<GameSaveManager>().PlayerData.GetFromResources(_resourceToAdd) ?? 0;
                 value += _addCount;
+                
+                var popup = GM.Instance.Get<PopupManager>().GetPopup(out PopupBehaviourGeneric generic);
+                generic.SetupAsNotify("Congratulations", "Your reward has been given.");
+                popup.Show();
 
                 GM.Instance.Get<GameSaveManager>().PlayerData.SetInResources(_resourceToAdd, value, true);
             }, () =>

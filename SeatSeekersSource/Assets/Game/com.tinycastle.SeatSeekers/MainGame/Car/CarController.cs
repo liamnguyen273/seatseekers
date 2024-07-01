@@ -57,7 +57,7 @@ namespace com.tinycastle.SeatSeekers
         public bool AllowPickUpSeat => MainGame.AllowPickUpSeat && _expandTween == null;
 
         private IProgress _initializeProgress;
-        public override IProgress InitializationProgress => _initializeProgress ?? new ImmediateProgress(false, 1f);
+        public IProgress InitializationProgress => _initializeProgress ?? new ImmediateProgress(false, 1f);
         
         public override IProgress Initialize()
         {

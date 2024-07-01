@@ -123,6 +123,6 @@ namespace com.brg.UnityComponents
             _progressSlider.Comp.value = value;
         }
 
-        public override IProgress InitializationProgress => new ImmediateProgress(true, 1f);
+        public IProgress InitializationProgress => new ImmediateProgress(true, 1f);
     }
 }

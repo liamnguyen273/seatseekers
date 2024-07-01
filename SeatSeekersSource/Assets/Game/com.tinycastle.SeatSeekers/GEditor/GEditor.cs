@@ -24,7 +24,7 @@ namespace com.tinycastle.SeatSeekers
         public MainGameManager MainGame => _mainGameManager.Comp;
 
         private IProgress _initializationProgress;
-        public override IProgress InitializationProgress => _initializationProgress ?? new ImmediateProgress(false, 1f);
+        public IProgress InitializationProgress => _initializationProgress ?? new ImmediateProgress(false, 1f);
         
         private void Awake()
         {

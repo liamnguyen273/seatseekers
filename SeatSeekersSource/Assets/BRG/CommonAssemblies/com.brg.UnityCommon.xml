@@ -107,9 +107,6 @@
         <member name="M:com.brg.UnityCommon.UnityComp`1.Initialize">
             <inheritdoc/>
         </member>
-        <member name="P:com.brg.UnityCommon.UnityComp`1.InitializationProgress">
-            <inheritdoc/>
-        </member>
         <member name="M:com.brg.UnityCommon.UnityComp`1.Activate">
             <inheritdoc/>
         </member>
@@ -138,9 +135,6 @@
             This class should have the exact implementation as <see cref="T:com.brg.Common.GameComponent"/>
             </para>
             </summary>
-        </member>
-        <member name="P:com.brg.UnityCommon.UnityComp.InitializationProgress">
-            <inheritdoc/>
         </member>
         <member name="P:com.brg.UnityCommon.UnityComp.Initialized">
             <summary>
@@ -177,6 +171,21 @@
         </member>
         <member name="M:com.brg.UnityCommon.UnityComp.Resume">
             <inheritdoc/>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.LogInfo(System.String)">
+            <summary>
+            Shorthand for logging info.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.LogWarning(System.String)">
+            <summary>
+            Shorthand for logging warning.
+            </summary>
+        </member>
+        <member name="M:com.brg.UnityCommon.UnityComp.LogError(System.String)">
+            <summary>
+            Shorthand for logging error.
+            </summary>
         </member>
         <member name="T:com.brg.UnityCommon.UnityLogWriter">
             <summary>
