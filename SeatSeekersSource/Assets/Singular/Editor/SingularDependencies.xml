@@ -1,5 +1,0 @@
-<dependencies>
-  <androidPackages>
-    <androidPackage spec="com.android.installreferrer:installreferrer:2.2"/>
-  </androidPackages>
-</dependencies>

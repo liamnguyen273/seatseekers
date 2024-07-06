@@ -2,9 +2,9 @@
     "name": "com.brg.Unity.Singular",
     "rootNamespace": "",
     "references": [
-        "Singular",
         "com.brg.Unity",
-        "UnityEngine.Purchasing"
+        "UnityEngine.Purchasing",
+        "SingularSDK"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

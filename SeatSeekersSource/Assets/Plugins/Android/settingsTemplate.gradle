@@ -25,7 +25,7 @@ dependencyResolutionManagement {
             url "https://android-sdk.is.com/" // Assets/LevelPlay/Editor/IronSourceSDKDependencies.xml:9, Assets/LevelPlay/Editor/ISAdMobAdapterDependencies.xml:16, Assets/LevelPlay/Editor/ISAppLovinAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISFacebookAdapterDependencies.xml:16, Assets/LevelPlay/Editor/ISInMobiAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISMintegralAdapterDependencies.xml:48, Assets/LevelPlay/Editor/ISPangleAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISUnityAdsAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISVungleAdapterDependencies.xml:16
         }
         maven {
-            url "https://maven.google.com/" // Assets/LevelPlay/Editor/IronSourceSDKDependencies.xml:17, Assets/LevelPlay/Editor/IronSourceSDKDependencies.xml:25, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:7, Assets/LevelPlay/Editor/ISAppLovinAdapterDependencies.xml:15, Assets/LevelPlay/Editor/ISFacebookAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISInMobiAdapterDependencies.xml:22, Assets/LevelPlay/Editor/ISMintegralAdapterDependencies.xml:40, Assets/LevelPlay/Editor/ISUnityAdsAdapterDependencies.xml:15, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:12, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleUmpDependencies.xml:7
+            url "https://maven.google.com/" // Assets/LevelPlay/Editor/IronSourceSDKDependencies.xml:25, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:7, Assets/LevelPlay/Editor/ISAppLovinAdapterDependencies.xml:15, Assets/LevelPlay/Editor/ISFacebookAdapterDependencies.xml:8, Assets/LevelPlay/Editor/ISInMobiAdapterDependencies.xml:22, Assets/LevelPlay/Editor/ISMintegralAdapterDependencies.xml:40, Assets/LevelPlay/Editor/ISUnityAdsAdapterDependencies.xml:15, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:12, Packages/com.google.ads.mobile/GoogleMobileAds/Editor/GoogleUmpDependencies.xml:7
         }
         maven {
             url "https://repo.maven.apache.org/maven2/" // Assets/LevelPlay/Editor/ISInMobiAdapterDependencies.xml:15
@@ -38,6 +38,9 @@ dependencyResolutionManagement {
         }
         maven {
             url "https://jitpack.io/" // Assets/LevelPlay/Editor/ISVungleAdapterDependencies.xml:8
+        }
+        maven {
+            url "https://maven.singular.net" // Packages/singular-unity-package/SingularSDK/Editor/Dependencies.xml:7
         }
         mavenLocal()
 // Android Resolver Repos End

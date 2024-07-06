@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using Singular;
 using UnityEngine.Purchasing;
 
 namespace com.brg.Unity.Singular
@@ -20,6 +21,5 @@ namespace com.brg.Unity.Singular
             SingularSDK.InAppPurchase("mn_iap", product, null, restored);
 #endif
         }
-
     }
 }

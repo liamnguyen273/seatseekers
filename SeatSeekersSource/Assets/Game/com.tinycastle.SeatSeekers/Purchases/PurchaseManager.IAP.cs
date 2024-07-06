@@ -127,6 +127,7 @@ namespace com.tinycastle.SeatSeekers
 #endif
             Log.Info($"Unity IAP's handling the purchase request.");
             var id = entry.Id;
+            _currentIapEntry = entry;
             _controller.InitiatePurchase(id);
         }
 
@@ -212,7 +213,6 @@ namespace com.tinycastle.SeatSeekers
             FinalizePurchaseSuccess(purchaseEvent.purchasedProduct.definition.id);
             
             SingularHelper.SendSingularIAPEvent(purchaseEvent.purchasedProduct, false);
-
             
             return PurchaseProcessingResult.Complete;
         }

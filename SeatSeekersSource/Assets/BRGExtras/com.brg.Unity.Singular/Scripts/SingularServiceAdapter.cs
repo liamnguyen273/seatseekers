@@ -1,5 +1,6 @@
 using System.Linq;
 using com.brg.Common;
+using Singular;
 using UnityEngine;
 
 namespace com.brg.Unity.Singular
