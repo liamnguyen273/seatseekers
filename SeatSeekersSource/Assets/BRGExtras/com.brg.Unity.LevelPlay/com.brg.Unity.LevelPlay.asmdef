@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Unity.LevelPlay",
-        "com.brg.Unity.Consents"
+        "com.brg.Unity.Consents",
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -12,7 +13,8 @@
     "precompiledReferences": [
         "com.brg.Common.dll",
         "com.brg.UnityCommon.dll",
-        "GoogleMobileAds.Ump.dll"
+        "GoogleMobileAds.Ump.dll",
+        "DOTween.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

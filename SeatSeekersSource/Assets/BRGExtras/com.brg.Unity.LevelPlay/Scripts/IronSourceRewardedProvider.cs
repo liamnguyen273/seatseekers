@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using com.brg.Common;
+using DG.Tweening;
 
 namespace com.brg.Unity.LevelPlay
 {
@@ -76,7 +77,7 @@ namespace com.brg.Unity.LevelPlay
         
         private void LoadAdIfNotAlready()
         {
-            if (_loading) return;
+            if (_loading || _loaded || !IronSource.Agent.isRewardedVideoAvailable()) return;
 
             _loading = true;
             _loaded = false;
@@ -98,6 +99,7 @@ namespace com.brg.Unity.LevelPlay
                             
             _loading = false;
             _loaded = false;
+            DOVirtual.DelayedCall(10f, LoadAdIfNotAlready).Play();
         }
 
         private void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)

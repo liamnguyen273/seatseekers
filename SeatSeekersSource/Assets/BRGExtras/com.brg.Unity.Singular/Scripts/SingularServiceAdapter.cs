@@ -48,7 +48,7 @@ namespace com.brg.Unity.Singular
         public bool TranslateGameEventName(string name, out string translatedName)
         {
             var lowercaseName = name.ToLower();
-            translatedName = "sng_" + lowercaseName;
+            translatedName = lowercaseName;
             return true;
         }
     }
