@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using com.brg.Common;
 using Singular;
@@ -39,10 +40,31 @@ namespace com.brg.Unity.Singular
                 LogObj.Default.Info("SingularServiceAdapter", $"Event not sent. Does not have event {eventBuilder.Name} translation.");
                 return;
             }
-            
-            var parameters = eventBuilder.IterateParameters().ToDictionary(x => x.Item1, x => x.Item3);
-            SingularSDK.Event(parameters, name);
-            LogObj.Default.Info("SingularServiceAdapter", $"Logged event: {eventBuilder}");
+
+            if (eventBuilder.Name == "ad_impression")
+            {
+                var parameters = eventBuilder.IterateParameters().ToDictionary(x => x.Item1, x => x.Item3);
+                SingularAdData adData;
+
+                try
+                {
+                    adData = new SingularAdData((string)parameters["platform"], (string)parameters["currency"],
+                        (double)parameters["revenue"]);
+                    SingularSDK.AdRevenue(adData);
+                    LogObj.Default.Info("SingularServiceAdapter", $"Logged revenue: {adData}.");
+                }
+                catch (Exception e)
+                {
+                    adData = new SingularAdData("", "", 0.0);
+                    LogObj.Default.Error(e);
+                }
+            }
+            else
+            {
+                var parameters = eventBuilder.IterateParameters().ToDictionary(x => x.Item1, x => x.Item3);
+                SingularSDK.Event(parameters, name);
+                LogObj.Default.Info("SingularServiceAdapter", $"Logged event: {eventBuilder}");
+            }
         }
 
         public bool TranslateGameEventName(string name, out string translatedName)

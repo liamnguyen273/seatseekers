@@ -115,7 +115,7 @@ namespace com.tinycastle.SeatSeekers
                 accessor.SetInResources(Constants.COIN_RESOURCE, curr, true);
                 GM.Instance.Get<GameSaveManager>().SaveAll();
                 _received = true;
-                            
+                GM.Instance.Get<GameSaveManager>().ExtraData.AddRewardedView();
                 GoToNextLevel();
             }, () =>
             {

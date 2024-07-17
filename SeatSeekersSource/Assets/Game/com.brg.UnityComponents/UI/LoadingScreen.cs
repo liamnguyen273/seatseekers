@@ -31,7 +31,12 @@ namespace com.brg.UnityComponents
         private event Action _completeEvent;
         
         private IInOutPlayable _transitPlayable;
-        
+
+        public override IProgress Initialize()
+        {
+            return new ImmediateProgress(true);
+        }
+
         private void Awake()
         {
             var rect = GetComponent<RectTransform>();
@@ -122,7 +127,5 @@ namespace com.brg.UnityComponents
         {
             _progressSlider.Comp.value = value;
         }
-
-        public IProgress InitializationProgress => new ImmediateProgress(true, 1f);
     }
 }

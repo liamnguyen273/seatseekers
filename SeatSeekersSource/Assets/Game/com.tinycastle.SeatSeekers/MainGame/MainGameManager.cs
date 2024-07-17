@@ -497,8 +497,6 @@ namespace com.tinycastle.SeatSeekers
         private int _adDelay = 1;
         private void CheckAndShowConcludePopups(PopupManager popupManager)
         {
-            _adDelay -= 1;
-            
             Action next = () =>
             {
                 if (_isWin)
@@ -513,6 +511,14 @@ namespace com.tinycastle.SeatSeekers
                     popup.Show();
                 }
             };
+            
+            if ((_levelEntry?.SortOrder ?? 99) <= 7)
+            {
+                next();
+                return;
+            }
+            
+            _adDelay -= 1;
 
             if (_adDelay <= 0)
             {
@@ -520,6 +526,7 @@ namespace com.tinycastle.SeatSeekers
                 {
                     _adDelay = 3;
                     next();
+                    GM.Instance.Get<GameSaveManager>().ExtraData.AddInterstitialView();
                 }, () =>
                 {
                     _adDelay = 1;

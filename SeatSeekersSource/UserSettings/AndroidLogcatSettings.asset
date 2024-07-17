@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "c780fb96",
         "name": "com.tinycastle.seatseekers",
-        "processId": 19055,
+        "processId": 15727,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,31 +11,43 @@
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 15576,
+            "processId": 32715,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 16071,
+            "processId": 3123,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 16853,
+            "processId": 4790,
+            "exited": true
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.miui.home",
+            "processId": 9084,
+            "exited": false
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 8594,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 17729,
-            "exited": true
+            "processId": 12226,
+            "exited": false
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 19055,
+            "processId": 15727,
             "exited": false
         }
     ],
@@ -93,7 +105,7 @@
         "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "levelplay",
+        "m_Filter": "",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

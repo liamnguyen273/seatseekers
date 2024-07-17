@@ -32,7 +32,7 @@ namespace com.tinycastle.SeatSeekers
 
         public void SetLevel(LevelEntry levelEntry, bool isUnlocked, bool isCurrent)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || FORCED_CHEAT
             isUnlocked = true;
 #endif
             

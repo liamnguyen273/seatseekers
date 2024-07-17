@@ -3357,10 +3357,18 @@ MonoBehaviour:
     _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 22395996743349553}
     _path: ./Panel/BottomGroup/Buttons/AdGroup/ButtonAdx2/TimeGroup/Time
+  _adButton:
+    _parent: {fileID: 1371992022459028373}
+    _comp: {fileID: 40122457927684428}
+    _path: ./Panel/BottomGroup/Buttons/AdGroup/ButtonAd
   _adButtonx2:
     _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 2271682004345855201}
     _path: ./Panel/BottomGroup/Buttons/AdGroup/ButtonAdx2
+  _refillButton:
+    _parent: {fileID: 1371992022459028373}
+    _comp: {fileID: 6219717374044479590}
+    _path: ./Panel/BottomGroup/Buttons/ButtonRefill
   _xButton:
     _parent: {fileID: 1371992022459028373}
     _comp: {fileID: 5936300202065579019}

@@ -22,6 +22,18 @@ namespace com.tinycastle.SeatSeekers
             
         }
 
+        public void AddInterstitialView()
+        {
+            InterstitialViews += 1;
+            WriteDataAsync();
+        }
+        
+        public void AddRewardedView()
+        {
+            RewardedViews += 1;
+            WriteDataAsync();
+        }
+
         public bool HasData => _dto != null;
         
         public override bool HasModifiedData => _modified;

@@ -93,14 +93,20 @@ namespace com.tinycastle.SeatSeekers
 
             var energy = accessor.GetFromResources(Constants.ENERGY_RESOURCE) ?? 0;
             var inf = accessor.GetFromResources(Constants.INFINITE_ENERGY_RESOURCE) ?? 0;
+#if FORCED_CHEAT
+            if (true)
+            #else
             if (energy > 0 || inf > 0)
+#endif
             {
+#if !FORCED_CHEAT
                 if (inf <= 0)
                 {
                     energy -= 1;
                     accessor.SetInResources(Constants.ENERGY_RESOURCE, energy, true);
                     GM.Instance.Get<GameSaveManager>().SaveAll();
                 }
+#endif
 
                 gm.RequestPlayLevel(entry);
             }
@@ -222,6 +228,7 @@ namespace com.tinycastle.SeatSeekers
             Log.Success("Created managers.");
             
             LevelPlayInitialization.Initialize();
+            IronSourceEvents.onImpressionDataReadyEvent += ImpressionDataReadyEvent;
             
             // Establish dependencies
             saveManager.AddDependencies(dataManager);
@@ -252,6 +259,15 @@ namespace com.tinycastle.SeatSeekers
             
             Comp = gm;
             GM.Instance = Comp;
+        }
+
+        private void ImpressionDataReadyEvent(IronSourceImpressionData obj)
+        {
+            GM.Instance.Get<AnalyticsEventManager>().MakeEvent("ad_impression")
+                .Add("platform", "IronSource")
+                .Add("currency", "USD")
+                .Add("revenue", obj.revenue ?? 0.0)
+                .SendEvent();
         }
 
         private void Start()
