@@ -11,9 +11,12 @@ namespace com.brg.Unity.LevelPlay
         private bool _loaded;
         private bool _showingAd;
         private bool _adResult;
+
+        private bool _init;
         
         public IProgress Initialize()
         {
+            if (_init) return new ImmediateProgress();
             LevelPlayInitialization.Initialize();
             LevelPlayInitialization.InitTask.ContinueWith((t) =>
             {
@@ -26,6 +29,7 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceInterstitialEvents.onAdClosedEvent += InterstitialOnAdClosedEvent;
                 IronSource.Agent.loadInterstitial();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+            _init = true;
             return new ImmediateProgress();
         }
 

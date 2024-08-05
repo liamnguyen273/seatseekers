@@ -1,14 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using com.brg.Common;
-using com.brg.Unity;
-using com.brg.UnityComponents;
-using com.tinycastle.SeatSeekers;
 using Newtonsoft.Json;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace com.tinycastle.SeatSeekers
 {
@@ -31,6 +25,12 @@ namespace com.tinycastle.SeatSeekers
         public void AddRewardedView()
         {
             RewardedViews += 1;
+            WriteDataAsync();
+        }
+
+        public void AddLtv(double value)
+        {
+            Ltv += value;
             WriteDataAsync();
         }
 
@@ -77,7 +77,7 @@ namespace com.tinycastle.SeatSeekers
     
     public partial class PlayerExtraData
     {
-        public float ltv;
+        public double ltv;
         public int interstitialViews;
         public int rewardedViews;
         public float time;

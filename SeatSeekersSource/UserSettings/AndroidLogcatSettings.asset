@@ -3,51 +3,45 @@
     "m_SelectedProcess": {
         "deviceId": "c780fb96",
         "name": "com.tinycastle.seatseekers",
-        "processId": 15727,
+        "processId": 14687,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownProcessesForSerialization": [
         {
             "deviceId": "c780fb96",
-            "name": "com.tinycastle.seatseekers",
-            "processId": 32715,
-            "exited": true
-        },
-        {
-            "deviceId": "c780fb96",
-            "name": "com.tinycastle.seatseekers",
-            "processId": 3123,
-            "exited": true
-        },
-        {
-            "deviceId": "c780fb96",
-            "name": "com.tinycastle.seatseekers",
-            "processId": 4790,
-            "exited": true
-        },
-        {
-            "deviceId": "c780fb96",
             "name": "com.miui.home",
-            "processId": 9084,
+            "processId": 25109,
             "exited": false
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 8594,
+            "processId": 6315,
             "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 12226,
-            "exited": false
+            "processId": 7870,
+            "exited": true
         },
         {
             "deviceId": "c780fb96",
             "name": "com.tinycastle.seatseekers",
-            "processId": 15727,
+            "processId": 9756,
+            "exited": true
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 13648,
+            "exited": true
+        },
+        {
+            "deviceId": "c780fb96",
+            "name": "com.tinycastle.seatseekers",
+            "processId": 14687,
             "exited": false
         }
     ],
@@ -80,6 +74,10 @@
             {
                 "m_Name": "CRASH",
                 "m_Selected": false
+            },
+            {
+                "m_Name": "ironSourceSDK",
+                "m_Selected": false
             }
         ]
     },
@@ -105,7 +103,7 @@
         "AutoCapture": true
     },
     "m_FilterOptions": {
-        "m_Filter": "",
+        "m_Filter": "IAP",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

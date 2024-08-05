@@ -10,8 +10,11 @@ namespace com.brg.Unity.LevelPlay
         private bool _loaded;
         private TaskCompletionSource<bool> _showTcs;
         
+        private bool _init;
+        
         public IProgress Initialize()
         {
+            if (_init) return new ImmediateProgress();
             LevelPlayInitialization.Initialize();
             LevelPlayInitialization.InitTask.ContinueWith((t) =>
             {
@@ -23,6 +26,7 @@ namespace com.brg.Unity.LevelPlay
                 IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
                 LoadBanner();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+            _init = true;
             return new ImmediateProgress();
         }
 
@@ -80,19 +84,9 @@ namespace com.brg.Unity.LevelPlay
         private void BannerOnAdLoadedEvent(IronSourceAdInfo adInfo)
         {
             LogObj.Default.Info(nameof(IronSourceBannerProvider), $"Banner loaded.");
-
-            if (_loading)
-            {
-                _loading = false;
-                _loaded = true;
-                IronSource.Agent.displayBanner();
-            }
-            else
-            {
-                _loading = false;
-                _loaded = true;
-                IronSource.Agent.hideBanner();
-            }
+            _loading = false;
+            _loaded = true;
+            IronSource.Agent.displayBanner();
         }
 
         private void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError) 

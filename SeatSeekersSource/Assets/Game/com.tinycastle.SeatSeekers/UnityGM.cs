@@ -263,6 +263,7 @@ namespace com.tinycastle.SeatSeekers
 
         private void ImpressionDataReadyEvent(IronSourceImpressionData obj)
         {
+            GM.Instance.Get<GameSaveManager>().ExtraData.AddLtv(obj.revenue ?? 0.0);
             GM.Instance.Get<AnalyticsEventManager>().MakeEvent("ad_impression")
                 .Add("platform", "IronSource")
                 .Add("currency", "USD")
